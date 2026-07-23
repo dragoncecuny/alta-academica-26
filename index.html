@@ -397,9 +397,25 @@
     //  ✅ CONFIGURACIÓN
     // ================================================================
     const SPREADSHEET_ID = "1sb5Uyk1ao9MKt6OjZtHXAMsuFG9mRA_7w5GGku4CC38";
-    const SHEET_NAME = "Asignación de horarios";  // Nombre exacto de tu hoja
-    const RANGE = `${SHEET_NAME}!A2:D`;  // Empieza en fila 2 (donde están las cabeceras)
+    const SHEET_NAME = "Asignación de horarios";
+    
+    // 🔥 IMPORTANTE: Usar gid en lugar de range para evitar problemas con espacios
+    // Primero obtenemos el gid de la hoja
+    async function obtenerGid() {
+        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
+        const response = await fetch(url);
+        const text = await response.text();
+        const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+        const json = JSON.parse(jsonText);
+        return json.table.cols[0].id; // No funciona, necesitamos otro método
+    }
+
+    // Mejor: Usamos el nombre de la hoja con codificación URL
+    const SHEET_ENCODED = encodeURIComponent(SHEET_NAME);
+    const RANGE = `${SHEET_ENCODED}!A2:D`;
     const URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&range=${RANGE}`;
+
+    console.log('🔍 URL generada:', URL);
 
     let docentesData = [];
 
@@ -427,7 +443,7 @@
             .replace(/[óöôò]/g, 'o')
             .replace(/[úüûù]/g, 'u')
             .replace(/[ñ]/g, 'n')
-            .replace(/[^a-z0-9]/g, '')  // Elimina todo lo que no sea letras o números
+            .replace(/[^a-z0-9]/g, '')
             .trim();
     }
 
@@ -452,19 +468,30 @@
             gridContainer.style.display = 'none';
             loadingDiv.innerHTML = '⏳ Cargando datos desde Google Sheets...';
 
+            console.log('🔍 Intentando cargar desde:', URL);
+
             const response = await fetch(URL);
-            if (!response.ok) throw new Error('Error al obtener los datos');
+            if (!response.ok) {
+                throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+            }
 
             const text = await response.text();
-            const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-            const json = JSON.parse(jsonText);
+            console.log('📥 Respuesta recibida (primeros 100 caracteres):', text.substring(0, 100));
+
+            // Si la respuesta empieza con "/*O_o*/", la limpiamos
+            let cleanText = text;
+            if (text.startsWith('/*O_o*/')) {
+                cleanText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+            }
+
+            const json = JSON.parse(cleanText);
 
             const rows = json.table.rows;
             if (!rows || rows.length === 0) {
                 throw new Error('No hay datos en la hoja.');
             }
 
-            // Leer cabeceras (fila 2 del sheet)
+            // Leer cabeceras
             const headerRow = rows[0];
             const headers = [];
             for (let i = 0; i < headerRow.c.length; i++) {
@@ -476,37 +503,30 @@
                 }
             }
 
-            // Buscar columnas automáticamente (con diferentes variantes)
+            console.log('📋 Cabeceras encontradas:', headers);
+
+            // Buscar columnas
             const colDocente = encontrarColumna(headers, ['Docente', 'DOCENTE', 'docente', 'Nombre', 'Profesor']);
             const colPlaneacion = encontrarColumna(headers, [
-                'Entregó planeación', 
-                'ENTREGÓ PLANEACIÓN', 
-                'entrego planeacion', 
-                'Planeación', 
-                'planeacion',
-                'Entregó su planeación'
+                'Entregó planeación', 'ENTREGÓ PLANEACIÓN', 'entrego planeacion', 
+                'Planeación', 'planeacion', 'Entregó su planeación'
             ]);
             const colCapacitacion = encontrarColumna(headers, [
-                'Asistió 70% capacitaciones', 
-                'ASISTIÓ 70% CAPACITACIONES', 
-                'asistio 70% capacitaciones', 
-                'Capacitaciones',
-                '70% capacitaciones'
+                'Asistió 70% capacitaciones', 'ASISTIÓ 70% CAPACITACIONES', 
+                'asistio 70% capacitaciones', 'Capacitaciones', '70% capacitaciones'
             ]);
             const colDias = encontrarColumna(headers, [
-                'Días de capacitación que faltan', 
-                'DIAS DE CAPACITACIÓN QUE FALTAN', 
-                'dias de capacitacion que faltan', 
-                'Días faltan',
-                'dias faltan',
-                'Faltan'
+                'Días de capacitación que faltan', 'DIAS DE CAPACITACIÓN QUE FALTAN', 
+                'dias de capacitacion que faltan', 'Días faltan', 'dias faltan', 'Faltan'
             ]);
 
-            // Verificar que encontramos todas las columnas
-            if (!colDocente) throw new Error('No se encontró la columna "Docente"');
-            if (!colPlaneacion) throw new Error('No se encontró la columna "Entregó planeación"');
-            if (!colCapacitacion) throw new Error('No se encontró la columna "Asistió 70% capacitaciones"');
-            if (!colDias) throw new Error('No se encontró la columna "Días de capacitación que faltan"');
+            // Si no encuentra alguna columna, mostrar error con las columnas detectadas
+            if (!colDocente) throw new Error(`No se encontró columna "Docente". Columnas detectadas: ${headers.join(', ')}`);
+            if (!colPlaneacion) throw new Error(`No se encontró columna "Entregó planeación". Columnas detectadas: ${headers.join(', ')}`);
+            if (!colCapacitacion) throw new Error(`No se encontró columna "Asistió 70% capacitaciones". Columnas detectadas: ${headers.join(', ')}`);
+            if (!colDias) throw new Error(`No se encontró columna "Días de capacitación que faltan". Columnas detectadas: ${headers.join(', ')}`);
+
+            console.log('✅ Columnas encontradas:', { colDocente, colPlaneacion, colCapacitacion, colDias });
 
             // Procesar datos
             const rawData = [];
@@ -552,7 +572,6 @@
                 };
             });
 
-            // Ordenar alfabéticamente
             docentesData.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
             renderDocentes(docentesData);
@@ -565,7 +584,7 @@
             gridContainer.style.display = 'block';
 
         } catch (error) {
-            console.error('Error detallado:', error);
+            console.error('❌ Error completo:', error);
             loadingDiv.innerHTML = `
                 <div class="empty-state">
                     <span class="emoji">❌</span>
@@ -577,8 +596,7 @@
                         Verifica que el ID del sheet sea correcto y que la hoja sea pública.
                     </p>
                     <p style="font-size:0.8rem; color:#94a3b8; margin-top:8px;">
-                        Columnas detectadas: <br>
-                        <strong>${headers.join(' | ')}</strong>
+                        Intentando leer: <strong>${SHEET_NAME}</strong>
                     </p>
                 </div>
             `;
