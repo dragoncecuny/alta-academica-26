@@ -407,9 +407,9 @@
 
 <script>
     // ================================================================
-    //  ⚠️  ¡¡¡ CAMBIA ESTE ID CON EL DE TU GOOGLE SHEET !!!
+    //  ✅ ID DE TU GOOGLE SHEET (YA CONFIGURADO)
     // ================================================================
-    const SPREADSHEET_ID = "1sb5Uyk1ao9MKt6OjZtHXAMsuFG9mRA_7w5GGku4CC38"; // <--- PON AQUÍ TU ID
+    const SPREADSHEET_ID = "1sb5Uyk1ao9MKt6OjZtHXAMsuFG9mRA_7w5GGku4CC38";
 
     // ================================================================
     //  NO CAMBIES NADA MÁS DEBAJO DE ESTA LÍNEA
@@ -439,6 +439,7 @@
         try {
             loadingDiv.style.display = 'block';
             gridContainer.style.display = 'none';
+            loadingDiv.innerHTML = '⏳ Cargando datos desde Google Sheets...';
 
             const response = await fetch(URL);
             if (!response.ok) throw new Error('Error al obtener los datos');
@@ -449,40 +450,71 @@
             const rows = json.table.rows;
             if (!rows || rows.length < 2) throw new Error('No hay suficientes datos en la hoja');
 
-            // Cabeceras: Docente, Entregó planeación, Asistió 70%, Días que faltan
-            const headers = rows[0].c.map(c => c ? c.v : '');
+            // ---------- CABECERAS ----------
+            const headerRow = rows[0];
+            const headers = [];
+            
+            for (let i = 0; i < headerRow.c.length; i++) {
+                const cell = headerRow.c[i];
+                if (cell && cell.v !== null && cell.v !== undefined) {
+                    headers.push(String(cell.v).trim());
+                } else {
+                    headers.push(`Columna ${i + 1}`);
+                }
+            }
 
-            // Procesar datos
-            const rawData = rows.slice(1).map(row => {
+            if (headers.length < 4) {
+                throw new Error('La hoja debe tener al menos 4 columnas: Docente, Entregó planeación, Asistió 70% capacitaciones, Días que faltan');
+            }
+
+            // ---------- PROCESAR DATOS ----------
+            const rawData = [];
+            
+            for (let r = 1; r < rows.length; r++) {
+                const row = rows[r];
+                if (!row || !row.c) continue;
+                
                 const obj = {};
-                headers.forEach((h, idx) => {
-                    const cell = row.c && row.c[idx] ? row.c[idx].v : '';
-                    obj[h.trim()] = cell;
-                });
-                return obj;
-            }).filter(item => item.Docente && item.Docente.trim() !== '');
+                for (let i = 0; i < row.c.length; i++) {
+                    const cell = row.c[i];
+                    const headerName = headers[i] || `Columna ${i + 1}`;
+                    if (cell && cell.v !== null && cell.v !== undefined) {
+                        obj[headerName] = String(cell.v).trim();
+                    } else {
+                        obj[headerName] = '';
+                    }
+                }
+                rawData.push(obj);
+            }
 
-            // Transformar a objetos más claros
-            docentesData = rawData.map(item => ({
-                nombre: item.Docente.trim(),
-                entregoPlaneacion: item['Entregó planeación'] ? item['Entregó planeación'].trim().toUpperCase() : 'NO',
-                asistio70: item['Asistió 70% capacitaciones'] ? item['Asistió 70% capacitaciones'].trim().toUpperCase() : 'NO',
-                diasFaltan: parseInt(item['Días de capacitación que faltan']) || 0,
-                // Calcular si tiene grupos asignados (automático)
-                tieneGrupos: (
-                    item['Entregó planeación'] && item['Entregó planeación'].trim().toUpperCase() === 'SI' &&
-                    item['Asistió 70% capacitaciones'] && item['Asistió 70% capacitaciones'].trim().toUpperCase() === 'SI'
-                )
-            }));
+            const filteredData = rawData.filter(item => {
+                const nombre = item.Docente || '';
+                return nombre.trim() !== '';
+            });
 
-            // Ordenar alfabéticamente
+            if (filteredData.length === 0) {
+                throw new Error('No se encontraron docentes en la hoja');
+            }
+
+            docentesData = filteredData.map(item => {
+                const entrego = item['Entregó planeación'] || 'NO';
+                const asistio = item['Asistió 70% capacitaciones'] || 'NO';
+                const dias = parseInt(item['Días de capacitación que faltan']) || 0;
+                
+                return {
+                    nombre: (item.Docente || '').trim(),
+                    entregoPlaneacion: entrego.toUpperCase(),
+                    asistio70: asistio.toUpperCase(),
+                    diasFaltan: dias,
+                    tieneGrupos: (entrego.toUpperCase() === 'SI' && asistio.toUpperCase() === 'SI')
+                };
+            });
+
             docentesData.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
-            // Renderizar todo
             renderDocentes(docentesData);
             actualizarEstadisticas(docentesData);
 
-            // Actualizar hora
             const now = new Date();
             updateTimeSpan.textContent = now.toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' });
 
@@ -494,11 +526,15 @@
                 <div class="empty-state">
                     <span class="emoji">❌</span>
                     <h3>Error al cargar los datos</h3>
-                    <p>${error.message}</p>
+                    <p style="color:#991b1b; font-weight:500;">${error.message}</p>
                     <br>
                     <button onclick="fetchData()" style="padding:10px 30px; border-radius:40px; border:none; background:#1e293b; color:white; font-weight:600; cursor:pointer;">🔄 Reintentar</button>
-                    <p style="margin-top:15px; font-size:0.85rem; color:#94a3b8;">
+                    <p style="margin-top:15px; font-size:0.85rem; color:#64748b;">
                         Verifica que el ID del sheet sea correcto y que la hoja sea pública.
+                    </p>
+                    <p style="font-size:0.8rem; color:#94a3b8; margin-top:8px;">
+                        Las columnas deben llamarse exactamente: <br>
+                        <strong>"Docente"</strong>, <strong>"Entregó planeación"</strong>, <strong>"Asistió 70% capacitaciones"</strong>, <strong>"Días de capacitación que faltan"</strong>
                     </p>
                 </div>
             `;
@@ -534,9 +570,7 @@
             const inicial = doc.nombre.charAt(0).toUpperCase();
             const tieneGrupos = doc.tieneGrupos;
 
-            // Estado de planeación
             const planeacionOk = doc.entregoPlaneacion === 'SI';
-            // Estado de capacitación
             const capacitacionOk = doc.asistio70 === 'SI';
 
             html += `
@@ -564,7 +598,7 @@
                         </span>
                     </div>
 
-                    <!-- Logro 3: Automático (Asignación de grupos) -->
+                    <!-- Logro 3: Automático -->
                     <div class="logro-automatico ${tieneGrupos ? 'exito' : 'fallo'}">
                         <span class="icono-grande">${tieneGrupos ? '🎯' : '⏳'}</span>
                         ${tieneGrupos 
