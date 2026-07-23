@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 Control de Logros Docentes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            border-radius: 24px;
+            padding: 30px 35px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header h1 span {
+            background: #3b82f6;
+            color: white;
+            font-size: 0.9rem;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-weight: 600;
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .header-info .badge {
+            background: #f1f5f9;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+
+        .header-info .badge strong {
+            color: #0f172a;
+        }
+
+        .btn-refresh {
+            background: #1e293b;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn-refresh:hover {
+            background: #0f172a;
+            transform: scale(1.02);
+        }
+
+        /* ===== FILTROS ===== */
+        .filters {
+            background: white;
+            border-radius: 16px;
+            padding: 16px 24px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filters label {
+            font-weight: 600;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+
+        .filters select, .filters input {
+            padding: 8px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            background: white;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .filters select:focus, .filters input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+        }
+
+        .filters input {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        /* ===== ESTADÍSTICAS ===== */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stats .stat-card {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+
+        .stats .stat-card .numero {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stats .stat-card .label {
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        .stat-card.total .numero { color: #1e293b; }
+        .stat-card.logrados .numero { color: #16a34a; }
+        .stat-card.pendientes .numero { color: #dc2626; }
+        .stat-card.progreso .numero { color: #3b82f6; }
+
+        /* ===== GRID DE DOCENTES ===== */
+        .grid-docentes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        /* ===== TARJETA DE DOCENTE ===== */
+        .card-docente {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid rgba(226, 232, 240, 0.6);
+        }
+
+        .card-docente:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.10);
+        }
+
+        .card-docente .nombre-docente {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            padding-bottom: 14px;
+            border-bottom: 2px dashed #eef2f6;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-docente .nombre-docente .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3b82f6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        /* ===== ITEMS DE LOGROS ===== */
+        .logro-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            background: #f8fafc;
+            transition: 0.2s;
+        }
+
+        .logro-item .icono {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .logro-item .texto {
+            flex: 1;
+            font-size: 0.92rem;
+            font-weight: 500;
+            color: #1e293b;
+        }
+
+        .logro-item .estado-badge {
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .estado-badge.logrado {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .estado-badge.no-logrado {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* ===== LOGRO AUTOMÁTICO (ASIGNACIÓN DE GRUPOS) ===== */
+        .logro-automatico {
+            margin-top: 14px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .logro-automatico.exito {
+            background: #dcfce7;
+            border-color: #86efac;
+            color: #166534;
+        }
+
+        .logro-automatico.exito .icono-grande {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .logro-automatico.fallo {
+            background: #fee2e2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .logro-automatico.fallo .icono-grande {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .dias-faltantes {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        /* ===== LOADING Y EMPTY ===== */
+        #loading {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 24px;
+            font-size: 1.1rem;
+            color: #3b82f6;
+            font-weight: 500;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 24px;
+            grid-column: 1 / -1;
+        }
+
+        .empty-state .emoji {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
+            .header h1 { font-size: 1.5rem; }
+            .grid-docentes { grid-template-columns: 1fr; }
+            .filters { flex-direction: column; }
+            .filters input { width: 100%; }
+            .stats { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <h1>
+            📋 Control de Logros Docentes
+            <span>2025</span>
+        </h1>
+        <div class="header-info">
+            <span class="badge">🔄 Actualizado: <strong id="updateTime">cargando...</strong></span>
+            <button class="btn-refresh" onclick="fetchData()">⟳ Actualizar</button>
+        </div>
+    </div>
+
+    <!-- ===== FILTROS ===== -->
+    <div class="filters">
+        <label for="searchInput">🔍 Buscar:</label>
+        <input type="text" id="searchInput" placeholder="Nombre del docente...">
+        <label for="filterStatus">📊 Estado:</label>
+        <select id="filterStatus">
+            <option value="todos">Todos</option>
+            <option value="completos">✅ Con grupos asignados</option>
+            <option value="incompletos">❌ Sin grupos asignados</option>
+        </select>
+    </div>
+
+    <!-- ===== ESTADÍSTICAS ===== -->
+    <div class="stats" id="statsContainer">
+        <div class="stat-card total">
+            <span class="numero" id="totalDocentes">0</span>
+            <span class="label">👥 Total Docentes</span>
+        </div>
+        <div class="stat-card logrados">
+            <span class="numero" id="conGrupos">0</span>
+            <span class="label">✅ Con grupos asignados</span>
+        </div>
+        <div class="stat-card pendientes">
+            <span class="numero" id="sinGrupos">0</span>
+            <span class="label">❌ Sin grupos asignados</span>
+        </div>
+        <div class="stat-card progreso">
+            <span class="numero" id="porcentajeProgreso">0%</span>
+            <span class="label">📈 Progreso general</span>
+        </div>
+    </div>
+
+    <!-- ===== GRID DE DOCENTES ===== -->
+    <div id="loading">⏳ Cargando datos desde Google Sheets...</div>
+    <div id="gridContainer" style="display: none;">
+        <div class="grid-docentes" id="gridDocentes"></div>
+    </div>
+
+</div>
+
+<script>
+    // ================================================================
+    //  ⚠️  ¡¡¡ CAMBIA ESTE ID CON EL DE TU GOOGLE SHEET !!!
+    // ================================================================
+    const SPREADSHEET_ID = "1sb5Uyk1ao9MKt6OjZtHXAMsuFG9mRA_7w5GGku4CC38"; // <--- PON AQUÍ TU ID
+
+    // ================================================================
+    //  NO CAMBIES NADA MÁS DEBAJO DE ESTA LÍNEA
+    // ================================================================
+
+    const SHEET_NAME = "Sheet1";
+    const RANGE = `${SHEET_NAME}!A:D`;
+    const URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&range=${RANGE}`;
+
+    let docentesData = [];
+
+    // DOM Elements
+    const loadingDiv = document.getElementById('loading');
+    const gridContainer = document.getElementById('gridContainer');
+    const gridDocentes = document.getElementById('gridDocentes');
+    const searchInput = document.getElementById('searchInput');
+    const filterStatus = document.getElementById('filterStatus');
+    const updateTimeSpan = document.getElementById('updateTime');
+
+    const totalDocentesSpan = document.getElementById('totalDocentes');
+    const conGruposSpan = document.getElementById('conGrupos');
+    const sinGruposSpan = document.getElementById('sinGrupos');
+    const porcentajeProgresoSpan = document.getElementById('porcentajeProgreso');
+
+    // ========== FUNCIÓN PRINCIPAL ==========
+    async function fetchData() {
+        try {
+            loadingDiv.style.display = 'block';
+            gridContainer.style.display = 'none';
+
+            const response = await fetch(URL);
+            if (!response.ok) throw new Error('Error al obtener los datos');
+
+            const text = await response.text();
+            const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+
+            const rows = json.table.rows;
+            if (!rows || rows.length < 2) throw new Error('No hay suficientes datos en la hoja');
+
+            // Cabeceras: Docente, Entregó planeación, Asistió 70%, Días que faltan
+            const headers = rows[0].c.map(c => c ? c.v : '');
+
+            // Procesar datos
+            const rawData = rows.slice(1).map(row => {
+                const obj = {};
+                headers.forEach((h, idx) => {
+                    const cell = row.c && row.c[idx] ? row.c[idx].v : '';
+                    obj[h.trim()] = cell;
+                });
+                return obj;
+            }).filter(item => item.Docente && item.Docente.trim() !== '');
+
+            // Transformar a objetos más claros
+            docentesData = rawData.map(item => ({
+                nombre: item.Docente.trim(),
+                entregoPlaneacion: item['Entregó planeación'] ? item['Entregó planeación'].trim().toUpperCase() : 'NO',
+                asistio70: item['Asistió 70% capacitaciones'] ? item['Asistió 70% capacitaciones'].trim().toUpperCase() : 'NO',
+                diasFaltan: parseInt(item['Días de capacitación que faltan']) || 0,
+                // Calcular si tiene grupos asignados (automático)
+                tieneGrupos: (
+                    item['Entregó planeación'] && item['Entregó planeación'].trim().toUpperCase() === 'SI' &&
+                    item['Asistió 70% capacitaciones'] && item['Asistió 70% capacitaciones'].trim().toUpperCase() === 'SI'
+                )
+            }));
+
+            // Ordenar alfabéticamente
+            docentesData.sort((a, b) => a.nombre.localeCompare(b.nombre));
+
+            // Renderizar todo
+            renderDocentes(docentesData);
+            actualizarEstadisticas(docentesData);
+
+            // Actualizar hora
+            const now = new Date();
+            updateTimeSpan.textContent = now.toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' });
+
+            loadingDiv.style.display = 'none';
+            gridContainer.style.display = 'block';
+
+        } catch (error) {
+            loadingDiv.innerHTML = `
+                <div class="empty-state">
+                    <span class="emoji">❌</span>
+                    <h3>Error al cargar los datos</h3>
+                    <p>${error.message}</p>
+                    <br>
+                    <button onclick="fetchData()" style="padding:10px 30px; border-radius:40px; border:none; background:#1e293b; color:white; font-weight:600; cursor:pointer;">🔄 Reintentar</button>
+                    <p style="margin-top:15px; font-size:0.85rem; color:#94a3b8;">
+                        Verifica que el ID del sheet sea correcto y que la hoja sea pública.
+                    </p>
+                </div>
+            `;
+        }
+    }
+
+    // ========== RENDERIZAR TARJETAS ==========
+    function renderDocentes(docentes) {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const statusFilter = filterStatus.value;
+
+        let filtrados = docentes.filter(doc => {
+            const matchSearch = doc.nombre.toLowerCase().includes(searchTerm);
+            const matchStatus = statusFilter === 'todos' ||
+                (statusFilter === 'completos' && doc.tieneGrupos) ||
+                (statusFilter === 'incompletos' && !doc.tieneGrupos);
+            return matchSearch && matchStatus;
+        });
+
+        if (filtrados.length === 0) {
+            gridDocentes.innerHTML = `
+                <div class="empty-state">
+                    <span class="emoji">🔍</span>
+                    <h3>No se encontraron docentes</h3>
+                    <p>Intenta con otro filtro o término de búsqueda.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        filtrados.forEach(doc => {
+            const inicial = doc.nombre.charAt(0).toUpperCase();
+            const tieneGrupos = doc.tieneGrupos;
+
+            // Estado de planeación
+            const planeacionOk = doc.entregoPlaneacion === 'SI';
+            // Estado de capacitación
+            const capacitacionOk = doc.asistio70 === 'SI';
+
+            html += `
+                <div class="card-docente">
+                    <div class="nombre-docente">
+                        <span class="avatar">${inicial}</span>
+                        ${doc.nombre}
+                    </div>
+
+                    <!-- Logro 1: Planeación -->
+                    <div class="logro-item">
+                        <span class="icono">${planeacionOk ? '✅' : '❌'}</span>
+                        <span class="texto">Entregué mi planeación didáctica-pedagógica</span>
+                        <span class="estado-badge ${planeacionOk ? 'logrado' : 'no-logrado'}">
+                            ${planeacionOk ? 'LOGRADO' : 'PENDIENTE'}
+                        </span>
+                    </div>
+
+                    <!-- Logro 2: Capacitaciones -->
+                    <div class="logro-item">
+                        <span class="icono">${capacitacionOk ? '✅' : '❌'}</span>
+                        <span class="texto">Asistí al 70% de capacitaciones docentes</span>
+                        <span class="estado-badge ${capacitacionOk ? 'logrado' : 'no-logrado'}">
+                            ${capacitacionOk ? 'LOGRADO' : 'PENDIENTE'}
+                        </span>
+                    </div>
+
+                    <!-- Logro 3: Automático (Asignación de grupos) -->
+                    <div class="logro-automatico ${tieneGrupos ? 'exito' : 'fallo'}">
+                        <span class="icono-grande">${tieneGrupos ? '🎯' : '⏳'}</span>
+                        ${tieneGrupos 
+                            ? '✅ ¡Ya tengo asignados mis grupos!' 
+                            : '❌ Aún no me pueden asignar oficialmente mis grupos'
+                        }
+                        <span class="dias-faltantes">
+                            ${tieneGrupos 
+                                ? '✅ Cumples con todos los requisitos' 
+                                : `📅 Te faltan ${doc.diasFaltan} día${doc.diasFaltan !== 1 ? 's' : ''} de capacitación`
+                            }
+                        </span>
+                    </div>
+                </div>
+            `;
+        });
+
+        gridDocentes.innerHTML = html;
+    }
+
+    // ========== ESTADÍSTICAS ==========
+    function actualizarEstadisticas(docentes) {
+        const total = docentes.length;
+        const conGrupos = docentes.filter(d => d.tieneGrupos).length;
+        const sinGrupos = total - conGrupos;
+        const porcentaje = total > 0 ? Math.round((conGrupos / total) * 100) : 0;
+
+        totalDocentesSpan.textContent = total;
+        conGruposSpan.textContent = conGrupos;
+        sinGruposSpan.textContent = sinGrupos;
+        porcentajeProgresoSpan.textContent = `${porcentaje}%`;
+    }
+
+    // ========== EVENTOS DE FILTROS ==========
+    searchInput.addEventListener('input', () => renderDocentes(docentesData));
+    filterStatus.addEventListener('change', () => renderDocentes(docentesData));
+
+    // ========== INICIAR ==========
+    fetchData();
+</script>
+
+</body>
+</html>
