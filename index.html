@@ -394,28 +394,18 @@
 
 <script>
     // ================================================================
-    //  ✅ CONFIGURACIÓN
+    //  ✅ CONFIGURACIÓN - VERSIÓN CON GID
     // ================================================================
     const SPREADSHEET_ID = "1sb5Uyk1ao9MKt6OjZtHXAMsuFG9mRA_7w5GGku4CC38";
-    const SHEET_NAME = "Asignación de horarios";
     
-    // 🔥 IMPORTANTE: Usar gid en lugar de range para evitar problemas con espacios
-    // Primero obtenemos el gid de la hoja
-    async function obtenerGid() {
-        const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
-        const response = await fetch(url);
-        const text = await response.text();
-        const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-        const json = JSON.parse(jsonText);
-        return json.table.cols[0].id; // No funciona, necesitamos otro método
-    }
+    // 🔥 USAMOS GID EN LUGAR DEL NOMBRE DE LA HOJA
+    // El gid 0 es la primera hoja (normalmente "Hoja 1" o "Asignación de horarios")
+    const GID = "0";  // Si tu hoja tiene otro gid, cámbialo aquí
+    
+    // Construimos la URL con gid
+    const URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&gid=${GID}`;
 
-    // Mejor: Usamos el nombre de la hoja con codificación URL
-    const SHEET_ENCODED = encodeURIComponent(SHEET_NAME);
-    const RANGE = `${SHEET_ENCODED}!A2:D`;
-    const URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&range=${RANGE}`;
-
-    console.log('🔍 URL generada:', URL);
+    console.log('🔍 URL generada con GID:', URL);
 
     let docentesData = [];
 
@@ -478,7 +468,7 @@
             const text = await response.text();
             console.log('📥 Respuesta recibida (primeros 100 caracteres):', text.substring(0, 100));
 
-            // Si la respuesta empieza con "/*O_o*/", la limpiamos
+            // Limpiar la respuesta de Google
             let cleanText = text;
             if (text.startsWith('/*O_o*/')) {
                 cleanText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
@@ -491,7 +481,7 @@
                 throw new Error('No hay datos en la hoja.');
             }
 
-            // Leer cabeceras
+            // Leer cabeceras (primera fila)
             const headerRow = rows[0];
             const headers = [];
             for (let i = 0; i < headerRow.c.length; i++) {
@@ -528,7 +518,7 @@
 
             console.log('✅ Columnas encontradas:', { colDocente, colPlaneacion, colCapacitacion, colDias });
 
-            // Procesar datos
+            // Procesar datos (desde la fila 1 en adelante)
             const rawData = [];
             for (let r = 1; r < rows.length; r++) {
                 const row = rows[r];
@@ -596,7 +586,10 @@
                         Verifica que el ID del sheet sea correcto y que la hoja sea pública.
                     </p>
                     <p style="font-size:0.8rem; color:#94a3b8; margin-top:8px;">
-                        Intentando leer: <strong>${SHEET_NAME}</strong>
+                        Usando GID: <strong>${GID}</strong>
+                    </p>
+                    <p style="font-size:0.8rem; color:#94a3b8; margin-top:4px;">
+                        Columnas detectadas: <strong>${headers ? headers.join(', ') : 'No se pudieron leer'}</strong>
                     </p>
                 </div>
             `;
