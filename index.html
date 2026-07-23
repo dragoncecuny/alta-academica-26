@@ -394,15 +394,11 @@
 
 <script>
     // ================================================================
-    //  ✅ ID DE TU GOOGLE SHEET (YA CONFIGURADO)
+    //  ✅ CONFIGURACIÓN
     // ================================================================
     const SPREADSHEET_ID = "1sb5Uyk1ao9MKt6OjZtHXAMsuFG9mRA_7w5GGku4CC38";
-
-    // ================================================================
-    //  IMPORTANTE: Ahora busca "Hoja 1" (con espacio) y empieza en fila 2
-    // ================================================================
-    const SHEET_NAME = "Hoja 1";  // <--- CAMBIADO: antes era "Sheet1"
-    const RANGE = `${SHEET_NAME}!A2:D`;  // <--- CAMBIADO: empieza en fila 2
+    const SHEET_NAME = "Asignación de horarios";  // Nombre exacto de tu hoja
+    const RANGE = `${SHEET_NAME}!A2:D`;  // Empieza en fila 2 (donde están las cabeceras)
     const URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&range=${RANGE}`;
 
     let docentesData = [];
@@ -420,6 +416,35 @@
     const sinGruposSpan = document.getElementById('sinGrupos');
     const porcentajeProgresoSpan = document.getElementById('porcentajeProgreso');
 
+    // ========== FUNCIÓN PARA LIMPIAR TEXTO ==========
+    function limpiarTexto(texto) {
+        if (!texto) return '';
+        return texto
+            .toLowerCase()
+            .replace(/[áäâà]/g, 'a')
+            .replace(/[éëêè]/g, 'e')
+            .replace(/[íïîì]/g, 'i')
+            .replace(/[óöôò]/g, 'o')
+            .replace(/[úüûù]/g, 'u')
+            .replace(/[ñ]/g, 'n')
+            .replace(/[^a-z0-9]/g, '')  // Elimina todo lo que no sea letras o números
+            .trim();
+    }
+
+    // ========== FUNCIÓN PARA ENCONTRAR COLUMNAS ==========
+    function encontrarColumna(headers, posiblesNombres) {
+        for (let h of headers) {
+            const hLimpio = limpiarTexto(h);
+            for (let nombre of posiblesNombres) {
+                const nLimpio = limpiarTexto(nombre);
+                if (hLimpio.includes(nLimpio) || nLimpio.includes(hLimpio)) {
+                    return h;
+                }
+            }
+        }
+        return null;
+    }
+
     // ========== FUNCIÓN PRINCIPAL ==========
     async function fetchData() {
         try {
@@ -431,45 +456,60 @@
             if (!response.ok) throw new Error('Error al obtener los datos');
 
             const text = await response.text();
-            
-            // Limpiar el texto para obtener solo el JSON
             const jsonText = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
             const json = JSON.parse(jsonText);
 
             const rows = json.table.rows;
             if (!rows || rows.length === 0) {
-                throw new Error('No hay datos en la hoja. Verifica que tengas docentes registrados.');
+                throw new Error('No hay datos en la hoja.');
             }
 
-            // La primera fila (fila 2 del sheet) contiene las cabeceras
+            // Leer cabeceras (fila 2 del sheet)
             const headerRow = rows[0];
             const headers = [];
-            
             for (let i = 0; i < headerRow.c.length; i++) {
                 const cell = headerRow.c[i];
                 if (cell && cell.v !== null && cell.v !== undefined) {
                     headers.push(String(cell.v).trim());
                 } else {
-                    headers.push(`Columna ${i + 1}`);
+                    headers.push(`Columna${i+1}`);
                 }
             }
 
-            // Verificar que tenemos las columnas necesarias
-            const expectedHeaders = ['Docente', 'Entregó planeación', 'Asistió 70% capacitaciones', 'Días de capacitación que faltan'];
-            let foundHeaders = 0;
-            expectedHeaders.forEach(expected => {
-                if (headers.some(h => h.includes(expected) || expected.includes(h))) {
-                    foundHeaders++;
-                }
-            });
+            // Buscar columnas automáticamente (con diferentes variantes)
+            const colDocente = encontrarColumna(headers, ['Docente', 'DOCENTE', 'docente', 'Nombre', 'Profesor']);
+            const colPlaneacion = encontrarColumna(headers, [
+                'Entregó planeación', 
+                'ENTREGÓ PLANEACIÓN', 
+                'entrego planeacion', 
+                'Planeación', 
+                'planeacion',
+                'Entregó su planeación'
+            ]);
+            const colCapacitacion = encontrarColumna(headers, [
+                'Asistió 70% capacitaciones', 
+                'ASISTIÓ 70% CAPACITACIONES', 
+                'asistio 70% capacitaciones', 
+                'Capacitaciones',
+                '70% capacitaciones'
+            ]);
+            const colDias = encontrarColumna(headers, [
+                'Días de capacitación que faltan', 
+                'DIAS DE CAPACITACIÓN QUE FALTAN', 
+                'dias de capacitacion que faltan', 
+                'Días faltan',
+                'dias faltan',
+                'Faltan'
+            ]);
 
-            if (foundHeaders < 4) {
-                throw new Error('Las columnas no coinciden. Deben ser: "Docente", "Entregó planeación", "Asistió 70% capacitaciones", "Días de capacitación que faltan"');
-            }
+            // Verificar que encontramos todas las columnas
+            if (!colDocente) throw new Error('No se encontró la columna "Docente"');
+            if (!colPlaneacion) throw new Error('No se encontró la columna "Entregó planeación"');
+            if (!colCapacitacion) throw new Error('No se encontró la columna "Asistió 70% capacitaciones"');
+            if (!colDias) throw new Error('No se encontró la columna "Días de capacitación que faltan"');
 
-            // Procesar datos desde la fila 1 (fila 3 del sheet) en adelante
+            // Procesar datos
             const rawData = [];
-            
             for (let r = 1; r < rows.length; r++) {
                 const row = rows[r];
                 if (!row || !row.c) continue;
@@ -477,7 +517,7 @@
                 const obj = {};
                 for (let i = 0; i < row.c.length; i++) {
                     const cell = row.c[i];
-                    const headerName = headers[i] || `Columna ${i + 1}`;
+                    const headerName = headers[i] || `Columna${i+1}`;
                     if (cell && cell.v !== null && cell.v !== undefined) {
                         obj[headerName] = String(cell.v).trim();
                     } else {
@@ -489,22 +529,22 @@
 
             // Filtrar filas vacías
             const filteredData = rawData.filter(item => {
-                const nombre = item.Docente || '';
+                const nombre = item[colDocente] || '';
                 return nombre.trim() !== '';
             });
 
             if (filteredData.length === 0) {
-                throw new Error('No se encontraron docentes. Asegúrate de tener nombres en la columna "Docente".');
+                throw new Error('No se encontraron docentes en la columna "Docente".');
             }
 
             // Transformar a objetos
             docentesData = filteredData.map(item => {
-                const entrego = item['Entregó planeación'] || 'NO';
-                const asistio = item['Asistió 70% capacitaciones'] || 'NO';
-                const dias = parseInt(item['Días de capacitación que faltan']) || 0;
+                const entrego = item[colPlaneacion] || 'NO';
+                const asistio = item[colCapacitacion] || 'NO';
+                const dias = parseInt(item[colDias]) || 0;
                 
                 return {
-                    nombre: (item.Docente || '').trim(),
+                    nombre: (item[colDocente] || '').trim(),
                     entregoPlaneacion: entrego.toUpperCase(),
                     asistio70: asistio.toUpperCase(),
                     diasFaltan: dias,
@@ -537,8 +577,8 @@
                         Verifica que el ID del sheet sea correcto y que la hoja sea pública.
                     </p>
                     <p style="font-size:0.8rem; color:#94a3b8; margin-top:8px;">
-                        Las columnas deben llamarse exactamente: <br>
-                        <strong>"Docente"</strong>, <strong>"Entregó planeación"</strong>, <strong>"Asistió 70% capacitaciones"</strong>, <strong>"Días de capacitación que faltan"</strong>
+                        Columnas detectadas: <br>
+                        <strong>${headers.join(' | ')}</strong>
                     </p>
                 </div>
             `;
