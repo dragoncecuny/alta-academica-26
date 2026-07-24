@@ -13,7 +13,6 @@
         .badge { background: #f1f5f9; padding: 8px 18px; border-radius: 40px; font-weight: 600; color: #1e293b; font-size: 0.9rem; }
         .btn-refresh { background: #1e293b; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; }
 
-        /* ===== LEYENDA INFORMATIVA ===== */
         .leyenda {
             background: #f0f9ff;
             border-left: 6px solid #3b82f6;
@@ -68,12 +67,11 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>📋 Control de Logros Docentes <span>2025</span></h1>
+        <h1>📋 Control de Logros Docentes <span>2026</span></h1>
         <div><span class="badge">🔄 Actualizado: <strong id="updateTime">cargando...</strong></span>
         <button class="btn-refresh" onclick="cargarDatos()">⟳ Actualizar</button></div>
     </div>
 
-    <!-- ===== LEYENDA INFORMATIVA ===== -->
     <div class="leyenda">
         <div class="icono-leyenda">📘</div>
         <div class="texto-leyenda">
@@ -102,9 +100,6 @@
     <div id="gridContainer" style="display: none;"><div class="grid-docentes" id="gridDocentes"></div></div>
 </div>
 <script>
-    // ================================================================
-    //  ✅ CONFIGURACIÓN - URL PÚBLICA DE TU GOOGLE SHEET (CSV)
-    // ================================================================
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSx0st0x1xgBt6GG1tdeokjGXBYvp_O67UT1Tm33fHlNcibaQ_5aBlM6JkZP6BnrzVuWHcsIjQ8Quqd/pub?gid=0&single=true&output=csv";
 
     let docentesData = [];
