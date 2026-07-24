@@ -3,123 +3,371 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📋 Control de Logros Docentes</title>
+    <title>🐉 CECUNY · Dragones que generan cultura</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: #f0f4f8; padding: 20px; min-height: 100vh; }
-        .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 30px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
-        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; border-bottom: 2px solid #eef2f6; padding-bottom: 20px; }
-        h1 { font-size: 2rem; color: #0f172a; display: flex; align-items: center; gap: 12px; }
-        .badge { background: #f1f5f9; padding: 8px 18px; border-radius: 40px; font-weight: 600; color: #1e293b; font-size: 0.9rem; }
-        .btn-refresh { background: #1e293b; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; }
-
-        /* ===== MENÚ DE NAVEGACIÓN ===== */
-        .menu { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
-        .menu a { 
-            color: #64748b; 
-            text-decoration: none; 
-            font-weight: 600; 
-            padding: 6px 18px; 
-            border-radius: 40px; 
-            background: #f1f5f9;
-            transition: all 0.2s;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e8e0d5;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c4b5a0' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            min-height: 100vh;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .container {
+            max-width: 1400px;
+            width: 100%;
+            background: rgba(255, 252, 245, 0.92);
+            backdrop-filter: blur(4px);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.3);
+            border: 1px solid #d6c9b8;
+        }
+        /* Header y Navegación */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #c4b5a0;
+            padding-bottom: 20px;
+        }
+        .header-titulo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-titulo .dragon-icon {
+            font-size: 2.4rem;
+            line-height: 1;
+        }
+        .header-titulo h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #1e3a5f;
+            letter-spacing: -0.5px;
+        }
+        .header-titulo h1 span {
+            font-weight: 400;
+            color: #8c5a2b;
+            font-size: 1.2rem;
+            display: block;
+            font-style: italic;
+        }
+        .header-derecha {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .badge {
+            background: #e8e0d5;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #1e3a5f;
+            border: 1px solid #c4b5a0;
+        }
+        .btn-refresh {
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+        }
+        .btn-refresh:hover {
+            background: #2a4a7a;
+            transform: translateY(-2px);
+        }
+        .menu {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .menu a {
+            font-family: 'Inter', sans-serif;
+            color: #4a4a4a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 18px;
+            border-radius: 30px;
+            background: transparent;
+            border: 1px solid transparent;
+            transition: 0.2s;
             font-size: 0.9rem;
         }
-        .menu a:hover { background: #dbeafe; }
-        .menu a.activo { background: #3b82f6; color: white; }
-
+        .menu a:hover {
+            background: #e8e0d5;
+            border-color: #c4b5a0;
+        }
+        .menu a.activo {
+            background: #1e3a5f;
+            color: white;
+            border-color: #1e3a5f;
+        }
         .leyenda {
-            background: #f0f9ff;
-            border-left: 6px solid #3b82f6;
+            background: #f5efe6;
+            border-left: 6px solid #b87333;
             border-radius: 12px;
-            padding: 18px 22px;
+            padding: 18px 24px;
             margin-bottom: 25px;
             display: flex;
             align-items: flex-start;
-            gap: 14px;
-            box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+            gap: 16px;
         }
         .leyenda .icono-leyenda { font-size: 1.8rem; flex-shrink: 0; margin-top: 2px; }
-        .leyenda .texto-leyenda { font-size: 0.95rem; color: #1e293b; line-height: 1.5; }
-        .leyenda .texto-leyenda strong { color: #0f172a; }
-        .leyenda .texto-leyenda .destacar { background: #dbeafe; padding: 2px 10px; border-radius: 20px; font-weight: 600; color: #1d4ed8; }
-
-        .filters { background: #f8fafc; padding: 16px 24px; border-radius: 16px; margin-bottom: 25px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
-        .filters input, .filters select { padding: 8px 16px; border: 2px solid #e2e8f0; border-radius: 40px; font-size: 0.9rem; background: white; outline: none; }
+        .leyenda .texto-leyenda { font-size: 0.95rem; color: #2d2d2d; line-height: 1.6; }
+        .leyenda .texto-leyenda strong { color: #1e3a5f; }
+        .leyenda .texto-leyenda .destacar {
+            background: #d6c9b8;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+        .filters {
+            background: #f5efe6;
+            padding: 16px 24px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            border: 1px solid #d6c9b8;
+        }
+        .filters input, .filters select {
+            padding: 10px 18px;
+            border: 1px solid #d6c9b8;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            background: white;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .filters input:focus, .filters select:focus {
+            border-color: #1e3a5f;
+            box-shadow: 0 0 0 3px rgba(30,58,95,0.1);
+        }
         .filters input { flex: 1; min-width: 180px; }
-        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-card { background: #f8fafc; padding: 16px 20px; border-radius: 16px; text-align: center; }
-        .stat-card .numero { font-size: 2rem; font-weight: 700; display: block; }
-        .stat-card .label { font-size: 0.8rem; color: #64748b; font-weight: 500; }
-        .stat-card.total .numero { color: #1e293b; }
-        .stat-card.logrados .numero { color: #16a34a; }
-        .stat-card.pendientes .numero { color: #dc2626; }
-        .stat-card.progreso .numero { color: #3b82f6; }
-        .grid-docentes { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
-        .card-docente { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid rgba(226, 232, 240, 0.6); }
-        .card-docente:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(0,0,0,0.10); }
-        .card-docente .nombre-docente { font-size: 1.25rem; font-weight: 700; color: #0f172a; padding-bottom: 14px; border-bottom: 2px dashed #eef2f6; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-        .card-docente .nombre-docente .avatar { width: 40px; height: 40px; border-radius: 50%; background: #3b82f6; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; }
-        .logro-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; margin-bottom: 8px; border-radius: 12px; background: #f8fafc; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .stat-card {
+            background: #f5efe6;
+            padding: 16px 20px;
+            border-radius: 16px;
+            text-align: center;
+            border: 1px solid #d6c9b8;
+        }
+        .stat-card .numero {
+            font-size: 2.2rem;
+            font-weight: 700;
+            display: block;
+            font-family: 'Merriweather', serif;
+        }
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: #5a5a5a;
+            font-weight: 600;
+        }
+        .stat-card.total .numero { color: #1e3a5f; }
+        .stat-card.logrados .numero { color: #2d6a4f; }
+        .stat-card.pendientes .numero { color: #9e2a2b; }
+        .stat-card.progreso .numero { color: #b87333; }
+        .grid-docentes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        .card-docente {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            border: 1px solid #e8e0d5;
+            transition: 0.2s;
+        }
+        .card-docente:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            border-color: #c4b5a0;
+        }
+        .card-docente .nombre-docente {
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Merriweather', serif;
+            color: #1e3a5f;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #e8e0d5;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .card-docente .nombre-docente .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #1e3a5f;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            font-family: 'Merriweather', serif;
+        }
+        .logro-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            margin-bottom: 10px;
+            border-radius: 12px;
+            background: #faf8f5;
+            border: 1px solid #e8e0d5;
+        }
         .logro-item .icono { font-size: 1.3rem; flex-shrink: 0; }
-        .logro-item .texto { flex: 1; font-size: 0.92rem; font-weight: 500; color: #1e293b; }
-        .logro-item .estado-badge { padding: 4px 14px; border-radius: 30px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; white-space: nowrap; }
-        .estado-badge.logrado { background: #dcfce7; color: #166534; }
-        .estado-badge.no-logrado { background: #fee2e2; color: #991b1b; }
-        .logro-automatico { margin-top: 14px; padding: 14px 16px; border-radius: 14px; text-align: center; font-weight: 700; font-size: 1rem; border: 2px solid transparent; }
-        .logro-automatico.exito { background: #dcfce7; border-color: #86efac; color: #166534; }
-        .logro-automatico.fallo { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+        .logro-item .texto {
+            flex: 1;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #2d2d2d;
+        }
+        .logro-item .estado-badge {
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        .estado-badge.logrado { background: #d8eddf; color: #1a4a33; }
+        .estado-badge.no-logrado { background: #f5d6d6; color: #7a1f1f; }
+        .logro-automatico {
+            margin-top: 14px;
+            padding: 14px 16px;
+            border-radius: 14px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: 2px solid transparent;
+        }
+        .logro-automatico.exito {
+            background: #d8eddf;
+            border-color: #8bc9a5;
+            color: #1a4a33;
+        }
+        .logro-automatico.fallo {
+            background: #f5d6d6;
+            border-color: #e8a8a8;
+            color: #7a1f1f;
+        }
         .logro-automatico .icono-grande { font-size: 1.8rem; display: block; margin-bottom: 4px; }
-        .dias-faltantes { display: block; font-size: 0.8rem; font-weight: 500; margin-top: 4px; opacity: 0.8; }
-        #loading { text-align: center; padding: 80px 20px; background: white; border-radius: 24px; font-size: 1.1rem; color: #3b82f6; font-weight: 500; }
-        .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 24px; grid-column: 1 / -1; }
+        .dias-faltantes {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+        #loading {
+            text-align: center;
+            padding: 80px 20px;
+            background: #f5efe6;
+            border-radius: 20px;
+            font-size: 1rem;
+            color: #1e3a5f;
+            font-weight: 600;
+            border: 1px solid #d6c9b8;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: #f5efe6;
+            border-radius: 20px;
+            grid-column: 1 / -1;
+            border: 1px solid #d6c9b8;
+        }
         .empty-state .emoji { font-size: 3.5rem; display: block; margin-bottom: 12px; }
-        .empty-state h3 { color: #1e293b; margin-bottom: 6px; }
-        .empty-state p { color: #94a3b8; }
-        @media (max-width: 640px) { .header { flex-direction: column; align-items: flex-start; padding: 20px; } .header h1 { font-size: 1.5rem; } .grid-docentes { grid-template-columns: 1fr; } .filters { flex-direction: column; } .filters input { width: 100%; } .stats { grid-template-columns: 1fr 1fr; } .leyenda { flex-direction: column; align-items: stretch; } }
+        .empty-state h3 { color: #1e3a5f; margin-bottom: 6px; font-family: 'Merriweather', serif; }
+        .empty-state p { color: #6a6a6a; }
+        @media (max-width: 640px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .header-titulo h1 { font-size: 1.4rem; }
+            .grid-docentes { grid-template-columns: 1fr; }
+            .filters { flex-direction: column; }
+            .filters input { width: 100%; }
+            .stats { grid-template-columns: 1fr 1fr; }
+            .leyenda { flex-direction: column; align-items: stretch; }
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <div>
-            <h1>📋 Control de Logros Docentes <span>2026</span></h1>
-            <div class="menu">
-                <a href="/alta-academica-26/" class="activo">📋 Logros</a>
-                <a href="/alta-academica-26/horarios.html">📅 Horarios</a>
+        <div class="header-titulo">
+            <span class="dragon-icon">🐉</span>
+            <div>
+                <h1>CECUNY <span>Dragones que generan cultura</span></h1>
+                <div class="menu">
+                    <a href="/alta-academica-26/" class="activo">📋 Logros</a>
+                    <a href="/alta-academica-26/horarios.html">📅 Horarios</a>
+                </div>
             </div>
         </div>
-        <div>
+        <div class="header-derecha">
             <span class="badge">🔄 Actualizado: <strong id="updateTime">cargando...</strong></span>
             <button class="btn-refresh" onclick="cargarDatos()">⟳ Actualizar</button>
         </div>
     </div>
 
     <div class="leyenda">
-        <div class="icono-leyenda">📘</div>
+        <span class="icono-leyenda">📜</span>
         <div class="texto-leyenda">
             <strong>📌 ¿Por qué aparece este número?</strong><br>
-            Los días de capacitación que debes tomar en total son iguales al <span class="destacar">80%</span> de las capacitaciones que hay disponibles en tu horario laboral normal. Si deseas o necesitas tomar otras capacitaciones en otros horarios puedes hacerlo, solo no olvides avisar en coordinación y anotarlo en la <strong>libreta azul de incidencias</strong> con el Administrador.
+            Los días de capacitación que debes tomar en total son iguales al <span class="destacar">80%</span> de las capacitaciones disponibles en tu horario laboral normal. Si deseas o necesitas tomar otras capacitaciones en otros horarios puedes hacerlo, solo no olvides avisar en coordinación y anotarlo en la <strong>libreta azul de incidencias</strong> con el Administrador.
         </div>
     </div>
 
     <div class="filters">
-        <label for="searchInput">🔍 Buscar:</label>
+        <label for="searchInput" style="font-weight:600;color:#4a4a4a;">🔍 Buscar:</label>
         <input type="text" id="searchInput" placeholder="Nombre del docente...">
-        <label for="filterStatus">📊 Estado:</label>
+        <label for="filterStatus" style="font-weight:600;color:#4a4a4a;">📊 Estado:</label>
         <select id="filterStatus">
             <option value="todos">Todos</option>
             <option value="completos">✅ Con grupos asignados</option>
             <option value="incompletos">❌ Sin grupos asignados</option>
         </select>
     </div>
+
     <div class="stats">
         <div class="stat-card total"><span class="numero" id="totalDocentes">0</span><span class="label">👥 Total Docentes</span></div>
         <div class="stat-card logrados"><span class="numero" id="conGrupos">0</span><span class="label">✅ Con grupos asignados</span></div>
         <div class="stat-card pendientes"><span class="numero" id="sinGrupos">0</span><span class="label">❌ Sin grupos asignados</span></div>
         <div class="stat-card progreso"><span class="numero" id="porcentajeProgreso">0%</span><span class="label">📈 Progreso general</span></div>
     </div>
-    <div id="loading">⏳ Cargando datos desde Google Sheets...</div>
+
+    <div id="loading">⏳ Cargando datos...</div>
     <div id="gridContainer" style="display: none;"><div class="grid-docentes" id="gridDocentes"></div></div>
 </div>
 <script>
@@ -205,7 +453,7 @@
             loadingDiv.style.display = 'none';
             gridContainer.style.display = 'block';
         } catch (error) {
-            loadingDiv.innerHTML = `<div class="empty-state"><span class="emoji">❌</span><h3>Error al cargar los datos</h3><p style="color:#991b1b;">${error.message}</p><br><button onclick="cargarDatos()" style="padding:10px 30px; border-radius:40px; border:none; background:#1e293b; color:white; font-weight:600; cursor:pointer;">🔄 Reintentar</button></div>`;
+            loadingDiv.innerHTML = `<div class="empty-state"><span class="emoji">❌</span><h3>Error al cargar los datos</h3><p style="color:#7a1f1f;">${error.message}</p><br><button onclick="cargarDatos()" style="padding:10px 30px; border-radius:30px; border:none; background:#1e3a5f; color:white; font-weight:600; cursor:pointer;">🔄 Reintentar</button></div>`;
         }
     }
 
