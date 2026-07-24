@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐉 CECUNY · Horarios</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Librería para PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         * { 
             margin: 0; 
@@ -21,7 +19,6 @@
             --light: #f5efe6;
             --success: #2d6a4f;
             --danger: #9e2a2b;
-            --shadow: 0 8px 0 var(--secondary);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -201,34 +198,6 @@
             to { transform: rotate(360deg); }
         }
 
-        .btn-pdf {
-            background: var(--success);
-            color: var(--light);
-            border: 2px solid #1a4a33;
-            padding: 10px 22px;
-            border-radius: 40px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.85rem;
-            box-shadow: 0 4px 0 #1a4a33;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-pdf:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 0 #1a4a33;
-            background: #1a4a33;
-        }
-
-        .btn-pdf:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #1a4a33;
-        }
-
         .menu {
             display: flex;
             gap: 5px;
@@ -337,7 +306,7 @@
             gap: 6px;
         }
 
-        .filters input, .filters select {
+        .filters input {
             padding: 10px 20px;
             border: 2px solid var(--accent);
             border-radius: 40px;
@@ -347,17 +316,14 @@
             font-family: 'Inter', sans-serif;
             color: var(--primary);
             transition: var(--transition);
+            flex: 1;
+            min-width: 180px;
         }
 
-        .filters input:focus, .filters select:focus {
+        .filters input:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 4px rgba(60, 42, 30, 0.15);
             transform: scale(1.02);
-        }
-
-        .filters input { 
-            flex: 1; 
-            min-width: 180px; 
         }
 
         .filters .filter-count {
@@ -369,51 +335,6 @@
             background: rgba(140, 122, 95, 0.15);
             border-radius: 40px;
         }
-
-        /* === ESTADÍSTICAS === */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: rgba(245, 239, 230, 0.85);
-            backdrop-filter: blur(4px);
-            padding: 16px 20px;
-            border-radius: 30px;
-            text-align: center;
-            border: 1px solid var(--accent);
-            box-shadow: inset 0 0 0 1px #d4c5a9;
-            transition: var(--transition);
-            cursor: default;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-        }
-
-        .stat-card .numero {
-            font-size: 2.4rem;
-            font-weight: 700;
-            display: block;
-            font-family: 'Crimson Text', serif;
-            color: var(--primary);
-            transition: var(--transition);
-        }
-
-        .stat-card .label {
-            font-size: 0.8rem;
-            color: #5a3f2b;
-            font-weight: 600;
-        }
-
-        .stat-card.total .numero { color: #1e3a5f; }
-        .stat-card.logrados .numero { color: var(--success); }
-        .stat-card.pendientes .numero { color: var(--danger); }
-        .stat-card.progreso .numero { color: #b87333; }
 
         /* === TARJETAS DE DOCENTES === */
         .grid-docentes {
@@ -488,6 +409,16 @@
         .card-docente:hover .nombre-docente .avatar {
             transform: scale(1.1) rotate(-5deg);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .card-docente .total-grupos {
+            margin-left: auto;
+            font-size: 0.7rem;
+            background: var(--secondary);
+            color: white;
+            padding: 2px 12px;
+            border-radius: 40px;
+            font-weight: 600;
         }
 
         /* === VISTA SEMANAL (Calendario) === */
@@ -693,10 +624,6 @@
                 width: 100%; 
             }
             
-            .stats { 
-                grid-template-columns: 1fr 1fr; 
-            }
-            
             .leyenda { 
                 flex-direction: column; 
                 align-items: stretch; 
@@ -720,10 +647,6 @@
         }
 
         @media (max-width: 480px) {
-            .stats { 
-                grid-template-columns: 1fr; 
-            }
-            
             .header-derecha {
                 width: 100%;
                 justify-content: space-between;
@@ -734,7 +657,7 @@
                 padding: 6px 12px;
             }
             
-            .btn-refresh, .btn-pdf {
+            .btn-refresh {
                 padding: 8px 16px;
                 font-size: 0.8rem;
             }
@@ -742,7 +665,6 @@
             .vista-semanal .calendario-semanal {
                 grid-template-columns: 50px repeat(3, 1fr);
                 min-width: 320px;
-                font-size: 0.5rem;
             }
 
             .vista-semanal .celda {
@@ -750,54 +672,6 @@
                 font-size: 0.5rem;
                 min-height: 25px;
             }
-        }
-
-        /* === ESTILOS PARA PDF === */
-        #contenidoPDF {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-        }
-
-        #contenidoPDF .header-pdf {
-            text-align: center;
-            border-bottom: 3px solid var(--secondary);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
-        }
-
-        #contenidoPDF .header-pdf h2 {
-            font-family: 'Crimson Text', serif;
-            color: var(--primary);
-            font-size: 2rem;
-        }
-
-        #contenidoPDF .header-pdf p {
-            color: var(--secondary);
-            font-size: 0.9rem;
-        }
-
-        #contenidoPDF .tabla-pdf {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        #contenidoPDF .tabla-pdf th {
-            background: var(--secondary);
-            color: var(--light);
-            padding: 10px;
-            text-align: left;
-            font-family: 'Crimson Text', serif;
-        }
-
-        #contenidoPDF .tabla-pdf td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        #contenidoPDF .tabla-pdf tr:nth-child(even) {
-            background: rgba(245, 239, 230, 0.3);
         }
     </style>
 </head>
@@ -819,9 +693,6 @@
             <span class="badge" role="status" aria-live="polite">
                 🔄 Actualizado: <strong id="updateTime">cargando...</strong>
             </span>
-            <button class="btn-pdf" onclick="exportarPDF()" aria-label="Exportar a PDF">
-                📄 PDF
-            </button>
             <button class="btn-refresh" onclick="cargarHorarios()" aria-label="Actualizar datos">
                 <span class="spinner">⟳</span>
                 <span class="text">⟳ Actualizar</span>
@@ -835,8 +706,7 @@
         <div class="texto-leyenda">
             <strong>📌 Visualización de Horarios</strong><br>
             Los horarios se muestran en <span class="destacar">vista semanal</span> para facilitar la consulta. 
-            Cada docente tiene asignados sus grupos en los días correspondientes. 
-            Puedes buscar por nombre o exportar la información a <strong>PDF</strong>.
+            Cada docente tiene asignados sus grupos en los días correspondientes.
         </div>
     </section>
 
@@ -846,26 +716,6 @@
         <input type="text" id="buscador" placeholder="Nombre del docente..." aria-label="Buscar docente">
         <span class="filter-count" id="filterCount" role="status" aria-live="polite">0 docentes</span>
     </div>
-
-    <!-- ESTADÍSTICAS -->
-    <section class="stats" aria-label="Estadísticas de horarios">
-        <div class="stat-card total">
-            <span class="numero" id="totalDocentes">0</span>
-            <span class="label">👥 Docentes con horario</span>
-        </div>
-        <div class="stat-card logrados">
-            <span class="numero" id="totalClases">0</span>
-            <span class="label">📚 Total de grupos</span>
-        </div>
-        <div class="stat-card pendientes">
-            <span class="numero" id="diasDisponibles">3</span>
-            <span class="label">📅 Días de clase</span>
-        </div>
-        <div class="stat-card progreso">
-            <span class="numero" id="horasTotales">0</span>
-            <span class="label">⏰ Horas semanales</span>
-        </div>
-    </section>
 
     <!-- CONTENIDO -->
     <div id="loading" role="status" aria-live="polite">
@@ -892,16 +742,12 @@
     };
 
     let todosLosHorarios = [];
-    let totalHoras = 0;
     
     const loadingDiv = document.getElementById('loading');
     const contenedorHorarios = document.getElementById('contenedorHorarios');
     const gridHorarios = document.getElementById('gridHorarios');
     const buscador = document.getElementById('buscador');
     const updateTimeSpan = document.getElementById('updateTime');
-    const totalDocentesSpan = document.getElementById('totalDocentes');
-    const totalClasesSpan = document.getElementById('totalClases');
-    const horasTotalesSpan = document.getElementById('horasTotales');
     const filterCount = document.getElementById('filterCount');
     const toast = document.getElementById('toast');
     const refreshBtn = document.querySelector('.btn-refresh');
@@ -1024,26 +870,7 @@
 
             if (todosLosHorarios.length === 0) throw new Error('No se encontraron horarios.');
 
-            // Calcular estadísticas
-            let totalClases = 0;
-            let horas = 0;
-            todosLosHorarios.forEach(d => {
-                totalClases += d.clases.length;
-                d.clases.forEach(c => {
-                    const partes = c.hora.split('-');
-                    if (partes.length === 2) {
-                        const inicio = parseInt(partes[0]);
-                        const fin = parseInt(partes[1]);
-                        if (!isNaN(inicio) && !isNaN(fin)) {
-                            horas += (fin - inicio);
-                        }
-                    }
-                });
-            });
-            totalHoras = horas;
-
             renderHorarios(todosLosHorarios);
-            actualizarEstadisticas(todosLosHorarios, totalClases);
             
             const now = new Date();
             updateTimeSpan.textContent = now.toLocaleString('es-ES', { 
@@ -1076,13 +903,6 @@
         }
     }
 
-    // Actualizar estadísticas
-    function actualizarEstadisticas(horarios, totalClases) {
-        totalDocentesSpan.textContent = horarios.length;
-        totalClasesSpan.textContent = totalClases;
-        horasTotalesSpan.textContent = totalHoras;
-    }
-
     // Renderizar horarios en vista semanal
     function renderHorarios(horarios) {
         const terminoBusqueda = buscador.value.toLowerCase().trim();
@@ -1097,7 +917,7 @@
                 <div class="empty-state">
                     <span class="emoji">🔍</span>
                     <h3>No se encontraron docentes</h3>
-                    <p>Intenta con otro nombre o revisa los filtros.</p>
+                    <p>Intenta con otro nombre.</p>
                 </div>
             `;
             return;
@@ -1143,9 +963,7 @@
                 <div class="nombre-docente">
                     <span class="avatar">${inicial}</span>
                     ${item.docente}
-                    <span style="margin-left: auto; font-size: 0.7rem; background: var(--secondary); color: white; padding: 2px 12px; border-radius: 40px;">
-                        ${item.clases.length} grupos
-                    </span>
+                    <span class="total-grupos">${item.clases.length} grupos</span>
                 </div>
                 
                 <div class="vista-semanal">
@@ -1177,79 +995,6 @@
         });
 
         gridHorarios.innerHTML = html;
-    }
-
-    // Exportar a PDF
-    function exportarPDF() {
-        if (todosLosHorarios.length === 0) {
-            showToast('⚠️ No hay datos para exportar', 'error');
-            return;
-        }
-
-        try {
-            showToast('📄 Generando PDF...', 'success');
-            
-            // Crear contenido para PDF
-            const contenido = document.createElement('div');
-            contenido.id = 'contenidoPDF';
-            contenido.innerHTML = `
-                <div class="header-pdf">
-                    <h2>🐉 CECUNY - Horarios de Clase</h2>
-                    <p>Generado el ${new Date().toLocaleString('es-ES', { dateStyle: 'full', timeStyle: 'short' })}</p>
-                    <p style="margin-top: 5px; font-size: 0.8rem;">
-                        Total: ${todosLosHorarios.length} docentes · ${document.getElementById('totalClases').textContent} grupos · ${totalHoras} horas semanales
-                    </p>
-                </div>
-                <table class="tabla-pdf">
-                    <thead>
-                        <tr>
-                            <th>Docente</th>
-                            <th>Día</th>
-                            <th>Hora</th>
-                            <th>Grupo</th>
-                            <th>Materia</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${todosLosHorarios.map(doc => {
-                            return doc.clases.map(clase => `
-                                <tr>
-                                    <td><strong>${doc.docente}</strong></td>
-                                    <td>${clase.dia}</td>
-                                    <td>${clase.hora}</td>
-                                    <td>${clase.grupo}</td>
-                                    <td>${clase.materia}</td>
-                                </tr>
-                            `).join('');
-                        }).join('')}
-                    </tbody>
-                </table>
-            `;
-
-            document.body.appendChild(contenido);
-
-            const opt = {
-                margin: 10,
-                filename: `CECUNY_Horarios_${new Date().toISOString().split('T')[0]}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, letterRendering: true, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-            };
-
-            html2pdf().set(opt).from(contenido).save().then(() => {
-                document.body.removeChild(contenido);
-                showToast('✅ PDF generado correctamente', 'success');
-            }).catch(err => {
-                document.body.removeChild(contenido);
-                console.error('Error al generar PDF:', err);
-                showToast('❌ Error al generar PDF', 'error');
-            });
-
-        } catch (error) {
-            console.error('Error:', error);
-            showToast('❌ Error al generar PDF', 'error');
-        }
     }
 
     // Debounce search
