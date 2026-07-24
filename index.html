@@ -4,9 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐉 CECUNY · Códice Dragón</title>
+    <meta name="description" content="Dashboard de seguimiento de capacitaciones docentes CECUNY">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        
+        :root {
+            --primary: #3c2a1e;
+            --secondary: #8c7a5f;
+            --accent: #b39b7c;
+            --light: #f5efe6;
+            --success: #2d6a4f;
+            --danger: #9e2a2b;
+            --shadow: 0 8px 0 var(--secondary);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
@@ -15,26 +32,44 @@
             justify-content: center;
             align-items: flex-start;
             background-color: #6b5b4a;
-            /* ✅ NUEVA IMAGEN: Casona antigua del centro */
-            background-image: url('https://images.unsplash.com/photo-1629032355262-d751086c475d?q=80&w=1974&auto=format&fit=crop');
+            /* ✅ IMAGEN DE CASONA ANTIGUA YUCATÁN */
+            background-image: url('https://images.unsplash.com/photo-1582813956899-d9e2a1f19b62?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-attachment: fixed;
+            background-position: center;
             background-blend-mode: overlay;
             background-color: #5a4a33;
+            position: relative;
         }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(60, 42, 30, 0.15);
+            z-index: 0;
+            pointer-events: none;
+        }
+
         .container {
             max-width: 1400px;
             width: 100%;
-            background: rgba(235, 218, 190, 0.88);
-            backdrop-filter: blur(3px);
+            background: rgba(235, 218, 190, 0.92);
+            backdrop-filter: blur(8px);
             border-radius: 40px 40px 20px 20px;
             padding: 35px;
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6);
-            border: 8px solid #b39b7c;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2);
+            border: 8px solid var(--accent);
             border-top-color: #d4c5a9;
             border-left-color: #c4b09a;
             position: relative;
+            z-index: 1;
+            transition: var(--transition);
         }
+
         /* === DECORACIONES DE CÓDICE === */
         .container::before {
             content: "🐉";
@@ -42,18 +77,27 @@
             top: -15px;
             left: -15px;
             font-size: 3.5rem;
-            opacity: 0.15;
+            opacity: 0.12;
             transform: rotate(-15deg);
+            animation: float 6s ease-in-out infinite;
         }
+
         .container::after {
             content: "✨";
             position: absolute;
             bottom: -10px;
             right: -10px;
             font-size: 3rem;
-            opacity: 0.15;
+            opacity: 0.12;
             transform: rotate(10deg);
+            animation: float 6s ease-in-out infinite reverse;
         }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-15deg); }
+            50% { transform: translateY(-10px) rotate(-10deg); }
+        }
+
         /* === HEADER Y MENÚ === */
         .header {
             display: flex;
@@ -62,26 +106,31 @@
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 25px;
-            border-bottom: 3px solid #8c7a5f;
+            border-bottom: 3px solid var(--secondary);
             padding-bottom: 20px;
         }
+
         .header-titulo {
             display: flex;
             align-items: center;
             gap: 15px;
         }
+
         .header-titulo .dragon-icon {
             font-size: 3rem;
             line-height: 1;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            animation: float 4s ease-in-out infinite;
         }
+
         .header-titulo h1 {
             font-family: 'Crimson Text', serif;
             font-size: 2rem;
             font-weight: 700;
-            color: #3c2a1e;
+            color: var(--primary);
             line-height: 1.2;
         }
+
         .header-titulo h1 span {
             font-weight: 400;
             font-style: italic;
@@ -89,71 +138,112 @@
             font-size: 1.1rem;
             display: block;
         }
+
         .header-derecha {
             display: flex;
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
         }
+
         .badge {
-            background: #8c7a5f;
-            color: #f5efe6;
+            background: var(--secondary);
+            color: var(--light);
             padding: 8px 18px;
             border-radius: 40px;
             font-size: 0.8rem;
             font-weight: 600;
             border: 1px solid #5a3f2b;
+            transition: var(--transition);
         }
+
+        .badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
         .btn-refresh {
-            background: #3c2a1e;
-            color: #f5efe6;
+            background: var(--primary);
+            color: var(--light);
             border: 2px solid #5a3f2b;
             padding: 10px 22px;
             border-radius: 40px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.2s;
+            transition: var(--transition);
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
             box-shadow: 0 4px 0 #1f140e;
+            position: relative;
+            overflow: hidden;
         }
+
         .btn-refresh:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 0 #1f140e;
             background: #5a3f2b;
         }
+
+        .btn-refresh:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #1f140e;
+        }
+
+        .btn-refresh .spinner {
+            display: none;
+            animation: spin 1s linear infinite;
+        }
+
+        .btn-refresh.loading .spinner {
+            display: inline-block;
+        }
+
+        .btn-refresh.loading .text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .menu {
             display: flex;
             gap: 5px;
             flex-wrap: wrap;
             margin-top: 8px;
         }
+
         .menu a {
             font-family: 'Crimson Text', serif;
-            color: #3c2a1e;
+            color: var(--primary);
             text-decoration: none;
             font-weight: 600;
             padding: 6px 20px;
             border-radius: 40px;
             background: rgba(140, 122, 95, 0.2);
             border: 1px solid transparent;
-            transition: 0.2s;
+            transition: var(--transition);
             font-size: 1rem;
+            position: relative;
         }
+
         .menu a:hover {
             background: rgba(140, 122, 95, 0.4);
-            border-color: #8c7a5f;
+            border-color: var(--secondary);
+            transform: translateY(-2px);
         }
+
         .menu a.activo {
-            background: #3c2a1e;
-            color: #f5efe6;
-            border-color: #3c2a1e;
+            background: var(--primary);
+            color: var(--light);
+            border-color: var(--primary);
             box-shadow: 0 4px 0 #1f140e;
         }
+
         /* === LEYENDA === */
         .leyenda {
-            background: rgba(245, 239, 230, 0.85);
-            border-left: 8px solid #8c7a5f;
+            background: rgba(245, 239, 230, 0.9);
+            border-left: 8px solid var(--secondary);
             border-radius: 16px;
             padding: 20px 28px;
             margin-bottom: 25px;
@@ -162,19 +252,44 @@
             gap: 20px;
             backdrop-filter: blur(4px);
             box-shadow: inset 0 0 0 1px #d4c5a9;
+            transition: var(--transition);
         }
-        .leyenda .icono-leyenda { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
-        .leyenda .texto-leyenda { font-size: 0.95rem; color: #3c2a1e; line-height: 1.6; }
+
+        .leyenda:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .leyenda .icono-leyenda { 
+            font-size: 2rem; 
+            flex-shrink: 0; 
+            margin-top: 2px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .leyenda .texto-leyenda { 
+            font-size: 0.95rem; 
+            color: var(--primary); 
+            line-height: 1.6; 
+        }
+
         .leyenda .texto-leyenda .destacar {
-            background: #8c7a5f;
-            color: #f5efe6;
+            background: var(--secondary);
+            color: var(--light);
             padding: 2px 14px;
             border-radius: 40px;
             font-weight: 700;
+            transition: var(--transition);
         }
+
+        .leyenda .texto-leyenda .destacar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
         /* === FILTROS === */
         .filters {
-            background: rgba(245, 239, 230, 0.8);
+            background: rgba(245, 239, 230, 0.85);
             backdrop-filter: blur(4px);
             padding: 16px 24px;
             border-radius: 60px;
@@ -183,23 +298,55 @@
             gap: 12px;
             flex-wrap: wrap;
             align-items: center;
-            border: 1px solid #b39b7c;
+            border: 1px solid var(--accent);
+            transition: var(--transition);
         }
+
+        .filters:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .filters label {
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         .filters input, .filters select {
             padding: 10px 20px;
-            border: 2px solid #b39b7c;
+            border: 2px solid var(--accent);
             border-radius: 40px;
             font-size: 0.9rem;
-            background: rgba(255, 252, 245, 0.8);
+            background: rgba(255, 252, 245, 0.9);
             outline: none;
             font-family: 'Inter', sans-serif;
-            color: #3c2a1e;
+            color: var(--primary);
+            transition: var(--transition);
         }
+
         .filters input:focus, .filters select:focus {
-            border-color: #3c2a1e;
-            box-shadow: 0 0 0 4px rgba(60, 42, 30, 0.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(60, 42, 30, 0.15);
+            transform: scale(1.02);
         }
-        .filters input { flex: 1; min-width: 180px; }
+
+        .filters input { 
+            flex: 1; 
+            min-width: 180px; 
+        }
+
+        .filters .filter-count {
+            margin-left: auto;
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 600;
+            padding: 4px 16px;
+            background: rgba(140, 122, 95, 0.15);
+            border-radius: 40px;
+        }
+
         /* === ESTADÍSTICAS === */
         .stats {
             display: grid;
@@ -207,78 +354,119 @@
             gap: 15px;
             margin-bottom: 25px;
         }
+
         .stat-card {
-            background: rgba(245, 239, 230, 0.8);
+            background: rgba(245, 239, 230, 0.85);
             backdrop-filter: blur(4px);
             padding: 16px 20px;
             border-radius: 30px;
             text-align: center;
-            border: 1px solid #b39b7c;
+            border: 1px solid var(--accent);
             box-shadow: inset 0 0 0 1px #d4c5a9;
+            transition: var(--transition);
+            cursor: default;
         }
+
+        .stat-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
         .stat-card .numero {
             font-size: 2.4rem;
             font-weight: 700;
             display: block;
             font-family: 'Crimson Text', serif;
-            color: #3c2a1e;
+            color: var(--primary);
+            transition: var(--transition);
         }
+
         .stat-card .label {
             font-size: 0.8rem;
             color: #5a3f2b;
             font-weight: 600;
         }
+
         .stat-card.total .numero { color: #1e3a5f; }
-        .stat-card.logrados .numero { color: #2d6a4f; }
-        .stat-card.pendientes .numero { color: #9e2a2b; }
+        .stat-card.logrados .numero { color: var(--success); }
+        .stat-card.pendientes .numero { color: var(--danger); }
         .stat-card.progreso .numero { color: #b87333; }
+
+        .stat-card .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(140, 122, 95, 0.2);
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .stat-card .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), #b87333);
+            transition: width 1s ease-in-out;
+            border-radius: 4px;
+        }
+
         /* === TARJETAS DE DOCENTES === */
         .grid-docentes {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 25px;
         }
+
         .card-docente {
-            background: rgba(255, 252, 245, 0.85);
+            background: rgba(255, 252, 245, 0.9);
             backdrop-filter: blur(4px);
             border-radius: 30px 30px 16px 16px;
             padding: 24px;
-            box-shadow: 0 8px 0 #8c7a5f, 0 10px 20px rgba(0,0,0,0.1);
-            border: 1px solid #b39b7c;
-            transition: 0.2s;
+            box-shadow: 0 8px 0 var(--secondary), 0 10px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--accent);
+            transition: var(--transition);
             position: relative;
+            overflow: hidden;
         }
+
         .card-docente::before {
             content: "🐉";
             position: absolute;
             bottom: 8px;
             right: 12px;
             font-size: 2.2rem;
-            opacity: 0.08;
+            opacity: 0.06;
             transform: rotate(-10deg);
+            transition: var(--transition);
         }
+
+        .card-docente:hover::before {
+            opacity: 0.12;
+            transform: rotate(-5deg) scale(1.1);
+        }
+
         .card-docente:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 0 #8c7a5f, 0 20px 30px rgba(0,0,0,0.15);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 0 var(--secondary), 0 20px 40px rgba(0,0,0,0.15);
         }
+
         .card-docente .nombre-docente {
             font-family: 'Crimson Text', serif;
             font-size: 1.4rem;
             font-weight: 700;
-            color: #3c2a1e;
+            color: var(--primary);
             padding-bottom: 14px;
-            border-bottom: 3px dashed #b39b7c;
+            border-bottom: 3px dashed var(--accent);
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
+
         .card-docente .nombre-docente .avatar {
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: #3c2a1e;
-            color: #f5efe6;
+            background: var(--primary);
+            color: var(--light);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -286,8 +474,15 @@
             font-size: 1.2rem;
             flex-shrink: 0;
             font-family: 'Crimson Text', serif;
-            border: 2px solid #8c7a5f;
+            border: 2px solid var(--secondary);
+            transition: var(--transition);
         }
+
+        .card-docente:hover .nombre-docente .avatar {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
         .logro-item {
             display: flex;
             align-items: center;
@@ -298,14 +493,31 @@
             background: rgba(245, 239, 230, 0.5);
             border: 1px solid #d4c5a9;
             backdrop-filter: blur(2px);
+            transition: var(--transition);
         }
-        .logro-item .icono { font-size: 1.4rem; flex-shrink: 0; }
+
+        .logro-item:hover {
+            transform: translateX(4px);
+            background: rgba(245, 239, 230, 0.8);
+        }
+
+        .logro-item .icono { 
+            font-size: 1.4rem; 
+            flex-shrink: 0; 
+            transition: var(--transition);
+        }
+
+        .logro-item:hover .icono {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
         .logro-item .texto {
             flex: 1;
             font-size: 0.9rem;
             font-weight: 600;
-            color: #3c2a1e;
+            color: var(--primary);
         }
+
         .logro-item .estado-badge {
             padding: 4px 16px;
             border-radius: 40px;
@@ -313,9 +525,21 @@
             font-weight: 700;
             text-transform: uppercase;
             white-space: nowrap;
+            transition: var(--transition);
         }
-        .estado-badge.logrado { background: #d8eddf; color: #1a4a33; border: 1px solid #2d6a4f; }
-        .estado-badge.no-logrado { background: #f5d6d6; color: #7a1f1f; border: 1px solid #9e2a2b; }
+
+        .estado-badge.logrado { 
+            background: #d8eddf; 
+            color: #1a4a33; 
+            border: 1px solid var(--success); 
+        }
+
+        .estado-badge.no-logrado { 
+            background: #f5d6d6; 
+            color: #7a1f1f; 
+            border: 1px solid var(--danger); 
+        }
+
         /* === LOGRO AUTOMÁTICO === */
         .logro-automatico {
             margin-top: 16px;
@@ -326,18 +550,37 @@
             font-size: 1rem;
             border: 2px solid transparent;
             font-family: 'Crimson Text', serif;
+            transition: var(--transition);
         }
+
+        .logro-automatico:hover {
+            transform: scale(1.02);
+        }
+
         .logro-automatico.exito {
             background: rgba(45, 106, 79, 0.15);
-            border-color: #2d6a4f;
+            border-color: var(--success);
             color: #1a4a33;
+            animation: pulse-success 2s ease-in-out infinite;
         }
+
         .logro-automatico.fallo {
             background: rgba(158, 42, 43, 0.12);
-            border-color: #9e2a2b;
+            border-color: var(--danger);
             color: #7a1f1f;
         }
-        .logro-automatico .icono-grande { font-size: 2rem; display: block; margin-bottom: 4px; }
+
+        @keyframes pulse-success {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        .logro-automatico .icono-grande { 
+            font-size: 2rem; 
+            display: block; 
+            margin-bottom: 4px; 
+        }
+
         .dias-faltantes {
             display: block;
             font-size: 0.85rem;
@@ -345,99 +588,269 @@
             margin-top: 6px;
             opacity: 0.8;
         }
+
         /* === LOADING Y EMPTY === */
         #loading {
             text-align: center;
             padding: 80px 20px;
-            background: rgba(245, 239, 230, 0.8);
+            background: rgba(245, 239, 230, 0.85);
             backdrop-filter: blur(4px);
             border-radius: 40px;
             font-size: 1.1rem;
-            color: #3c2a1e;
+            color: var(--primary);
             font-weight: 700;
-            border: 2px dashed #8c7a5f;
+            border: 2px dashed var(--secondary);
+            transition: var(--transition);
         }
+
+        #loading .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(140, 122, 95, 0.2);
+            border-top: 4px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            background: rgba(245, 239, 230, 0.8);
+            background: rgba(245, 239, 230, 0.85);
             backdrop-filter: blur(4px);
             border-radius: 40px;
             grid-column: 1 / -1;
-            border: 2px dashed #8c7a5f;
+            border: 2px dashed var(--secondary);
+            transition: var(--transition);
         }
-        .empty-state .emoji { font-size: 4rem; display: block; margin-bottom: 12px; }
-        .empty-state h3 { font-family: 'Crimson Text', serif; color: #3c2a1e; margin-bottom: 6px; }
-        .empty-state p { color: #5a3f2b; }
-        @media (max-width: 640px) {
-            .header { flex-direction: column; align-items: flex-start; }
-            .header-titulo h1 { font-size: 1.6rem; }
-            .grid-docentes { grid-template-columns: 1fr; }
-            .filters { flex-direction: column; border-radius: 30px; }
-            .filters input { width: 100%; }
-            .stats { grid-template-columns: 1fr 1fr; }
-            .leyenda { flex-direction: column; align-items: stretch; }
+
+        .empty-state:hover {
+            transform: scale(1.02);
+        }
+
+        .empty-state .emoji { 
+            font-size: 4rem; 
+            display: block; 
+            margin-bottom: 12px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .empty-state h3 { 
+            font-family: 'Crimson Text', serif; 
+            color: var(--primary); 
+            margin-bottom: 6px; 
+        }
+
+        .empty-state p { 
+            color: #5a3f2b; 
+        }
+
+        .empty-state .btn-retry {
+            margin-top: 20px;
+            padding: 10px 30px;
+            border-radius: 30px;
+            border: none;
+            background: var(--primary);
+            color: var(--light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .empty-state .btn-retry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: #5a3f2b;
+        }
+
+        /* === TOAST NOTIFICATIONS === */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            background: rgba(60, 42, 30, 0.95);
+            backdrop-filter: blur(8px);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            body { padding: 15px; }
+            .container { padding: 20px; }
+            
+            .header { 
+                flex-direction: column; 
+                align-items: flex-start; 
+            }
+            
+            .header-titulo h1 { 
+                font-size: 1.6rem; 
+            }
+            
+            .grid-docentes { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .filters { 
+                flex-direction: column; 
+                border-radius: 30px;
+                padding: 16px 20px;
+            }
+            
+            .filters input { 
+                width: 100%; 
+            }
+            
+            .stats { 
+                grid-template-columns: 1fr 1fr; 
+            }
+            
+            .leyenda { 
+                flex-direction: column; 
+                align-items: stretch; 
+            }
+            
+            .filters .filter-count {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .header-derecha {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .badge {
+                font-size: 0.7rem;
+                padding: 6px 12px;
+            }
+            
+            .btn-refresh {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container" role="main">
     <!-- HEADER -->
-    <div class="header">
+    <header class="header" role="banner">
         <div class="header-titulo">
-            <span class="dragon-icon">🐉</span>
+            <span class="dragon-icon" aria-hidden="true">🐉</span>
             <div>
                 <h1>CECUNY <span>Dragones que generan cultura</span></h1>
-                <div class="menu">
-                    <a href="/alta-academica-26/" class="activo">📜 Logros</a>
+                <nav class="menu" role="navigation" aria-label="Navegación principal">
+                    <a href="/alta-academica-26/" class="activo" aria-current="page">📜 Logros</a>
                     <a href="/alta-academica-26/horarios.html">📅 Horarios</a>
-                </div>
+                </nav>
             </div>
         </div>
         <div class="header-derecha">
-            <span class="badge">🔄 Actualizado: <strong id="updateTime">cargando...</strong></span>
-            <button class="btn-refresh" onclick="cargarDatos()">⟳ Actualizar</button>
+            <span class="badge" role="status" aria-live="polite">
+                🔄 Actualizado: <strong id="updateTime">cargando...</strong>
+            </span>
+            <button class="btn-refresh" onclick="cargarDatos()" aria-label="Actualizar datos">
+                <span class="spinner">⟳</span>
+                <span class="text">⟳ Actualizar</span>
+            </button>
         </div>
-    </div>
+    </header>
 
     <!-- LEYENDA -->
-    <div class="leyenda">
-        <span class="icono-leyenda">📜</span>
+    <section class="leyenda" aria-label="Información sobre el sistema">
+        <span class="icono-leyenda" aria-hidden="true">📜</span>
         <div class="texto-leyenda">
             <strong>📌 ¿Por qué aparece este número?</strong><br>
             Los días de capacitación que debes tomar en total son iguales al <span class="destacar">80%</span> de las capacitaciones disponibles en tu horario laboral normal. Si deseas o necesitas tomar otras capacitaciones en otros horarios puedes hacerlo, solo no olvides avisar en coordinación y anotarlo en la <strong>libreta azul de incidencias</strong> con el Administrador.
         </div>
-    </div>
+    </section>
 
     <!-- FILTROS -->
-    <div class="filters">
-        <label for="searchInput" style="font-weight:700;color:#3c2a1e;">🔍 Buscar:</label>
-        <input type="text" id="searchInput" placeholder="Nombre del docente...">
-        <label for="filterStatus" style="font-weight:700;color:#3c2a1e;">📊 Estado:</label>
-        <select id="filterStatus">
+    <div class="filters" role="search">
+        <label for="searchInput">🔍 Buscar:</label>
+        <input type="text" id="searchInput" placeholder="Nombre del docente..." aria-label="Buscar docente">
+        
+        <label for="filterStatus">📊 Estado:</label>
+        <select id="filterStatus" aria-label="Filtrar por estado">
             <option value="todos">Todos</option>
             <option value="completos">✅ Con grupos asignados</option>
             <option value="incompletos">❌ Sin grupos asignados</option>
         </select>
+        <span class="filter-count" id="filterCount" role="status" aria-live="polite">0 docentes</span>
     </div>
 
     <!-- ESTADÍSTICAS -->
-    <div class="stats">
-        <div class="stat-card total"><span class="numero" id="totalDocentes">0</span><span class="label">👥 Total Docentes</span></div>
-        <div class="stat-card logrados"><span class="numero" id="conGrupos">0</span><span class="label">✅ Con grupos asignados</span></div>
-        <div class="stat-card pendientes"><span class="numero" id="sinGrupos">0</span><span class="label">❌ Sin grupos asignados</span></div>
-        <div class="stat-card progreso"><span class="numero" id="porcentajeProgreso">0%</span><span class="label">📈 Progreso general</span></div>
-    </div>
+    <section class="stats" aria-label="Estadísticas generales">
+        <div class="stat-card total">
+            <span class="numero" id="totalDocentes">0</span>
+            <span class="label">👥 Total Docentes</span>
+        </div>
+        <div class="stat-card logrados">
+            <span class="numero" id="conGrupos">0</span>
+            <span class="label">✅ Con grupos asignados</span>
+            <div class="progress-bar">
+                <div class="fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+        <div class="stat-card pendientes">
+            <span class="numero" id="sinGrupos">0</span>
+            <span class="label">❌ Sin grupos asignados</span>
+        </div>
+        <div class="stat-card progreso">
+            <span class="numero" id="porcentajeProgreso">0%</span>
+            <span class="label">📈 Progreso general</span>
+        </div>
+    </section>
 
     <!-- CONTENIDO -->
-    <div id="loading">⏳ Cargando datos...</div>
-    <div id="gridContainer" style="display: none;"><div class="grid-docentes" id="gridDocentes"></div></div>
+    <div id="loading" role="status" aria-live="polite">
+        <div class="loading-spinner"></div>
+        <div>⏳ Cargando datos...</div>
+    </div>
+    <div id="gridContainer" style="display: none;">
+        <div class="grid-docentes" id="gridDocentes"></div>
+    </div>
 </div>
+
+<!-- TOAST NOTIFICATIONS -->
+<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
 
 <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSx0st0x1xgBt6GG1tdeokjGXBYvp_O67UT1Tm33fHlNcibaQ_5aBlM6JkZP6BnrzVuWHcsIjQ8Quqd/pub?gid=0&single=true&output=csv";
 
     let docentesData = [];
+    let isFirstLoad = true;
+    
     const loadingDiv = document.getElementById('loading');
     const gridContainer = document.getElementById('gridContainer');
     const gridDocentes = document.getElementById('gridDocentes');
@@ -448,10 +861,43 @@
     const conGruposSpan = document.getElementById('conGrupos');
     const sinGruposSpan = document.getElementById('sinGrupos');
     const porcentajeProgresoSpan = document.getElementById('porcentajeProgreso');
+    const progressFill = document.getElementById('progressFill');
+    const filterCount = document.getElementById('filterCount');
+    const toast = document.getElementById('toast');
+    const refreshBtn = document.querySelector('.btn-refresh');
+
+    let toastTimeout = null;
+
+    function showToast(message, type = 'success') {
+        if (toastTimeout) {
+            clearTimeout(toastTimeout);
+            toast.classList.remove('show');
+        }
+        
+        toast.textContent = message;
+        toast.className = `toast ${type}`;
+        
+        // Force reflow
+        void toast.offsetWidth;
+        
+        toast.classList.add('show');
+        
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 4000);
+    }
 
     function limpiarTexto(texto) {
         if (!texto) return '';
-        return texto.toLowerCase().replace(/[áäâà]/g,'a').replace(/[éëêè]/g,'e').replace(/[íïîì]/g,'i').replace(/[óöôò]/g,'o').replace(/[úüûù]/g,'u').replace(/[ñ]/g,'n').replace(/[^a-z0-9]/g,'').trim();
+        return texto.toLowerCase()
+            .replace(/[áäâà]/g,'a')
+            .replace(/[éëêè]/g,'e')
+            .replace(/[íïîì]/g,'i')
+            .replace(/[óöôò]/g,'o')
+            .replace(/[úüûù]/g,'u')
+            .replace(/[ñ]/g,'n')
+            .replace(/[^a-z0-9]/g,'')
+            .trim();
     }
 
     function encontrarColumna(headers, posiblesNombres) {
@@ -466,86 +912,223 @@
 
     function parseCSV(csvText) {
         const lines = csvText.split(/\r\n|\n/);
-        const headers = lines[0].split(',').map(h => h.trim());
+        if (lines.length < 2) throw new Error('El archivo CSV está vacío o no tiene datos.');
+        
+        const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
         const result = [];
+        
         for (let i = 1; i < lines.length; i++) {
             if (!lines[i].trim()) continue;
-            const values = lines[i].split(',').map(v => v.trim());
+            
+            // Handle quoted values
+            let row = lines[i];
+            const values = [];
+            let current = '';
+            let insideQuotes = false;
+            
+            for (let char of row) {
+                if (char === '"') {
+                    insideQuotes = !insideQuotes;
+                } else if (char === ',' && !insideQuotes) {
+                    values.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            values.push(current.trim());
+            
             const obj = {};
-            headers.forEach((h, idx) => { obj[h] = values[idx] || ''; });
+            headers.forEach((h, idx) => { 
+                obj[h] = values[idx] ? values[idx].replace(/^"|"$/g, '').trim() : ''; 
+            });
             result.push(obj);
         }
+        
         return result;
+    }
+
+    function validarDatos(docentes) {
+        if (docentes.length === 0) {
+            throw new Error('No se encontraron datos de docentes.');
+        }
+        
+        // Check for required columns
+        const firstRow = docentes[0];
+        const hasValidData = Object.values(firstRow).some(v => v && v.trim() !== '');
+        if (!hasValidData) {
+            throw new Error('Los datos del CSV no contienen información válida.');
+        }
+        
+        return docentes;
     }
 
     async function cargarDatos() {
         try {
+            // Show loading state
+            refreshBtn.classList.add('loading');
             loadingDiv.style.display = 'block';
             gridContainer.style.display = 'none';
-            loadingDiv.innerHTML = '⏳ Cargando datos...';
+            
+            if (isFirstLoad) {
+                loadingDiv.innerHTML = `
+                    <div class="loading-spinner"></div>
+                    <div>⏳ Cargando datos del Códice...</div>
+                `;
+            }
+            
             const response = await fetch(CSV_URL);
-            if (!response.ok) throw new Error('Error HTTP: ' + response.status);
+            if (!response.ok) throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
+            
             const csvText = await response.text();
+            if (!csvText.trim()) throw new Error('El archivo CSV está vacío.');
+            
             const rawData = parseCSV(csvText);
-            if (rawData.length === 0) throw new Error('No hay datos en el CSV.');
+            validarDatos(rawData);
+            
             const headers = Object.keys(rawData[0]);
-            const colDocente = encontrarColumna(headers, ['Docente', 'docente', 'Nombre']);
-            const colPlaneacion = encontrarColumna(headers, ['Entregó planeación', 'planeacion', 'entrego']);
-            const colCapacitacion = encontrarColumna(headers, ['Asistió 80% capacitaciones', 'capacitaciones', 'asistio']);
-            const colDias = encontrarColumna(headers, ['Días de capacitación que faltan', 'dias faltan', 'faltan']);
-            if (!colDocente) throw new Error('No se encontró columna "Docente"');
-            if (!colPlaneacion) throw new Error('No se encontró columna "Entregó planeación"');
-            if (!colCapacitacion) throw new Error('No se encontró columna "Asistió 80% capacitaciones"');
-            if (!colDias) throw new Error('No se encontró columna "Días de capacitación que faltan"');
-            docentesData = rawData.map(item => {
-                const entrego = (item[colPlaneacion] || 'NO').toUpperCase();
-                const asistio = (item[colCapacitacion] || 'NO').toUpperCase();
-                const dias = parseInt(item[colDias]) || 0;
-                return {
-                    nombre: (item[colDocente] || '').trim(),
-                    entregoPlaneacion: entrego,
-                    asistio80: asistio,
-                    diasFaltan: dias,
-                    tieneGrupos: (entrego === 'SI' && asistio === 'SI')
-                };
-            }).filter(d => d.nombre !== '');
-            if (docentesData.length === 0) throw new Error('No se encontraron docentes.');
-            docentesData.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            
+            // Find columns with better error messages
+            const colDocente = encontrarColumna(headers, ['Docente', 'docente', 'Nombre', 'nombre', 'Profesor', 'profesor']);
+            const colPlaneacion = encontrarColumna(headers, ['Entregó planeación', 'planeacion', 'entrego', 'Planeación', 'Planeacion']);
+            const colCapacitacion = encontrarColumna(headers, ['Asistió 80% capacitaciones', 'capacitaciones', 'asistio', 'Capacitación', 'Capacitacion']);
+            const colDias = encontrarColumna(headers, ['Días de capacitación que faltan', 'dias faltan', 'faltan', 'Días', 'dias']);
+            
+            if (!colDocente) throw new Error('No se encontró la columna "Docente" en el CSV');
+            if (!colPlaneacion) throw new Error('No se encontró la columna "Entregó planeación" en el CSV');
+            if (!colCapacitacion) throw new Error('No se encontró la columna "Asistió 80% capacitaciones" en el CSV');
+            if (!colDias) throw new Error('No se encontró la columna "Días de capacitación que faltan" en el CSV');
+            
+            docentesData = rawData
+                .map(item => {
+                    const entrego = (item[colPlaneacion] || 'NO').toUpperCase().trim();
+                    const asistio = (item[colCapacitacion] || 'NO').toUpperCase().trim();
+                    const dias = parseInt(item[colDias]) || 0;
+                    const nombre = (item[colDocente] || '').trim();
+                    
+                    return {
+                        nombre: nombre,
+                        entregoPlaneacion: ['SI', 'SÍ', 'YES', 'Y'].includes(entrego) ? 'SI' : 'NO',
+                        asistio80: ['SI', 'SÍ', 'YES', 'Y'].includes(asistio) ? 'SI' : 'NO',
+                        diasFaltan: Math.max(0, dias),
+                        tieneGrupos: ['SI', 'SÍ', 'YES', 'Y'].includes(entrego) && ['SI', 'SÍ', 'YES', 'Y'].includes(asistio)
+                    };
+                })
+                .filter(d => d.nombre !== '')
+                .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
+            
+            if (docentesData.length === 0) {
+                throw new Error('No se encontraron docentes válidos en los datos.');
+            }
+            
             renderDocentes(docentesData);
             actualizarEstadisticas(docentesData);
-            updateTimeSpan.textContent = new Date().toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' });
+            
+            const now = new Date();
+            updateTimeSpan.textContent = now.toLocaleString('es-ES', { 
+                dateStyle: 'medium', 
+                timeStyle: 'short' 
+            });
+            
             loadingDiv.style.display = 'none';
             gridContainer.style.display = 'block';
+            isFirstLoad = false;
+            refreshBtn.classList.remove('loading');
+            
+            showToast(`✅ Datos actualizados correctamente (${docentesData.length} docentes)`, 'success');
+            
         } catch (error) {
-            loadingDiv.innerHTML = `<div class="empty-state"><span class="emoji">❌</span><h3>Error al cargar los datos</h3><p style="color:#7a1f1f;">${error.message}</p><br><button onclick="cargarDatos()" style="padding:10px 30px; border-radius:30px; border:none; background:#3c2a1e; color:#f5efe6; font-weight:600; cursor:pointer;">🔄 Reintentar</button></div>`;
+            console.error('Error al cargar datos:', error);
+            refreshBtn.classList.remove('loading');
+            
+            loadingDiv.innerHTML = `
+                <div class="empty-state">
+                    <span class="emoji">❌</span>
+                    <h3>Error al cargar los datos del Códice</h3>
+                    <p style="color:#7a1f1f; margin: 10px 0;">${error.message}</p>
+                    <p style="font-size: 0.9rem; color: #5a3f2b;">
+                        Verifica que la URL del CSV sea accesible y contenga los datos correctos.
+                    </p>
+                    <button class="btn-retry" onclick="cargarDatos()">🔄 Reintentar</button>
+                </div>
+            `;
+            loadingDiv.style.display = 'block';
+            gridContainer.style.display = 'none';
+            
+            showToast(`❌ Error: ${error.message}`, 'error');
         }
     }
 
     function renderDocentes(docentes) {
         const searchTerm = searchInput.value.toLowerCase().trim();
         const statusFilter = filterStatus.value;
+        
         let filtrados = docentes.filter(doc => {
             const matchSearch = doc.nombre.toLowerCase().includes(searchTerm);
-            const matchStatus = statusFilter === 'todos' || (statusFilter === 'completos' && doc.tieneGrupos) || (statusFilter === 'incompletos' && !doc.tieneGrupos);
+            const matchStatus = statusFilter === 'todos' || 
+                (statusFilter === 'completos' && doc.tieneGrupos) || 
+                (statusFilter === 'incompletos' && !doc.tieneGrupos);
             return matchSearch && matchStatus;
         });
+        
+        filterCount.textContent = `${filtrados.length} docentes`;
+        
         if (filtrados.length === 0) {
-            gridDocentes.innerHTML = `<div class="empty-state"><span class="emoji">🔍</span><h3>No se encontraron docentes</h3><p>Intenta con otro filtro.</p></div>`;
+            gridDocentes.innerHTML = `
+                <div class="empty-state">
+                    <span class="emoji">🔍</span>
+                    <h3>No se encontraron docentes</h3>
+                    <p>Intenta con otros términos de búsqueda o cambia los filtros.</p>
+                </div>
+            `;
             return;
         }
+        
         let html = '';
         filtrados.forEach(doc => {
             const inicial = doc.nombre.charAt(0).toUpperCase();
             const tieneGrupos = doc.tieneGrupos;
             const planeacionOk = doc.entregoPlaneacion === 'SI';
             const capacitacionOk = doc.asistio80 === 'SI';
-            html += `<div class="card-docente">
-                <div class="nombre-docente"><span class="avatar">${inicial}</span>${doc.nombre}</div>
-                <div class="logro-item"><span class="icono">${planeacionOk ? '✅' : '❌'}</span><span class="texto">Entregué mi planeación didáctica-pedagógica</span><span class="estado-badge ${planeacionOk ? 'logrado' : 'no-logrado'}">${planeacionOk ? 'LOGRADO' : 'PENDIENTE'}</span></div>
-                <div class="logro-item"><span class="icono">${capacitacionOk ? '✅' : '❌'}</span><span class="texto">Asistí al 80% de capacitaciones docentes</span><span class="estado-badge ${capacitacionOk ? 'logrado' : 'no-logrado'}">${capacitacionOk ? 'LOGRADO' : 'PENDIENTE'}</span></div>
-                <div class="logro-automatico ${tieneGrupos ? 'exito' : 'fallo'}"><span class="icono-grande">${tieneGrupos ? '🎯' : '⏳'}</span>${tieneGrupos ? '✅ ¡Ya tengo asignados mis grupos!' : '❌ Aún no me pueden asignar oficialmente mis grupos'}<span class="dias-faltantes">${tieneGrupos ? '✅ Cumples con todos los requisitos' : `📅 Te faltan ${doc.diasFaltan} día${doc.diasFaltan !== 1 ? 's' : ''} de capacitación`}</span></div>
-            </div>`;
+            
+            html += `
+                <div class="card-docente" role="article">
+                    <div class="nombre-docente">
+                        <span class="avatar" aria-hidden="true">${inicial}</span>
+                        ${doc.nombre}
+                    </div>
+                    
+                    <div class="logro-item">
+                        <span class="icono" aria-hidden="true">${planeacionOk ? '✅' : '❌'}</span>
+                        <span class="texto">Entregué mi planeación didáctica-pedagógica</span>
+                        <span class="estado-badge ${planeacionOk ? 'logrado' : 'no-logrado'}">
+                            ${planeacionOk ? 'LOGRADO' : 'PENDIENTE'}
+                        </span>
+                    </div>
+                    
+                    <div class="logro-item">
+                        <span class="icono" aria-hidden="true">${capacitacionOk ? '✅' : '❌'}</span>
+                        <span class="texto">Asistí al 80% de capacitaciones docentes</span>
+                        <span class="estado-badge ${capacitacionOk ? 'logrado' : 'no-logrado'}">
+                            ${capacitacionOk ? 'LOGRADO' : 'PENDIENTE'}
+                        </span>
+                    </div>
+                    
+                    <div class="logro-automatico ${tieneGrupos ? 'exito' : 'fallo'}">
+                        <span class="icono-grande" aria-hidden="true">${tieneGrupos ? '🎯' : '⏳'}</span>
+                        ${tieneGrupos ? 
+                            '✅ ¡Ya tengo asignados mis grupos!' : 
+                            '❌ Aún no me pueden asignar oficialmente mis grupos'}
+                        <span class="dias-faltantes">
+                            ${tieneGrupos ? 
+                                '✅ Cumples con todos los requisitos' : 
+                                `📅 Te faltan ${doc.diasFaltan} día${doc.diasFaltan !== 1 ? 's' : ''} de capacitación`}
+                        </span>
+                    </div>
+                </div>
+            `;
         });
+        
         gridDocentes.innerHTML = html;
     }
 
@@ -554,15 +1137,29 @@
         const conGrupos = docentes.filter(d => d.tieneGrupos).length;
         const sinGrupos = total - conGrupos;
         const porcentaje = total > 0 ? Math.round((conGrupos / total) * 100) : 0;
+        
         totalDocentesSpan.textContent = total;
         conGruposSpan.textContent = conGrupos;
         sinGruposSpan.textContent = sinGrupos;
         porcentajeProgresoSpan.textContent = `${porcentaje}%`;
+        
+        // Animate progress bar
+        progressFill.style.width = `${porcentaje}%`;
     }
 
-    searchInput.addEventListener('input', () => renderDocentes(docentesData));
+    // Debounce search
+    let searchTimeout = null;
+    searchInput.addEventListener('input', () => {
+        if (searchTimeout) clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            renderDocentes(docentesData);
+        }, 300);
+    });
+    
     filterStatus.addEventListener('change', () => renderDocentes(docentesData));
-    cargarDatos();
+
+    // Load data on page load
+    document.addEventListener('DOMContentLoaded', cargarDatos);
 </script>
 </body>
 </html>
