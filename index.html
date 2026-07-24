@@ -77,7 +77,7 @@
     // ================================================================
     //  ✅ CONFIGURACIÓN - URL PÚBLICA DE TU GOOGLE SHEET (CSV)
     // ================================================================
-    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSx0st0x1xgBt6GG1tdeokjGXBYvp_O67UT1Tm33fHlNcibaQ_5aBlM6JkZP6BnrzVuWHcsIjQ8Quqd/pub?output=csv";
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSx0st0x1xgBt6GG1tdeokjGXBYvp_O67UT1Tm33fHlNcibaQ_5aBlM6JkZP6BnrzVuWHcsIjQ8Quqd/pub?gid=0&single=true&output=csv";
 
     let docentesData = [];
     const loadingDiv = document.getElementById('loading');
@@ -133,11 +133,11 @@
             const headers = Object.keys(rawData[0]);
             const colDocente = encontrarColumna(headers, ['Docente', 'docente', 'Nombre']);
             const colPlaneacion = encontrarColumna(headers, ['Entregó planeación', 'planeacion', 'entrego']);
-            const colCapacitacion = encontrarColumna(headers, ['Asistió 70% capacitaciones', 'capacitaciones', 'asistio']);
+            const colCapacitacion = encontrarColumna(headers, ['Asistió 80% capacitaciones', 'capacitaciones', 'asistio']);
             const colDias = encontrarColumna(headers, ['Días de capacitación que faltan', 'dias faltan', 'faltan']);
             if (!colDocente) throw new Error('No se encontró columna "Docente"');
             if (!colPlaneacion) throw new Error('No se encontró columna "Entregó planeación"');
-            if (!colCapacitacion) throw new Error('No se encontró columna "Asistió 70% capacitaciones"');
+            if (!colCapacitacion) throw new Error('No se encontró columna "Asistió 80% capacitaciones"');
             if (!colDias) throw new Error('No se encontró columna "Días de capacitación que faltan"');
             docentesData = rawData.map(item => {
                 const entrego = (item[colPlaneacion] || 'NO').toUpperCase();
@@ -146,7 +146,7 @@
                 return {
                     nombre: (item[colDocente] || '').trim(),
                     entregoPlaneacion: entrego,
-                    asistio70: asistio,
+                    asistio80: asistio,
                     diasFaltan: dias,
                     tieneGrupos: (entrego === 'SI' && asistio === 'SI')
                 };
@@ -180,11 +180,11 @@
             const inicial = doc.nombre.charAt(0).toUpperCase();
             const tieneGrupos = doc.tieneGrupos;
             const planeacionOk = doc.entregoPlaneacion === 'SI';
-            const capacitacionOk = doc.asistio70 === 'SI';
+            const capacitacionOk = doc.asistio80 === 'SI';
             html += `<div class="card-docente">
                 <div class="nombre-docente"><span class="avatar">${inicial}</span>${doc.nombre}</div>
                 <div class="logro-item"><span class="icono">${planeacionOk ? '✅' : '❌'}</span><span class="texto">Entregué mi planeación didáctica-pedagógica</span><span class="estado-badge ${planeacionOk ? 'logrado' : 'no-logrado'}">${planeacionOk ? 'LOGRADO' : 'PENDIENTE'}</span></div>
-                <div class="logro-item"><span class="icono">${capacitacionOk ? '✅' : '❌'}</span><span class="texto">Asistí al 70% de capacitaciones docentes</span><span class="estado-badge ${capacitacionOk ? 'logrado' : 'no-logrado'}">${capacitacionOk ? 'LOGRADO' : 'PENDIENTE'}</span></div>
+                <div class="logro-item"><span class="icono">${capacitacionOk ? '✅' : '❌'}</span><span class="texto">Asistí al 80% de capacitaciones docentes</span><span class="estado-badge ${capacitacionOk ? 'logrado' : 'no-logrado'}">${capacitacionOk ? 'LOGRADO' : 'PENDIENTE'}</span></div>
                 <div class="logro-automatico ${tieneGrupos ? 'exito' : 'fallo'}"><span class="icono-grande">${tieneGrupos ? '🎯' : '⏳'}</span>${tieneGrupos ? '✅ ¡Ya tengo asignados mis grupos!' : '❌ Aún no me pueden asignar oficialmente mis grupos'}<span class="dias-faltantes">${tieneGrupos ? '✅ Cumples con todos los requisitos' : `📅 Te faltan ${doc.diasFaltan} día${doc.diasFaltan !== 1 ? 's' : ''} de capacitación`}</span></div>
             </div>`;
         });
