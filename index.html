@@ -3,63 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🐉 CECUNY · Dragones que generan cultura</title>
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>🐉 CECUNY · Códice Dragón</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #e8e0d5;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c4b5a0' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             min-height: 100vh;
             padding: 30px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
+            background-color: #d4c5a9;
+            background-image: url('https://images.unsplash.com/photo-1580587771525-78b9dba3b914?q=80&w=1974&auto=format&fit=crop');
+            background-size: cover;
+            background-attachment: fixed;
+            background-blend-mode: overlay;
+            background-color: #8c7a5f;
         }
         .container {
             max-width: 1400px;
             width: 100%;
-            background: rgba(255, 252, 245, 0.92);
-            backdrop-filter: blur(4px);
-            border-radius: 24px;
+            background: rgba(235, 218, 190, 0.85);
+            backdrop-filter: blur(2px);
+            border-radius: 40px 40px 20px 20px;
             padding: 35px;
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.3);
-            border: 1px solid #d6c9b8;
+            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.5);
+            border: 8px solid #b39b7c;
+            border-top-color: #d4c5a9;
+            border-left-color: #c4b09a;
+            position: relative;
         }
-        /* Header y Navegación */
+        /* === DECORACIONES DE CÓDICE === */
+        .container::before {
+            content: "🐉";
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            font-size: 3.5rem;
+            opacity: 0.15;
+            transform: rotate(-15deg);
+        }
+        .container::after {
+            content: "✨";
+            position: absolute;
+            bottom: -10px;
+            right: -10px;
+            font-size: 3rem;
+            opacity: 0.15;
+            transform: rotate(10deg);
+        }
+        /* === HEADER Y MENÚ === */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #c4b5a0;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #8c7a5f;
             padding-bottom: 20px;
         }
         .header-titulo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
         }
         .header-titulo .dragon-icon {
-            font-size: 2.4rem;
+            font-size: 3rem;
             line-height: 1;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
         }
         .header-titulo h1 {
-            font-family: 'Merriweather', serif;
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: #1e3a5f;
-            letter-spacing: -0.5px;
+            font-family: 'Crimson Text', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3c2a1e;
+            line-height: 1.2;
         }
         .header-titulo h1 span {
             font-weight: 400;
-            color: #8c5a2b;
-            font-size: 1.2rem;
-            display: block;
             font-style: italic;
+            color: #5a3f2b;
+            font-size: 1.1rem;
+            display: block;
         }
         .header-derecha {
             display: flex;
@@ -68,102 +95,111 @@
             flex-wrap: wrap;
         }
         .badge {
-            background: #e8e0d5;
+            background: #8c7a5f;
+            color: #f5efe6;
             padding: 8px 18px;
-            border-radius: 30px;
+            border-radius: 40px;
             font-size: 0.8rem;
             font-weight: 600;
-            color: #1e3a5f;
-            border: 1px solid #c4b5a0;
+            border: 1px solid #5a3f2b;
         }
         .btn-refresh {
-            background: #1e3a5f;
-            color: white;
-            border: none;
+            background: #3c2a1e;
+            color: #f5efe6;
+            border: 2px solid #5a3f2b;
             padding: 10px 22px;
-            border-radius: 30px;
-            font-weight: 600;
+            border-radius: 40px;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.2s;
             font-family: 'Inter', sans-serif;
             font-size: 0.85rem;
+            box-shadow: 0 4px 0 #1f140e;
         }
         .btn-refresh:hover {
-            background: #2a4a7a;
             transform: translateY(-2px);
+            box-shadow: 0 6px 0 #1f140e;
+            background: #5a3f2b;
         }
         .menu {
             display: flex;
-            gap: 8px;
+            gap: 5px;
             flex-wrap: wrap;
-            margin-top: 6px;
+            margin-top: 8px;
         }
         .menu a {
-            font-family: 'Inter', sans-serif;
-            color: #4a4a4a;
+            font-family: 'Crimson Text', serif;
+            color: #3c2a1e;
             text-decoration: none;
             font-weight: 600;
-            padding: 6px 18px;
-            border-radius: 30px;
-            background: transparent;
+            padding: 6px 20px;
+            border-radius: 40px;
+            background: rgba(140, 122, 95, 0.2);
             border: 1px solid transparent;
             transition: 0.2s;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
         .menu a:hover {
-            background: #e8e0d5;
-            border-color: #c4b5a0;
+            background: rgba(140, 122, 95, 0.4);
+            border-color: #8c7a5f;
         }
         .menu a.activo {
-            background: #1e3a5f;
-            color: white;
-            border-color: #1e3a5f;
+            background: #3c2a1e;
+            color: #f5efe6;
+            border-color: #3c2a1e;
+            box-shadow: 0 4px 0 #1f140e;
         }
+        /* === LEYENDA === */
         .leyenda {
-            background: #f5efe6;
-            border-left: 6px solid #b87333;
-            border-radius: 12px;
-            padding: 18px 24px;
+            background: rgba(245, 239, 230, 0.8);
+            border-left: 8px solid #8c7a5f;
+            border-radius: 16px;
+            padding: 20px 28px;
             margin-bottom: 25px;
             display: flex;
             align-items: flex-start;
-            gap: 16px;
+            gap: 20px;
+            backdrop-filter: blur(4px);
+            box-shadow: inset 0 0 0 1px #d4c5a9;
         }
-        .leyenda .icono-leyenda { font-size: 1.8rem; flex-shrink: 0; margin-top: 2px; }
-        .leyenda .texto-leyenda { font-size: 0.95rem; color: #2d2d2d; line-height: 1.6; }
-        .leyenda .texto-leyenda strong { color: #1e3a5f; }
+        .leyenda .icono-leyenda { font-size: 2rem; flex-shrink: 0; margin-top: 2px; }
+        .leyenda .texto-leyenda { font-size: 0.95rem; color: #3c2a1e; line-height: 1.6; }
         .leyenda .texto-leyenda .destacar {
-            background: #d6c9b8;
-            padding: 2px 12px;
-            border-radius: 20px;
+            background: #8c7a5f;
+            color: #f5efe6;
+            padding: 2px 14px;
+            border-radius: 40px;
             font-weight: 700;
-            color: #1e3a5f;
         }
+        /* === FILTROS === */
         .filters {
-            background: #f5efe6;
+            background: rgba(245, 239, 230, 0.7);
+            backdrop-filter: blur(4px);
             padding: 16px 24px;
-            border-radius: 16px;
+            border-radius: 60px;
             margin-bottom: 25px;
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
             align-items: center;
-            border: 1px solid #d6c9b8;
+            border: 1px solid #b39b7c;
         }
         .filters input, .filters select {
-            padding: 10px 18px;
-            border: 1px solid #d6c9b8;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border: 2px solid #b39b7c;
+            border-radius: 40px;
             font-size: 0.9rem;
-            background: white;
+            background: rgba(255, 252, 245, 0.8);
             outline: none;
             font-family: 'Inter', sans-serif;
+            color: #3c2a1e;
         }
         .filters input:focus, .filters select:focus {
-            border-color: #1e3a5f;
-            box-shadow: 0 0 0 3px rgba(30,58,95,0.1);
+            border-color: #3c2a1e;
+            box-shadow: 0 0 0 4px rgba(60, 42, 30, 0.1);
         }
         .filters input { flex: 1; min-width: 180px; }
+        /* === ESTADÍSTICAS === */
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -171,70 +207,85 @@
             margin-bottom: 25px;
         }
         .stat-card {
-            background: #f5efe6;
+            background: rgba(245, 239, 230, 0.7);
+            backdrop-filter: blur(4px);
             padding: 16px 20px;
-            border-radius: 16px;
+            border-radius: 30px;
             text-align: center;
-            border: 1px solid #d6c9b8;
+            border: 1px solid #b39b7c;
+            box-shadow: inset 0 0 0 1px #d4c5a9;
         }
         .stat-card .numero {
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 700;
             display: block;
-            font-family: 'Merriweather', serif;
+            font-family: 'Crimson Text', serif;
+            color: #3c2a1e;
         }
         .stat-card .label {
             font-size: 0.8rem;
-            color: #5a5a5a;
+            color: #5a3f2b;
             font-weight: 600;
         }
         .stat-card.total .numero { color: #1e3a5f; }
         .stat-card.logrados .numero { color: #2d6a4f; }
         .stat-card.pendientes .numero { color: #9e2a2b; }
         .stat-card.progreso .numero { color: #b87333; }
+        /* === TARJETAS DE DOCENTES === */
         .grid-docentes {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 25px;
         }
         .card-docente {
-            background: white;
-            border-radius: 20px;
+            background: rgba(255, 252, 245, 0.75);
+            backdrop-filter: blur(4px);
+            border-radius: 30px 30px 16px 16px;
             padding: 24px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            border: 1px solid #e8e0d5;
+            box-shadow: 0 8px 0 #8c7a5f, 0 10px 20px rgba(0,0,0,0.1);
+            border: 1px solid #b39b7c;
             transition: 0.2s;
+            position: relative;
+        }
+        .card-docente::before {
+            content: "🐉";
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            font-size: 2.2rem;
+            opacity: 0.08;
+            transform: rotate(-10deg);
         }
         .card-docente:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-            border-color: #c4b5a0;
+            transform: translateY(-6px);
+            box-shadow: 0 12px 0 #8c7a5f, 0 20px 30px rgba(0,0,0,0.15);
         }
         .card-docente .nombre-docente {
-            font-size: 1.3rem;
+            font-family: 'Crimson Text', serif;
+            font-size: 1.4rem;
             font-weight: 700;
-            font-family: 'Merriweather', serif;
-            color: #1e3a5f;
+            color: #3c2a1e;
             padding-bottom: 14px;
-            border-bottom: 2px solid #e8e0d5;
+            border-bottom: 3px dashed #b39b7c;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
         .card-docente .nombre-docente .avatar {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
-            background: #1e3a5f;
-            color: white;
+            background: #3c2a1e;
+            color: #f5efe6;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             flex-shrink: 0;
-            font-family: 'Merriweather', serif;
+            font-family: 'Crimson Text', serif;
+            border: 2px solid #8c7a5f;
         }
         .logro-item {
             display: flex;
@@ -242,80 +293,86 @@
             gap: 12px;
             padding: 10px 14px;
             margin-bottom: 10px;
-            border-radius: 12px;
-            background: #faf8f5;
-            border: 1px solid #e8e0d5;
+            border-radius: 30px;
+            background: rgba(245, 239, 230, 0.5);
+            border: 1px solid #d4c5a9;
+            backdrop-filter: blur(2px);
         }
-        .logro-item .icono { font-size: 1.3rem; flex-shrink: 0; }
+        .logro-item .icono { font-size: 1.4rem; flex-shrink: 0; }
         .logro-item .texto {
             flex: 1;
             font-size: 0.9rem;
             font-weight: 600;
-            color: #2d2d2d;
+            color: #3c2a1e;
         }
         .logro-item .estado-badge {
-            padding: 4px 14px;
-            border-radius: 30px;
+            padding: 4px 16px;
+            border-radius: 40px;
             font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             white-space: nowrap;
         }
-        .estado-badge.logrado { background: #d8eddf; color: #1a4a33; }
-        .estado-badge.no-logrado { background: #f5d6d6; color: #7a1f1f; }
+        .estado-badge.logrado { background: #d8eddf; color: #1a4a33; border: 1px solid #2d6a4f; }
+        .estado-badge.no-logrado { background: #f5d6d6; color: #7a1f1f; border: 1px solid #9e2a2b; }
+        /* === LOGRO AUTOMÁTICO === */
         .logro-automatico {
-            margin-top: 14px;
-            padding: 14px 16px;
-            border-radius: 14px;
+            margin-top: 16px;
+            padding: 16px 18px;
+            border-radius: 30px;
             text-align: center;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 1rem;
             border: 2px solid transparent;
+            font-family: 'Crimson Text', serif;
         }
         .logro-automatico.exito {
-            background: #d8eddf;
-            border-color: #8bc9a5;
+            background: rgba(45, 106, 79, 0.15);
+            border-color: #2d6a4f;
             color: #1a4a33;
         }
         .logro-automatico.fallo {
-            background: #f5d6d6;
-            border-color: #e8a8a8;
+            background: rgba(158, 42, 43, 0.12);
+            border-color: #9e2a2b;
             color: #7a1f1f;
         }
-        .logro-automatico .icono-grande { font-size: 1.8rem; display: block; margin-bottom: 4px; }
+        .logro-automatico .icono-grande { font-size: 2rem; display: block; margin-bottom: 4px; }
         .dias-faltantes {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-top: 4px;
+            margin-top: 6px;
             opacity: 0.8;
         }
+        /* === LOADING Y EMPTY === */
         #loading {
             text-align: center;
             padding: 80px 20px;
-            background: #f5efe6;
-            border-radius: 20px;
-            font-size: 1rem;
-            color: #1e3a5f;
-            font-weight: 600;
-            border: 1px solid #d6c9b8;
+            background: rgba(245, 239, 230, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 40px;
+            font-size: 1.1rem;
+            color: #3c2a1e;
+            font-weight: 700;
+            border: 2px dashed #8c7a5f;
         }
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            background: #f5efe6;
-            border-radius: 20px;
+            background: rgba(245, 239, 230, 0.7);
+            backdrop-filter: blur(4px);
+            border-radius: 40px;
             grid-column: 1 / -1;
-            border: 1px solid #d6c9b8;
+            border: 2px dashed #8c7a5f;
         }
-        .empty-state .emoji { font-size: 3.5rem; display: block; margin-bottom: 12px; }
-        .empty-state h3 { color: #1e3a5f; margin-bottom: 6px; font-family: 'Merriweather', serif; }
-        .empty-state p { color: #6a6a6a; }
+        .empty-state .emoji { font-size: 4rem; display: block; margin-bottom: 12px; }
+        .empty-state h3 { font-family: 'Crimson Text', serif; color: #3c2a1e; margin-bottom: 6px; }
+        .empty-state p { color: #5a3f2b; }
         @media (max-width: 640px) {
             .header { flex-direction: column; align-items: flex-start; }
-            .header-titulo h1 { font-size: 1.4rem; }
+            .header-titulo h1 { font-size: 1.6rem; }
             .grid-docentes { grid-template-columns: 1fr; }
-            .filters { flex-direction: column; }
+            .filters { flex-direction: column; border-radius: 30px; }
             .filters input { width: 100%; }
             .stats { grid-template-columns: 1fr 1fr; }
             .leyenda { flex-direction: column; align-items: stretch; }
@@ -324,13 +381,14 @@
 </head>
 <body>
 <div class="container">
+    <!-- HEADER -->
     <div class="header">
         <div class="header-titulo">
             <span class="dragon-icon">🐉</span>
             <div>
                 <h1>CECUNY <span>Dragones que generan cultura</span></h1>
                 <div class="menu">
-                    <a href="/alta-academica-26/" class="activo">📋 Logros</a>
+                    <a href="/alta-academica-26/" class="activo">📜 Logros</a>
                     <a href="/alta-academica-26/horarios.html">📅 Horarios</a>
                 </div>
             </div>
@@ -341,6 +399,7 @@
         </div>
     </div>
 
+    <!-- LEYENDA -->
     <div class="leyenda">
         <span class="icono-leyenda">📜</span>
         <div class="texto-leyenda">
@@ -349,10 +408,11 @@
         </div>
     </div>
 
+    <!-- FILTROS -->
     <div class="filters">
-        <label for="searchInput" style="font-weight:600;color:#4a4a4a;">🔍 Buscar:</label>
+        <label for="searchInput" style="font-weight:700;color:#3c2a1e;">🔍 Buscar:</label>
         <input type="text" id="searchInput" placeholder="Nombre del docente...">
-        <label for="filterStatus" style="font-weight:600;color:#4a4a4a;">📊 Estado:</label>
+        <label for="filterStatus" style="font-weight:700;color:#3c2a1e;">📊 Estado:</label>
         <select id="filterStatus">
             <option value="todos">Todos</option>
             <option value="completos">✅ Con grupos asignados</option>
@@ -360,6 +420,7 @@
         </select>
     </div>
 
+    <!-- ESTADÍSTICAS -->
     <div class="stats">
         <div class="stat-card total"><span class="numero" id="totalDocentes">0</span><span class="label">👥 Total Docentes</span></div>
         <div class="stat-card logrados"><span class="numero" id="conGrupos">0</span><span class="label">✅ Con grupos asignados</span></div>
@@ -367,9 +428,11 @@
         <div class="stat-card progreso"><span class="numero" id="porcentajeProgreso">0%</span><span class="label">📈 Progreso general</span></div>
     </div>
 
+    <!-- CONTENIDO -->
     <div id="loading">⏳ Cargando datos...</div>
     <div id="gridContainer" style="display: none;"><div class="grid-docentes" id="gridDocentes"></div></div>
 </div>
+
 <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSx0st0x1xgBt6GG1tdeokjGXBYvp_O67UT1Tm33fHlNcibaQ_5aBlM6JkZP6BnrzVuWHcsIjQ8Quqd/pub?gid=0&single=true&output=csv";
 
@@ -453,7 +516,7 @@
             loadingDiv.style.display = 'none';
             gridContainer.style.display = 'block';
         } catch (error) {
-            loadingDiv.innerHTML = `<div class="empty-state"><span class="emoji">❌</span><h3>Error al cargar los datos</h3><p style="color:#7a1f1f;">${error.message}</p><br><button onclick="cargarDatos()" style="padding:10px 30px; border-radius:30px; border:none; background:#1e3a5f; color:white; font-weight:600; cursor:pointer;">🔄 Reintentar</button></div>`;
+            loadingDiv.innerHTML = `<div class="empty-state"><span class="emoji">❌</span><h3>Error al cargar los datos</h3><p style="color:#7a1f1f;">${error.message}</p><br><button onclick="cargarDatos()" style="padding:10px 30px; border-radius:30px; border:none; background:#3c2a1e; color:#f5efe6; font-weight:600; cursor:pointer;">🔄 Reintentar</button></div>`;
         }
     }
 
