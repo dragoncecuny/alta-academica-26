@@ -14,9 +14,23 @@
         .menu a { color: #3b82f6; text-decoration: none; font-weight: 600; padding: 8px 16px; border-radius: 40px; background: #f1f5f9; }
         .menu a:hover { background: #dbeafe; }
         .menu a.activo { background: #3b82f6; color: white; }
-        .mensaje { text-align: center; padding: 60px 20px; color: #64748b; }
-        .mensaje .emoji { font-size: 3.5rem; display: block; margin-bottom: 12px; }
-        .mensaje h2 { color: #1e293b; margin-bottom: 8px; }
+        .filtros { background: #f8fafc; padding: 16px 24px; border-radius: 16px; margin-bottom: 25px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .filtros input { padding: 8px 16px; border: 2px solid #e2e8f0; border-radius: 40px; font-size: 0.9rem; background: white; outline: none; flex: 1; min-width: 180px; }
+        .grid-docentes { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+        .card-docente { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid rgba(226, 232, 240, 0.6); }
+        .card-docente .nombre-docente { font-size: 1.25rem; font-weight: 700; color: #0f172a; padding-bottom: 14px; border-bottom: 2px dashed #eef2f6; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .card-docente .nombre-docente .avatar { width: 40px; height: 40px; border-radius: 50%; background: #3b82f6; color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; flex-shrink: 0; }
+        .tabla-horario { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .tabla-horario th { text-align: left; padding: 8px 6px 6px 6px; color: #64748b; font-weight: 600; border-bottom: 1px solid #eef2f6; }
+        .tabla-horario td { padding: 6px; border-bottom: 1px solid #f1f5f9; }
+        .tabla-horario tr:last-child td { border-bottom: none; }
+        .badge-dia { background: #eef2ff; color: #4338ca; padding: 2px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; display: inline-block; }
+        .empty-state { text-align: center; padding: 60px 20px; background: white; border-radius: 24px; grid-column: 1 / -1; }
+        .empty-state .emoji { font-size: 3.5rem; display: block; margin-bottom: 12px; }
+        .empty-state h3 { color: #1e293b; margin-bottom: 6px; }
+        .empty-state p { color: #94a3b8; }
+        #loading { text-align: center; padding: 80px 20px; background: white; border-radius: 24px; font-size: 1.1rem; color: #3b82f6; font-weight: 500; }
+        @media (max-width: 640px) { .header { flex-direction: column; align-items: flex-start; } .grid-docentes { grid-template-columns: 1fr; } .filtros { flex-direction: column; } .filtros input { width: 100%; } }
     </style>
 </head>
 <body>
@@ -28,13 +42,170 @@
             <a href="/alta-academica-26/horarios.html" class="activo">📅 Horarios</a>
         </div>
     </div>
-
-    <div class="mensaje">
-        <span class="emoji">📅</span>
-        <h2>Página de horarios en construcción</h2>
-        <p>Pronto podrás ver los horarios de los docentes aquí.</p>
-        <p style="font-size: 0.85rem; margin-top: 10px; color: #94a3b8;">(Este es solo un lugar reservado para la página de horarios)</p>
+    <div class="filtros">
+        <input type="text" id="buscador" placeholder="🔍 Buscar por docente...">
     </div>
+    <div id="loading">⏳ Cargando horarios...</div>
+    <div id="contenedorHorarios" style="display: none;"><div class="grid-docentes" id="gridHorarios"></div></div>
 </div>
+<script>
+    // ================================================================
+    //  CONFIGURACIÓN: Enlaces a las tres hojas CSV
+    // ================================================================
+    const URLS_HORARIOS = {
+        "Lunes y Miércoles": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqg7pVNQKX1ZocH1JiCy1ruB1v39xT1wdsRz1yUy42gfCRkhrejdWnx_Uf5NStBfuxO4z42q4gMXUm/pub?gid=0&single=true&output=csv",
+        "Martes y Jueves": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqg7pVNQKX1ZocH1JiCy1ruB1v39xT1wdsRz1yUy42gfCRkhrejdWnx_Uf5NStBfuxO4z42q4gMXUm/pub?gid=1711929526&single=true&output=csv",
+        "Viernes": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqg7pVNQKX1ZocH1JiCy1ruB1v39xT1wdsRz1yUy42gfCRkhrejdWnx_Uf5NStBfuxO4z42q4gMXUm/pub?gid=1049689652&single=true&output=csv"
+    };
+
+    // ================================================================
+    //  LÓGICA PRINCIPAL
+    // ================================================================
+    let todosLosHorarios = [];
+
+    const loadingDiv = document.getElementById('loading');
+    const contenedorHorarios = document.getElementById('contenedorHorarios');
+    const gridHorarios = document.getElementById('gridHorarios');
+    const buscador = document.getElementById('buscador');
+
+    // Función para parsear CSV
+    function parseCSV(csvText) {
+        const lines = csvText.split(/\r\n|\n/);
+        if (lines.length < 2) return [];
+        const headers = lines[0].split(',').map(h => h.trim());
+        const result = [];
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue;
+            const values = lines[i].split(',').map(v => v.trim());
+            const obj = {};
+            headers.forEach((h, idx) => { obj[h] = values[idx] || ''; });
+            result.push(obj);
+        }
+        return result;
+    }
+
+    // Función para limpiar claves de grupo (ej: "DAN01" → "DAN")
+    function limpiarClaveGrupo(texto) {
+        if (!texto) return '';
+        return texto.replace(/[0-9]/g, '').trim();
+    }
+
+    // Cargar datos de todas las hojas
+    async function cargarHorarios() {
+        try {
+            loadingDiv.style.display = 'block';
+            contenedorHorarios.style.display = 'none';
+            loadingDiv.innerHTML = '⏳ Cargando horarios...';
+
+            const horariosPorDocente = {};
+
+            // Procesar cada hoja (bloque de días)
+            for (const [bloqueDias, url] of Object.entries(URLS_HORARIOS)) {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`Error al cargar ${bloqueDias}`);
+                const csvText = await response.text();
+                const datos = parseCSV(csvText);
+                if (datos.length === 0) continue;
+
+                // Obtener nombres de docentes (columnas B en adelante)
+                const headers = Object.keys(datos[0]);
+                const docentes = headers.slice(1); // Excluir "Hora"
+
+                // Procesar cada fila (franja horaria)
+                datos.forEach(fila => {
+                    const hora = fila['Hora'] || '';
+                    if (!hora) return;
+
+                    docentes.forEach(docente => {
+                        const claveGrupo = fila[docente] || '';
+                        if (!claveGrupo || claveGrupo === '—' || claveGrupo === '-') return;
+
+                        // Inicializar docente si no existe
+                        if (!horariosPorDocente[docente]) {
+                            horariosPorDocente[docente] = [];
+                        }
+
+                        // Agregar esta clase
+                        horariosPorDocente[docente].push({
+                            dia: bloqueDias,
+                            hora: hora,
+                            grupo: claveGrupo,
+                            materia: limpiarClaveGrupo(claveGrupo)
+                        });
+                    });
+                });
+            }
+
+            // Convertir objeto a array y ordenar
+            todosLosHorarios = Object.entries(horariosPorDocente).map(([docente, clases]) => ({
+                docente: docente,
+                clases: clases
+            }));
+
+            todosLosHorarios.sort((a, b) => a.docente.localeCompare(b.docente));
+
+            if (todosLosHorarios.length === 0) throw new Error('No se encontraron horarios.');
+
+            renderHorarios(todosLosHorarios);
+            loadingDiv.style.display = 'none';
+            contenedorHorarios.style.display = 'block';
+
+        } catch (error) {
+            loadingDiv.innerHTML = `<div class="empty-state"><span class="emoji">❌</span><h3>Error al cargar horarios</h3><p style="color:#991b1b;">${error.message}</p><br><button onclick="cargarHorarios()" style="padding:10px 30px; border-radius:40px; border:none; background:#1e293b; color:white; font-weight:600; cursor:pointer;">🔄 Reintentar</button></div>`;
+        }
+    }
+
+    // Renderizar horarios
+    function renderHorarios(horarios) {
+        const terminoBusqueda = buscador.value.toLowerCase().trim();
+        let filtrados = horarios.filter(item =>
+            item.docente.toLowerCase().includes(terminoBusqueda)
+        );
+
+        if (filtrados.length === 0) {
+            gridHorarios.innerHTML = `<div class="empty-state"><span class="emoji">🔍</span><h3>No se encontraron docentes</h3><p>Intenta con otro nombre.</p></div>`;
+            return;
+        }
+
+        let html = '';
+        filtrados.forEach(item => {
+            const inicial = item.docente.charAt(0).toUpperCase();
+            // Ordenar clases por día y hora
+            const clasesOrdenadas = item.clases.sort((a, b) => {
+                const ordenDias = { 'Lunes y Miércoles': 1, 'Martes y Jueves': 2, 'Viernes': 3 };
+                return (ordenDias[a.dia] || 99) - (ordenDias[b.dia] || 99);
+            });
+
+            html += `<div class="card-docente">
+                <div class="nombre-docente">
+                    <span class="avatar">${inicial}</span>
+                    ${item.docente}
+                </div>
+                <table class="tabla-horario">
+                    <thead>
+                        <tr><th>Día</th><th>Hora</th><th>Grupo</th></tr>
+                    </thead>
+                    <tbody>`;
+            
+            clasesOrdenadas.forEach(clase => {
+                html += `<tr>
+                    <td><span class="badge-dia">${clase.dia}</span></td>
+                    <td>${clase.hora}</td>
+                    <td>${clase.grupo}</td>
+                </tr>`;
+            });
+
+            html += `</tbody></table></div>`;
+        });
+
+        gridHorarios.innerHTML = html;
+    }
+
+    // Evento de búsqueda
+    buscador.addEventListener('input', () => renderHorarios(todosLosHorarios));
+
+    // Iniciar
+    cargarHorarios();
+</script>
 </body>
 </html>
