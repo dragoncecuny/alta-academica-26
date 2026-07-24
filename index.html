@@ -8,10 +8,28 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f0f4f8; padding: 20px; min-height: 100vh; }
         .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 30px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
-        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #eef2f6; padding-bottom: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 15px; border-bottom: 2px solid #eef2f6; padding-bottom: 20px; }
         h1 { font-size: 2rem; color: #0f172a; display: flex; align-items: center; gap: 12px; }
         .badge { background: #f1f5f9; padding: 8px 18px; border-radius: 40px; font-weight: 600; color: #1e293b; font-size: 0.9rem; }
         .btn-refresh { background: #1e293b; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; }
+
+        /* ===== LEYENDA INFORMATIVA ===== */
+        .leyenda {
+            background: #f0f9ff;
+            border-left: 6px solid #3b82f6;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+        }
+        .leyenda .icono-leyenda { font-size: 1.8rem; flex-shrink: 0; margin-top: 2px; }
+        .leyenda .texto-leyenda { font-size: 0.95rem; color: #1e293b; line-height: 1.5; }
+        .leyenda .texto-leyenda strong { color: #0f172a; }
+        .leyenda .texto-leyenda .destacar { background: #dbeafe; padding: 2px 10px; border-radius: 20px; font-weight: 600; color: #1d4ed8; }
+
         .filters { background: #f8fafc; padding: 16px 24px; border-radius: 16px; margin-bottom: 25px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
         .filters input, .filters select { padding: 8px 16px; border: 2px solid #e2e8f0; border-radius: 40px; font-size: 0.9rem; background: white; outline: none; }
         .filters input { flex: 1; min-width: 180px; }
@@ -44,7 +62,7 @@
         .empty-state .emoji { font-size: 3.5rem; display: block; margin-bottom: 12px; }
         .empty-state h3 { color: #1e293b; margin-bottom: 6px; }
         .empty-state p { color: #94a3b8; }
-        @media (max-width: 640px) { .header { flex-direction: column; align-items: flex-start; padding: 20px; } .header h1 { font-size: 1.5rem; } .grid-docentes { grid-template-columns: 1fr; } .filters { flex-direction: column; } .filters input { width: 100%; } .stats { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 640px) { .header { flex-direction: column; align-items: flex-start; padding: 20px; } .header h1 { font-size: 1.5rem; } .grid-docentes { grid-template-columns: 1fr; } .filters { flex-direction: column; } .filters input { width: 100%; } .stats { grid-template-columns: 1fr 1fr; } .leyenda { flex-direction: column; align-items: stretch; } }
     </style>
 </head>
 <body>
@@ -54,6 +72,16 @@
         <div><span class="badge">🔄 Actualizado: <strong id="updateTime">cargando...</strong></span>
         <button class="btn-refresh" onclick="cargarDatos()">⟳ Actualizar</button></div>
     </div>
+
+    <!-- ===== LEYENDA INFORMATIVA ===== -->
+    <div class="leyenda">
+        <div class="icono-leyenda">📘</div>
+        <div class="texto-leyenda">
+            <strong>📌 ¿Por qué aparece este número?</strong><br>
+            Los días de capacitación que debes tomar en total son iguales al <span class="destacar">80%</span> de las capacitaciones que hay disponibles en tu horario laboral normal. Si deseas o necesitas tomar otras capacitaciones en otros horarios puedes hacerlo, solo no olvides avisar en coordinación y anotarlo en la <strong>libreta azul de incidencias</strong> con el Administrador.
+        </div>
+    </div>
+
     <div class="filters">
         <label for="searchInput">🔍 Buscar:</label>
         <input type="text" id="searchInput" placeholder="Nombre del docente...">
