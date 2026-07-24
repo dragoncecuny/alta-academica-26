@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>📋 Control de Logros Docentes</title>
     <style>
-        <div style="display: flex; gap: 15px; margin-top: 10px;">
-    <a href="/alta-academica-26/" style="color: #3b82f6; text-decoration: none; font-weight: 600; padding: 6px 16px; border-radius: 40px; background: #dbeafe;">📋 Logros</a>
-    <a href="/alta-academica-26/horarios.html" style="color: #64748b; text-decoration: none; font-weight: 600; padding: 6px 16px; border-radius: 40px; background: #f1f5f9;">📅 Horarios</a>
-</div>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background: #f0f4f8; padding: 20px; min-height: 100vh; }
         .container { max-width: 1400px; margin: 0 auto; background: white; border-radius: 30px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
@@ -16,6 +12,21 @@
         h1 { font-size: 2rem; color: #0f172a; display: flex; align-items: center; gap: 12px; }
         .badge { background: #f1f5f9; padding: 8px 18px; border-radius: 40px; font-weight: 600; color: #1e293b; font-size: 0.9rem; }
         .btn-refresh { background: #1e293b; color: white; border: none; padding: 10px 24px; border-radius: 40px; font-weight: 600; cursor: pointer; }
+
+        /* ===== MENÚ DE NAVEGACIÓN ===== */
+        .menu { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+        .menu a { 
+            color: #64748b; 
+            text-decoration: none; 
+            font-weight: 600; 
+            padding: 6px 18px; 
+            border-radius: 40px; 
+            background: #f1f5f9;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        .menu a:hover { background: #dbeafe; }
+        .menu a.activo { background: #3b82f6; color: white; }
 
         .leyenda {
             background: #f0f9ff;
@@ -71,9 +82,17 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>📋 Control de Logros Docentes <span>2026</span></h1>
-        <div><span class="badge">🔄 Actualizado: <strong id="updateTime">cargando...</strong></span>
-        <button class="btn-refresh" onclick="cargarDatos()">⟳ Actualizar</button></div>
+        <div>
+            <h1>📋 Control de Logros Docentes <span>2026</span></h1>
+            <div class="menu">
+                <a href="/alta-academica-26/" class="activo">📋 Logros</a>
+                <a href="/alta-academica-26/horarios.html">📅 Horarios</a>
+            </div>
+        </div>
+        <div>
+            <span class="badge">🔄 Actualizado: <strong id="updateTime">cargando...</strong></span>
+            <button class="btn-refresh" onclick="cargarDatos()">⟳ Actualizar</button>
+        </div>
     </div>
 
     <div class="leyenda">
