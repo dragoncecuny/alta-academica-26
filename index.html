@@ -4,14 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐉 CECUNY · Códice Dragón</title>
-    <meta name="description" content="Dashboard de seguimiento de capacitaciones docentes CECUNY">
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
             --primary: #3c2a1e;
@@ -19,7 +14,8 @@
             --accent: #b39b7c;
             --light: #f5efe6;
             --success: #2d6a4f;
-            --danger: #9e2a2b;
+            --warning: #b87333;
+            --info: #1e3a5f;
             --shadow: 0 8px 0 var(--secondary);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -31,14 +27,8 @@
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            background-color: #6b5b4a;
-            /* ✅ IMAGEN DE CASONA ANTIGUA YUCATÁN */
-            background-image: url('https://images.unsplash.com/photo-1582813956899-d9e2a1f19b62?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            background-blend-mode: overlay;
-            background-color: #5a4a33;
+            background: #6b5b4a;
+            background-image: linear-gradient(135deg, #6b5b4a 0%, #3c2a1e 100%);
             position: relative;
         }
 
@@ -49,7 +39,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(60, 42, 30, 0.15);
+            background: rgba(60, 42, 30, 0.1);
             z-index: 0;
             pointer-events: none;
         }
@@ -387,10 +377,10 @@
             font-weight: 600;
         }
 
-        .stat-card.total .numero { color: #1e3a5f; }
+        .stat-card.total .numero { color: var(--info); }
         .stat-card.logrados .numero { color: var(--success); }
-        .stat-card.pendientes .numero { color: var(--danger); }
-        .stat-card.progreso .numero { color: #b87333; }
+        .stat-card.pendientes .numero { color: var(--warning); }
+        .stat-card.progreso .numero { color: var(--warning); }
 
         .stat-card .progress-bar {
             width: 100%;
@@ -403,7 +393,7 @@
 
         .stat-card .progress-bar .fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--success), #b87333);
+            background: linear-gradient(90deg, var(--warning), var(--success));
             transition: width 1s ease-in-out;
             border-radius: 4px;
         }
@@ -483,6 +473,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
+        /* === LOGROS CON ESTILO AMIGABLE === */
         .logro-item {
             display: flex;
             align-items: center;
@@ -505,10 +496,12 @@
             font-size: 1.4rem; 
             flex-shrink: 0; 
             transition: var(--transition);
+            width: 28px;
+            text-align: center;
         }
 
         .logro-item:hover .icono {
-            transform: scale(1.2) rotate(-10deg);
+            transform: scale(1.2) rotate(-5deg);
         }
 
         .logro-item .texto {
@@ -518,7 +511,8 @@
             color: var(--primary);
         }
 
-        .logro-item .estado-badge {
+        /* === NUEVOS ESTILOS DE BADGE AMIGABLES === */
+        .estado-badge {
             padding: 4px 16px;
             border-radius: 40px;
             font-size: 0.7rem;
@@ -526,18 +520,35 @@
             text-transform: uppercase;
             white-space: nowrap;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
+        /* Logrado: Verde con check */
         .estado-badge.logrado { 
             background: #d8eddf; 
             color: #1a4a33; 
-            border: 1px solid var(--success); 
+            border: 1px solid var(--success);
+            box-shadow: 0 2px 8px rgba(45, 106, 79, 0.15);
         }
 
-        .estado-badge.no-logrado { 
-            background: #f5d6d6; 
-            color: #7a1f1f; 
-            border: 1px solid var(--danger); 
+        .estado-badge.logrado::before {
+            content: "✅";
+            font-size: 0.8rem;
+        }
+
+        /* En progreso: Círculo blanco con borde - ¡Sin tache! */
+        .estado-badge.en-progreso { 
+            background: #fef3e8; 
+            color: #8a6d3b; 
+            border: 2px solid #e8c9a0;
+            box-shadow: 0 2px 8px rgba(184, 115, 51, 0.1);
+        }
+
+        .estado-badge.en-progreso::before {
+            content: "⭕";
+            font-size: 0.8rem;
         }
 
         /* === LOGRO AUTOMÁTICO === */
@@ -558,21 +569,25 @@
         }
 
         .logro-automatico.exito {
-            background: rgba(45, 106, 79, 0.15);
+            background: rgba(45, 106, 79, 0.12);
             border-color: var(--success);
             color: #1a4a33;
-            animation: pulse-success 2s ease-in-out infinite;
         }
 
-        .logro-automatico.fallo {
-            background: rgba(158, 42, 43, 0.12);
-            border-color: var(--danger);
-            color: #7a1f1f;
+        .logro-automatico.exito .icono-grande {
+            animation: celebrar 2s ease-in-out infinite;
         }
 
-        @keyframes pulse-success {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
+        @keyframes celebrar {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .logro-automatico.en-progreso {
+            background: rgba(184, 115, 51, 0.1);
+            border-color: #e8c9a0;
+            color: #8a6d3b;
         }
 
         .logro-automatico .icono-grande { 
@@ -587,6 +602,37 @@
             font-weight: 600;
             margin-top: 6px;
             opacity: 0.8;
+        }
+
+        /* === TOAST === */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 16px 24px;
+            border-radius: 16px;
+            background: rgba(60, 42, 30, 0.95);
+            backdrop-filter: blur(8px);
+            color: var(--light);
+            font-weight: 600;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid #9e2a2b;
         }
 
         /* === LOADING Y EMPTY === */
@@ -663,37 +709,6 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             background: #5a3f2b;
-        }
-
-        /* === TOAST NOTIFICATIONS === */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            padding: 16px 24px;
-            border-radius: 16px;
-            background: rgba(60, 42, 30, 0.95);
-            backdrop-filter: blur(8px);
-            color: var(--light);
-            font-weight: 600;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            transform: translateY(100px);
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1000;
-        }
-
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .toast.success {
-            border-left: 4px solid var(--success);
-        }
-
-        .toast.error {
-            border-left: 4px solid var(--danger);
         }
 
         /* === RESPONSIVE === */
@@ -796,61 +811,37 @@
     </section>
 
     <!-- FILTROS -->
-    <div class="filters" role="search">
-        <label for="searchInput">🔍 Buscar:</label>
-        <input type="text" id="searchInput" placeholder="Nombre del docente..." aria-label="Buscar docente">
-        
-        <label for="filterStatus">📊 Estado:</label>
-        <select id="filterStatus" aria-label="Filtrar por estado">
+    <div class="filters">
+        <label for="searchInput" style="font-weight:700;color:#3c2a1e;">🔍 Buscar:</label>
+        <input type="text" id="searchInput" placeholder="Nombre del docente...">
+        <label for="filterStatus" style="font-weight:700;color:#3c2a1e;">📊 Estado:</label>
+        <select id="filterStatus">
             <option value="todos">Todos</option>
             <option value="completos">✅ Con grupos asignados</option>
-            <option value="incompletos">❌ Sin grupos asignados</option>
+            <option value="incompletos">⭕ Sin grupos asignados</option>
         </select>
-        <span class="filter-count" id="filterCount" role="status" aria-live="polite">0 docentes</span>
     </div>
 
     <!-- ESTADÍSTICAS -->
-    <section class="stats" aria-label="Estadísticas generales">
-        <div class="stat-card total">
-            <span class="numero" id="totalDocentes">0</span>
-            <span class="label">👥 Total Docentes</span>
-        </div>
-        <div class="stat-card logrados">
-            <span class="numero" id="conGrupos">0</span>
-            <span class="label">✅ Con grupos asignados</span>
-            <div class="progress-bar">
-                <div class="fill" id="progressFill" style="width: 0%"></div>
-            </div>
-        </div>
-        <div class="stat-card pendientes">
-            <span class="numero" id="sinGrupos">0</span>
-            <span class="label">❌ Sin grupos asignados</span>
-        </div>
-        <div class="stat-card progreso">
-            <span class="numero" id="porcentajeProgreso">0%</span>
-            <span class="label">📈 Progreso general</span>
-        </div>
-    </section>
+    <div class="stats">
+        <div class="stat-card total"><span class="numero" id="totalDocentes">0</span><span class="label">👥 Total Docentes</span></div>
+        <div class="stat-card logrados"><span class="numero" id="conGrupos">0</span><span class="label">✅ Con grupos asignados</span></div>
+        <div class="stat-card pendientes"><span class="numero" id="sinGrupos">0</span><span class="label">⭕ En progreso</span></div>
+        <div class="stat-card progreso"><span class="numero" id="porcentajeProgreso">0%</span><span class="label">📈 Progreso general</span></div>
+    </div>
 
     <!-- CONTENIDO -->
-    <div id="loading" role="status" aria-live="polite">
-        <div class="loading-spinner"></div>
-        <div>⏳ Cargando datos...</div>
-    </div>
-    <div id="gridContainer" style="display: none;">
-        <div class="grid-docentes" id="gridDocentes"></div>
-    </div>
+    <div id="loading">⏳ Cargando datos...</div>
+    <div id="gridContainer" style="display: none;"><div class="grid-docentes" id="gridDocentes"></div></div>
 </div>
 
-<!-- TOAST NOTIFICATIONS -->
-<div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+<!-- TOAST -->
+<div class="toast" id="toast" role="alert"></div>
 
 <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSx0st0x1xgBt6GG1tdeokjGXBYvp_O67UT1Tm33fHlNcibaQ_5aBlM6JkZP6BnrzVuWHcsIjQ8Quqd/pub?gid=0&single=true&output=csv";
 
     let docentesData = [];
-    let isFirstLoad = true;
-    
     const loadingDiv = document.getElementById('loading');
     const gridContainer = document.getElementById('gridContainer');
     const gridDocentes = document.getElementById('gridDocentes');
@@ -861,8 +852,6 @@
     const conGruposSpan = document.getElementById('conGrupos');
     const sinGruposSpan = document.getElementById('sinGrupos');
     const porcentajeProgresoSpan = document.getElementById('porcentajeProgreso');
-    const progressFill = document.getElementById('progressFill');
-    const filterCount = document.getElementById('filterCount');
     const toast = document.getElementById('toast');
     const refreshBtn = document.querySelector('.btn-refresh');
 
@@ -873,15 +862,10 @@
             clearTimeout(toastTimeout);
             toast.classList.remove('show');
         }
-        
         toast.textContent = message;
         toast.className = `toast ${type}`;
-        
-        // Force reflow
         void toast.offsetWidth;
-        
         toast.classList.add('show');
-        
         toastTimeout = setTimeout(() => {
             toast.classList.remove('show');
         }, 4000);
@@ -889,15 +873,7 @@
 
     function limpiarTexto(texto) {
         if (!texto) return '';
-        return texto.toLowerCase()
-            .replace(/[áäâà]/g,'a')
-            .replace(/[éëêè]/g,'e')
-            .replace(/[íïîì]/g,'i')
-            .replace(/[óöôò]/g,'o')
-            .replace(/[úüûù]/g,'u')
-            .replace(/[ñ]/g,'n')
-            .replace(/[^a-z0-9]/g,'')
-            .trim();
+        return texto.toLowerCase().replace(/[áäâà]/g,'a').replace(/[éëêè]/g,'e').replace(/[íïîì]/g,'i').replace(/[óöôò]/g,'o').replace(/[úüûù]/g,'u').replace(/[ñ]/g,'n').replace(/[^a-z0-9]/g,'').trim();
     }
 
     function encontrarColumna(headers, posiblesNombres) {
@@ -912,175 +888,81 @@
 
     function parseCSV(csvText) {
         const lines = csvText.split(/\r\n|\n/);
-        if (lines.length < 2) throw new Error('El archivo CSV está vacío o no tiene datos.');
-        
-        const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+        const headers = lines[0].split(',').map(h => h.trim());
         const result = [];
-        
         for (let i = 1; i < lines.length; i++) {
             if (!lines[i].trim()) continue;
-            
-            // Handle quoted values
-            let row = lines[i];
-            const values = [];
-            let current = '';
-            let insideQuotes = false;
-            
-            for (let char of row) {
-                if (char === '"') {
-                    insideQuotes = !insideQuotes;
-                } else if (char === ',' && !insideQuotes) {
-                    values.push(current.trim());
-                    current = '';
-                } else {
-                    current += char;
-                }
-            }
-            values.push(current.trim());
-            
+            const values = lines[i].split(',').map(v => v.trim());
             const obj = {};
-            headers.forEach((h, idx) => { 
-                obj[h] = values[idx] ? values[idx].replace(/^"|"$/g, '').trim() : ''; 
-            });
+            headers.forEach((h, idx) => { obj[h] = values[idx] || ''; });
             result.push(obj);
         }
-        
         return result;
-    }
-
-    function validarDatos(docentes) {
-        if (docentes.length === 0) {
-            throw new Error('No se encontraron datos de docentes.');
-        }
-        
-        // Check for required columns
-        const firstRow = docentes[0];
-        const hasValidData = Object.values(firstRow).some(v => v && v.trim() !== '');
-        if (!hasValidData) {
-            throw new Error('Los datos del CSV no contienen información válida.');
-        }
-        
-        return docentes;
     }
 
     async function cargarDatos() {
         try {
-            // Show loading state
             refreshBtn.classList.add('loading');
             loadingDiv.style.display = 'block';
             gridContainer.style.display = 'none';
-            
-            if (isFirstLoad) {
-                loadingDiv.innerHTML = `
-                    <div class="loading-spinner"></div>
-                    <div>⏳ Cargando datos del Códice...</div>
-                `;
-            }
+            loadingDiv.innerHTML = '<div class="loading-spinner"></div><div>⏳ Cargando datos del Códice...</div>';
             
             const response = await fetch(CSV_URL);
-            if (!response.ok) throw new Error(`Error HTTP: ${response.status} - ${response.statusText}`);
-            
+            if (!response.ok) throw new Error('Error HTTP: ' + response.status);
             const csvText = await response.text();
-            if (!csvText.trim()) throw new Error('El archivo CSV está vacío.');
-            
             const rawData = parseCSV(csvText);
-            validarDatos(rawData);
+            if (rawData.length === 0) throw new Error('No hay datos en el CSV.');
             
             const headers = Object.keys(rawData[0]);
+            const colDocente = encontrarColumna(headers, ['Docente', 'docente', 'Nombre']);
+            const colPlaneacion = encontrarColumna(headers, ['Entregó planeación', 'planeacion', 'entrego']);
+            const colCapacitacion = encontrarColumna(headers, ['Asistió 80% capacitaciones', 'capacitaciones', 'asistio']);
+            const colDias = encontrarColumna(headers, ['Días de capacitación que faltan', 'dias faltan', 'faltan']);
             
-            // Find columns with better error messages
-            const colDocente = encontrarColumna(headers, ['Docente', 'docente', 'Nombre', 'nombre', 'Profesor', 'profesor']);
-            const colPlaneacion = encontrarColumna(headers, ['Entregó planeación', 'planeacion', 'entrego', 'Planeación', 'Planeacion']);
-            const colCapacitacion = encontrarColumna(headers, ['Asistió 80% capacitaciones', 'capacitaciones', 'asistio', 'Capacitación', 'Capacitacion']);
-            const colDias = encontrarColumna(headers, ['Días de capacitación que faltan', 'dias faltan', 'faltan', 'Días', 'dias']);
+            if (!colDocente) throw new Error('No se encontró columna "Docente"');
+            if (!colPlaneacion) throw new Error('No se encontró columna "Entregó planeación"');
+            if (!colCapacitacion) throw new Error('No se encontró columna "Asistió 80% capacitaciones"');
+            if (!colDias) throw new Error('No se encontró columna "Días de capacitación que faltan"');
             
-            if (!colDocente) throw new Error('No se encontró la columna "Docente" en el CSV');
-            if (!colPlaneacion) throw new Error('No se encontró la columna "Entregó planeación" en el CSV');
-            if (!colCapacitacion) throw new Error('No se encontró la columna "Asistió 80% capacitaciones" en el CSV');
-            if (!colDias) throw new Error('No se encontró la columna "Días de capacitación que faltan" en el CSV');
+            docentesData = rawData.map(item => {
+                const entrego = (item[colPlaneacion] || 'NO').toUpperCase();
+                const asistio = (item[colCapacitacion] || 'NO').toUpperCase();
+                const dias = parseInt(item[colDias]) || 0;
+                return {
+                    nombre: (item[colDocente] || '').trim(),
+                    entregoPlaneacion: entrego,
+                    asistio80: asistio,
+                    diasFaltan: dias,
+                    tieneGrupos: (entrego === 'SI' && asistio === 'SI')
+                };
+            }).filter(d => d.nombre !== '');
             
-            docentesData = rawData
-                .map(item => {
-                    const entrego = (item[colPlaneacion] || 'NO').toUpperCase().trim();
-                    const asistio = (item[colCapacitacion] || 'NO').toUpperCase().trim();
-                    const dias = parseInt(item[colDias]) || 0;
-                    const nombre = (item[colDocente] || '').trim();
-                    
-                    return {
-                        nombre: nombre,
-                        entregoPlaneacion: ['SI', 'SÍ', 'YES', 'Y'].includes(entrego) ? 'SI' : 'NO',
-                        asistio80: ['SI', 'SÍ', 'YES', 'Y'].includes(asistio) ? 'SI' : 'NO',
-                        diasFaltan: Math.max(0, dias),
-                        tieneGrupos: ['SI', 'SÍ', 'YES', 'Y'].includes(entrego) && ['SI', 'SÍ', 'YES', 'Y'].includes(asistio)
-                    };
-                })
-                .filter(d => d.nombre !== '')
-                .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'));
-            
-            if (docentesData.length === 0) {
-                throw new Error('No se encontraron docentes válidos en los datos.');
-            }
-            
+            if (docentesData.length === 0) throw new Error('No se encontraron docentes.');
+            docentesData.sort((a, b) => a.nombre.localeCompare(b.nombre));
             renderDocentes(docentesData);
             actualizarEstadisticas(docentesData);
-            
-            const now = new Date();
-            updateTimeSpan.textContent = now.toLocaleString('es-ES', { 
-                dateStyle: 'medium', 
-                timeStyle: 'short' 
-            });
-            
+            updateTimeSpan.textContent = new Date().toLocaleString('es-ES', { dateStyle: 'medium', timeStyle: 'short' });
             loadingDiv.style.display = 'none';
             gridContainer.style.display = 'block';
-            isFirstLoad = false;
             refreshBtn.classList.remove('loading');
-            
-            showToast(`✅ Datos actualizados correctamente (${docentesData.length} docentes)`, 'success');
-            
+            showToast(`✅ Datos cargados (${docentesData.length} docentes)`, 'success');
         } catch (error) {
-            console.error('Error al cargar datos:', error);
             refreshBtn.classList.remove('loading');
-            
-            loadingDiv.innerHTML = `
-                <div class="empty-state">
-                    <span class="emoji">❌</span>
-                    <h3>Error al cargar los datos del Códice</h3>
-                    <p style="color:#7a1f1f; margin: 10px 0;">${error.message}</p>
-                    <p style="font-size: 0.9rem; color: #5a3f2b;">
-                        Verifica que la URL del CSV sea accesible y contenga los datos correctos.
-                    </p>
-                    <button class="btn-retry" onclick="cargarDatos()">🔄 Reintentar</button>
-                </div>
-            `;
-            loadingDiv.style.display = 'block';
-            gridContainer.style.display = 'none';
-            
-            showToast(`❌ Error: ${error.message}`, 'error');
+            loadingDiv.innerHTML = `<div class="empty-state"><span class="emoji">❌</span><h3>Error al cargar los datos</h3><p style="color:#7a1f1f;">${error.message}</p><br><button class="btn-retry" onclick="cargarDatos()">🔄 Reintentar</button></div>`;
         }
     }
 
     function renderDocentes(docentes) {
         const searchTerm = searchInput.value.toLowerCase().trim();
         const statusFilter = filterStatus.value;
-        
         let filtrados = docentes.filter(doc => {
             const matchSearch = doc.nombre.toLowerCase().includes(searchTerm);
-            const matchStatus = statusFilter === 'todos' || 
-                (statusFilter === 'completos' && doc.tieneGrupos) || 
-                (statusFilter === 'incompletos' && !doc.tieneGrupos);
+            const matchStatus = statusFilter === 'todos' || (statusFilter === 'completos' && doc.tieneGrupos) || (statusFilter === 'incompletos' && !doc.tieneGrupos);
             return matchSearch && matchStatus;
         });
         
-        filterCount.textContent = `${filtrados.length} docentes`;
-        
         if (filtrados.length === 0) {
-            gridDocentes.innerHTML = `
-                <div class="empty-state">
-                    <span class="emoji">🔍</span>
-                    <h3>No se encontraron docentes</h3>
-                    <p>Intenta con otros términos de búsqueda o cambia los filtros.</p>
-                </div>
-            `;
+            gridDocentes.innerHTML = `<div class="empty-state"><span class="emoji">🔍</span><h3>No se encontraron docentes</h3><p>Intenta con otro filtro.</p></div>`;
             return;
         }
         
@@ -1091,44 +973,34 @@
             const planeacionOk = doc.entregoPlaneacion === 'SI';
             const capacitacionOk = doc.asistio80 === 'SI';
             
-            html += `
-                <div class="card-docente" role="article">
-                    <div class="nombre-docente">
-                        <span class="avatar" aria-hidden="true">${inicial}</span>
-                        ${doc.nombre}
-                    </div>
-                    
-                    <div class="logro-item">
-                        <span class="icono" aria-hidden="true">${planeacionOk ? '✅' : '❌'}</span>
-                        <span class="texto">Entregué mi planeación didáctica-pedagógica</span>
-                        <span class="estado-badge ${planeacionOk ? 'logrado' : 'no-logrado'}">
-                            ${planeacionOk ? 'LOGRADO' : 'PENDIENTE'}
-                        </span>
-                    </div>
-                    
-                    <div class="logro-item">
-                        <span class="icono" aria-hidden="true">${capacitacionOk ? '✅' : '❌'}</span>
-                        <span class="texto">Asistí al 80% de capacitaciones docentes</span>
-                        <span class="estado-badge ${capacitacionOk ? 'logrado' : 'no-logrado'}">
-                            ${capacitacionOk ? 'LOGRADO' : 'PENDIENTE'}
-                        </span>
-                    </div>
-                    
-                    <div class="logro-automatico ${tieneGrupos ? 'exito' : 'fallo'}">
-                        <span class="icono-grande" aria-hidden="true">${tieneGrupos ? '🎯' : '⏳'}</span>
-                        ${tieneGrupos ? 
-                            '✅ ¡Ya tengo asignados mis grupos!' : 
-                            '❌ Aún no me pueden asignar oficialmente mis grupos'}
-                        <span class="dias-faltantes">
-                            ${tieneGrupos ? 
-                                '✅ Cumples con todos los requisitos' : 
-                                `📅 Te faltan ${doc.diasFaltan} día${doc.diasFaltan !== 1 ? 's' : ''} de capacitación`}
-                        </span>
-                    </div>
+            // Mensajes amigables
+            const estadoPlaneacion = planeacionOk ? 'LOGRADO' : 'Por completar';
+            const clasePlaneacion = planeacionOk ? 'logrado' : 'en-progreso';
+            const iconoPlaneacion = planeacionOk ? '✅' : '⭕';
+            
+            const estadoCapacitacion = capacitacionOk ? 'LOGRADO' : 'Por completar';
+            const claseCapacitacion = capacitacionOk ? 'logrado' : 'en-progreso';
+            const iconoCapacitacion = capacitacionOk ? '✅' : '⭕';
+            
+            html += `<div class="card-docente">
+                <div class="nombre-docente"><span class="avatar">${inicial}</span>${doc.nombre}</div>
+                <div class="logro-item">
+                    <span class="icono">${iconoPlaneacion}</span>
+                    <span class="texto">Entregué mi planeación didáctica-pedagógica</span>
+                    <span class="estado-badge ${clasePlaneacion}">${estadoPlaneacion}</span>
                 </div>
-            `;
+                <div class="logro-item">
+                    <span class="icono">${iconoCapacitacion}</span>
+                    <span class="texto">Asistí al 80% de capacitaciones docentes</span>
+                    <span class="estado-badge ${claseCapacitacion}">${estadoCapacitacion}</span>
+                </div>
+                <div class="logro-automatico ${tieneGrupos ? 'exito' : 'en-progreso'}">
+                    <span class="icono-grande">${tieneGrupos ? '🏆' : '🎯'}</span>
+                    ${tieneGrupos ? '✅ ¡Ya tengo asignados mis grupos!' : '⭕ Aún no me pueden asignar oficialmente mis grupos'}
+                    <span class="dias-faltantes">${tieneGrupos ? '🌟 ¡Cumples con todos los requisitos!' : `📅 Te faltan ${doc.diasFaltan} día${doc.diasFaltan !== 1 ? 's' : ''} de capacitación`}</span>
+                </div>
+            </div>`;
         });
-        
         gridDocentes.innerHTML = html;
     }
 
@@ -1137,29 +1009,15 @@
         const conGrupos = docentes.filter(d => d.tieneGrupos).length;
         const sinGrupos = total - conGrupos;
         const porcentaje = total > 0 ? Math.round((conGrupos / total) * 100) : 0;
-        
         totalDocentesSpan.textContent = total;
         conGruposSpan.textContent = conGrupos;
         sinGruposSpan.textContent = sinGrupos;
         porcentajeProgresoSpan.textContent = `${porcentaje}%`;
-        
-        // Animate progress bar
-        progressFill.style.width = `${porcentaje}%`;
     }
 
-    // Debounce search
-    let searchTimeout = null;
-    searchInput.addEventListener('input', () => {
-        if (searchTimeout) clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(() => {
-            renderDocentes(docentesData);
-        }, 300);
-    });
-    
+    searchInput.addEventListener('input', () => renderDocentes(docentesData));
     filterStatus.addEventListener('change', () => renderDocentes(docentesData));
-
-    // Load data on page load
-    document.addEventListener('DOMContentLoaded', cargarDatos);
+    cargarDatos();
 </script>
 </body>
 </html>
