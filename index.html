@@ -871,4 +871,24 @@
                                 <tr>
                                     <th>Día</th>
                                     <th>Hora</th>
-                                    <th>Grupo</
+                                    <th>Grupo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${filas}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            });
+
+            gridHorarios.innerHTML = html;
+        }
+
+        buscador.addEventListener('input', () => renderHorarios(todosLosHorarios));
+
+        // Iniciar
+        cargarHorarios();
+    </script>
+</body>
+</html>
