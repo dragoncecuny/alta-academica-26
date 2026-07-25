@@ -607,9 +607,9 @@
         //  CONFIGURACIÓN: Enlaces a las tres hojas CSV
         // ================================================================
         const URLS_HORARIOS = {
-            "Lunes y Miércoles": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqg7pVNQKX1ZocH1JiCy1ruB1v39xT1wdsRz1yUy42gfCRkhrejdWnx_Uf5NStBfuxO4z42q4gMXUm/pub?gid=0&single=true&output=csv",
-            "Martes y Jueves": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqg7pVNQKX1ZocH1JiCy1ruB1v39xT1wdsRz1yUy42gfCRkhrejdWnx_Uf5NStBfuxO4z42q4gMXUm/pub?gid=1711929526&single=true&output=csv",
-            "Viernes": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQqg7pVNQKX1ZocH1JiCy1ruB1v39xT1wdsRz1yUy42gfCRkhrejdWnx_Uf5NStBfuxO4z42q4gMXUm/pub?gid=1049689652&single=true&output=csv"
+            "Lunes y Miércoles": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2FE4opUHVldgTrC-I4qrF7YEl3I50AOJN4OviRC9RzF7wHZPkhG3EmNNsKwqmZ6agk0FmqsltHxJ2/pub?gid=0&single=true&output=csv",
+            "Martes y Jueves": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2FE4opUHVldgTrC-I4qrF7YEl3I50AOJN4OviRC9RzF7wHZPkhG3EmNNsKwqmZ6agk0FmqsltHxJ2/pub?gid=1558597294&single=true&output=csv",
+            "Viernes": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ2FE4opUHVldgTrC-I4qrF7YEl3I50AOJN4OviRC9RzF7wHZPkhG3EmNNsKwqmZ6agk0FmqsltHxJ2/pub?gid=416463505&single=true&output=csv"
         };
 
         let todosLosHorarios = [];
@@ -652,21 +652,18 @@
                 'Viernes': [5]
             };
 
-            const diaActual = ahora.getDay(); // 0=domingo, 1=lunes, ...
+            const diaActual = ahora.getDay();
             const horaActual = ahora.getHours() + ahora.getMinutes() / 60;
 
-            // Verificar si el día actual coincide con el bloque
             const diasBloque = diasSemana[dia] || [];
             if (!diasBloque.includes(diaActual)) return false;
 
-            // Parsear la hora (ej: "4:00–4:50")
             const partes = hora.split('–');
             if (partes.length !== 2) return false;
 
             const horaInicio = parseFloat(partes[0].trim().replace(':', '.'));
             const horaFin = parseFloat(partes[1].trim().replace(':', '.'));
 
-            // Verificar si la hora actual está dentro del rango
             return horaActual >= horaInicio && horaActual < horaFin;
         }
 
@@ -674,11 +671,9 @@
         //  FUNCIÓN PARA IMPRIMIR HORARIO DE UN DOCENTE
         // ================================================================
         function imprimirHorario(docente) {
-            // Buscar el docente en los datos
             const datosDocente = todosLosHorarios.find(item => item.docente === docente);
             if (!datosDocente) return;
 
-            // Crear una ventana de impresión
             const ventana = window.open('', '_blank', 'width=800,height=600');
             if (!ventana) {
                 alert('Por favor, permite las ventanas emergentes para imprimir.');
@@ -690,7 +685,6 @@
                 return (ordenDias[a.dia] || 99) - (ordenDias[b.dia] || 99);
             });
 
-            // Generar el HTML para imprimir
             let filas = '';
             clasesOrdenadas.forEach(clase => {
                 const esActual = esHorarioActual(clase.dia, clase.hora);
@@ -851,7 +845,6 @@
                     return (ordenDias[a.dia] || 99) - (ordenDias[b.dia] || 99);
                 });
 
-                // Generar filas de la tabla con resaltado de horario actual
                 let filas = '';
                 clasesOrdenadas.forEach(clase => {
                     const esActual = esHorarioActual(clase.dia, clase.hora);
@@ -865,10 +858,17 @@
                 });
 
                 html += `
-                    <div class="card-docente" id="card-${item.docente.replace(/\s/g, '')}">
+                    <div class="card-docente">
                         <div class="nombre-docente">
                             <div class="izquierda">
                                 <span class="avatar">${inicial}</span>
                                 ${item.docente}
                             </div>
-                            <button class="btn-imprimir" onclick="im
+                            <button class="btn-imprimir" onclick="imprimirHorario('${item.docente}')">🖨️ Imprimir</button>
+                        </div>
+                        <table class="tabla-horario">
+                            <thead>
+                                <tr>
+                                    <th>Día</th>
+                                    <th>Hora</th>
+                                    <th>Grupo</
