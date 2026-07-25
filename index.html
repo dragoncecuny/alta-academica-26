@@ -24,7 +24,7 @@
             align-items: flex-start;
         }
 
-        /* === CONTENEDOR PRINCIPAL (ESTILO MAMPOSTERÍA) === */
+        /* === CONTENEDOR PRINCIPAL === */
         .container {
             max-width: 1400px;
             width: 100%;
@@ -38,16 +38,33 @@
 
         /* === DECORACIÓN SUPERIOR === */
         .container::before {
-            content: "🏛️";
+            content: "𒊹 🌴";
             position: absolute;
             top: -18px;
             left: 30px;
-            font-size: 2.2rem;
+            font-size: 2rem;
             background: #f2ebe1;
             padding: 0 12px;
             border-radius: 40px;
             border: 1px solid #cbb9a4;
             box-shadow: 0 2px 0 #b09a82;
+        }
+
+        /* === ANIMACIÓN DE FLOTACIÓN === */
+        @keyframes flotar {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .dragon-flotante {
+            display: inline-block;
+            animation: flotar 3s ease-in-out infinite;
+        }
+
+        .pergamino-flotante {
+            display: inline-block;
+            animation: flotar 3.5s ease-in-out infinite;
+            animation-delay: 0.5s;
         }
 
         /* === HEADER === */
@@ -129,7 +146,32 @@
             background: #5a4a33;
         }
 
-        /* === LEYENDA ACTUALIZADA === */
+        /* === LEYENDA NUEVA === */
+        .leyenda-nueva {
+            background: #e8ddd0;
+            border: 2px solid #cbb9a4;
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02), 0 4px 0 #b09a82;
+        }
+
+        .leyenda-nueva .icono {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .leyenda-nueva .texto {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #2d241a;
+            font-family: 'Merriweather', serif;
+        }
+
+        /* === LEYENDA EXISTENTE === */
         .leyenda {
             background: #e8ddd0;
             border: 2px solid #cbb9a4;
@@ -207,10 +249,10 @@
             box-shadow: 0 0 0 4px rgba(60, 42, 30, 0.08);
         }
 
-        /* === TARJETAS DE DOCENTES (ESTILO MAMPOSTERÍA) === */
+        /* === TARJETAS DE DOCENTES === */
         .grid-docentes {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
             gap: 25px;
         }
 
@@ -225,7 +267,7 @@
         }
 
         .card-docente::after {
-            content: "🧱";
+            content: "🌿";
             position: absolute;
             bottom: 8px;
             right: 12px;
@@ -249,6 +291,13 @@
             margin-bottom: 16px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .card-docente .nombre-docente .izquierda {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
@@ -268,6 +317,29 @@
             border: 2px solid #b09a82;
         }
 
+        .btn-imprimir {
+            background: #6b5b4a;
+            color: #f2ebe1;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.15s ease;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 3px 0 #3a2c1e;
+            border: 1px solid #5a4a33;
+            flex-shrink: 0;
+        }
+
+        .btn-imprimir:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 0 #3a2c1e;
+            background: #5a4a33;
+        }
+
+        /* === TABLA DE HORARIOS === */
         .tabla-horario {
             width: 100%;
             border-collapse: collapse;
@@ -291,12 +363,29 @@
             padding: 8px 6px;
             border-bottom: 1px solid #e8ddd0;
             color: #2d241a;
+            transition: background-color 0.3s ease;
         }
 
         .tabla-horario tr:last-child td {
             border-bottom: none;
         }
 
+        /* === RESALTADO DE HORARIO ACTUAL === */
+        .tabla-horario tr.horario-actual td {
+            background-color: #fef3c7 !important;
+            border-left: 4px solid #f59e0b;
+            font-weight: 700;
+        }
+
+        .tabla-horario tr.horario-actual td:first-child {
+            border-radius: 4px 0 0 4px;
+        }
+
+        .tabla-horario tr.horario-actual td:last-child {
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* === BADGE DE DÍA === */
         .badge-dia {
             background: #b09a82;
             color: #f2ebe1;
@@ -347,6 +436,71 @@
             color: #6b5b4a;
         }
 
+        /* === ESTILOS PARA IMPRESIÓN === */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+
+            .container {
+                box-shadow: none;
+                border: none;
+                padding: 20px;
+                background: white;
+            }
+
+            .container::before {
+                display: none;
+            }
+
+            .header-derecha,
+            .btn-refresh,
+            .filters,
+            .leyenda,
+            .leyenda-nueva,
+            .card-docente::after {
+                display: none !important;
+            }
+
+            .grid-docentes {
+                display: block !important;
+            }
+
+            .card-docente {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+                transform: none !important;
+            }
+
+            .btn-imprimir {
+                display: none !important;
+            }
+
+            .tabla-horario tr.horario-actual td {
+                background-color: #fef3c7 !important;
+                border-left: 4px solid #f59e0b !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .badge-dia {
+                background: #b09a82 !important;
+                color: #f2ebe1 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .card-docente .nombre-docente .avatar {
+                background: #6b5b4a !important;
+                color: #f2ebe1 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
+
         /* === RESPONSIVE === */
         @media (max-width: 640px) {
             body {
@@ -389,8 +543,17 @@
                 text-align: center;
             }
 
+            .leyenda-nueva {
+                flex-direction: column;
+                text-align: center;
+            }
+
             .tabla-horario {
                 font-size: 0.8rem;
+            }
+
+            .card-docente .nombre-docente {
+                flex-wrap: wrap;
             }
         }
     </style>
@@ -400,7 +563,7 @@
         <!-- HEADER -->
         <div class="header">
             <div class="header-titulo">
-                <span class="dragon-icon">🐉</span>
+                <span class="dragon-icon dragon-flotante">🐉</span>
                 <div>
                     <h1>CECUNY <span>Horarios · Dragones que generan cultura</span></h1>
                 </div>
@@ -411,11 +574,16 @@
             </div>
         </div>
 
-        <!-- LEYENDA ACTUALIZADA -->
+        <!-- LEYENDA NUEVA -->
+        <div class="leyenda-nueva">
+            <span class="icono">📋</span>
+            <span class="texto">Para poderte asignar tus grupos debes entregar tu planeación completa y acudir a los cursos de capacitación.</span>
+        </div>
+
+        <!-- LEYENDA EXISTENTE -->
         <div class="leyenda">
-            <span class="icono-leyenda">📜</span>
+            <span class="icono-leyenda pergamino-flotante">📜</span>
             <div class="texto-leyenda">
-                <strong>📌 ¿Por qué aparecen estos números?</strong><br>
                 Los días de capacitación que debes tomar en total son iguales al <span class="destacar">80%</span> de las capacitaciones disponibles en tu horario laboral normal. Tenemos 10 capacitaciones disponibles este año, por lo que, si tu horario es de cuatro o cinco días a la semana, debes acudir a 6 días de capacitaciones, si es de dos días a la semana, debes acudir al menos a dos. Si entras en agosto por cualquier motivo, debes tomar las dos disponibles en agosto.<br><br>
                 Si necesitas cambiar tus horarios para asistir a los cursos puedes hacerlo libremente, sólo avisa a la coordinación y anótalo en la <strong>libreta azul de incidencias</strong> del administrador.
             </div>
@@ -467,13 +635,130 @@
             return result;
         }
 
-        // Función para limpiar claves de grupo (ej: "DAN01" → "DAN")
+        // Función para limpiar claves de grupo
         function limpiarClaveGrupo(texto) {
             if (!texto) return '';
             return texto.replace(/[0-9]/g, '').trim();
         }
 
-        // Cargar datos de todas las hojas
+        // ================================================================
+        //  FUNCIÓN PARA DETERMINAR HORARIO ACTUAL
+        // ================================================================
+        function esHorarioActual(dia, hora) {
+            const ahora = new Date();
+            const diasSemana = {
+                'Lunes y Miércoles': [1, 3],
+                'Martes y Jueves': [2, 4],
+                'Viernes': [5]
+            };
+
+            const diaActual = ahora.getDay(); // 0=domingo, 1=lunes, ...
+            const horaActual = ahora.getHours() + ahora.getMinutes() / 60;
+
+            // Verificar si el día actual coincide con el bloque
+            const diasBloque = diasSemana[dia] || [];
+            if (!diasBloque.includes(diaActual)) return false;
+
+            // Parsear la hora (ej: "4:00–4:50")
+            const partes = hora.split('–');
+            if (partes.length !== 2) return false;
+
+            const horaInicio = parseFloat(partes[0].trim().replace(':', '.'));
+            const horaFin = parseFloat(partes[1].trim().replace(':', '.'));
+
+            // Verificar si la hora actual está dentro del rango
+            return horaActual >= horaInicio && horaActual < horaFin;
+        }
+
+        // ================================================================
+        //  FUNCIÓN PARA IMPRIMIR HORARIO DE UN DOCENTE
+        // ================================================================
+        function imprimirHorario(docente) {
+            // Buscar el docente en los datos
+            const datosDocente = todosLosHorarios.find(item => item.docente === docente);
+            if (!datosDocente) return;
+
+            // Crear una ventana de impresión
+            const ventana = window.open('', '_blank', 'width=800,height=600');
+            if (!ventana) {
+                alert('Por favor, permite las ventanas emergentes para imprimir.');
+                return;
+            }
+
+            const clasesOrdenadas = datosDocente.clases.sort((a, b) => {
+                const ordenDias = { 'Lunes y Miércoles': 1, 'Martes y Jueves': 2, 'Viernes': 3 };
+                return (ordenDias[a.dia] || 99) - (ordenDias[b.dia] || 99);
+            });
+
+            // Generar el HTML para imprimir
+            let filas = '';
+            clasesOrdenadas.forEach(clase => {
+                const esActual = esHorarioActual(clase.dia, clase.hora);
+                filas += `
+                    <tr class="${esActual ? 'horario-actual' : ''}">
+                        <td><span class="badge-dia">${clase.dia}</span></td>
+                        <td>${clase.hora}</td>
+                        <td>${clase.grupo}</td>
+                    </tr>
+                `;
+            });
+
+            ventana.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Horario - ${docente}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+                    <style>
+                        * { margin: 0; padding: 0; box-sizing: border-box; }
+                        body { font-family: 'Inter', sans-serif; background: white; padding: 30px; }
+                        .header-print { border-bottom: 3px solid #cbb9a4; padding-bottom: 15px; margin-bottom: 20px; }
+                        .header-print h1 { font-family: 'Merriweather', serif; font-size: 1.8rem; color: #3a2c1e; }
+                        .header-print h1 span { font-weight: 400; font-style: italic; color: #6b5b4a; font-size: 1.1rem; display: block; }
+                        .header-print .docente { font-size: 1.4rem; font-weight: 700; color: #3a2c1e; margin-top: 10px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+                        th { text-align: left; padding: 10px 8px; background: #e8ddd0; color: #3a2c1e; font-family: 'Merriweather', serif; border-bottom: 2px solid #cbb9a4; }
+                        td { padding: 10px 8px; border-bottom: 1px solid #e8ddd0; }
+                        .badge-dia { background: #b09a82; color: #f2ebe1; padding: 2px 14px; border-radius: 40px; font-size: 0.7rem; font-weight: 700; display: inline-block; }
+                        .horario-actual td { background-color: #fef3c7 !important; border-left: 4px solid #f59e0b; }
+                        .footer-print { margin-top: 30px; padding-top: 15px; border-top: 2px solid #e8ddd0; font-size: 0.8rem; color: #6b5b4a; text-align: center; }
+                        @media print { .no-print { display: none; } }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-print">
+                        <h1>CECUNY <span>Dragones que generan cultura</span></h1>
+                        <div class="docente">🐉 ${docente}</div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Día</th>
+                                <th>Hora</th>
+                                <th>Grupo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filas}
+                        </tbody>
+                    </table>
+                    <div class="footer-print">
+                        Horario generado automáticamente · ${new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;" class="no-print">
+                        <button onclick="window.print()" style="padding:10px 30px; border-radius:40px; border:none; background:#3a2c1e; color:#f2ebe1; font-weight:700; cursor:pointer;">🖨️ Imprimir</button>
+                        <button onclick="window.close()" style="padding:10px 30px; border-radius:40px; border:none; background:#cbb9a4; color:#2d241a; font-weight:700; cursor:pointer; margin-left:10px;">✖ Cerrar</button>
+                    </div>
+                </body>
+                </html>
+            `);
+
+            ventana.document.close();
+        }
+
+        // ================================================================
+        //  CARGAR Y RENDERIZAR HORARIOS
+        // ================================================================
         async function cargarHorarios() {
             try {
                 loadingDiv.style.display = 'block';
@@ -541,7 +826,6 @@
             }
         }
 
-        // Renderizar horarios
         function renderHorarios(horarios) {
             const terminoBusqueda = buscador.value.toLowerCase().trim();
             let filtrados = horarios.filter(item =>
@@ -567,26 +851,12 @@
                     return (ordenDias[a.dia] || 99) - (ordenDias[b.dia] || 99);
                 });
 
-                html += `
-                    <div class="card-docente">
-                        <div class="nombre-docente">
-                            <span class="avatar">${inicial}</span>
-                            ${item.docente}
-                        </div>
-                        <table class="tabla-horario">
-                            <thead>
-                                <tr>
-                                    <th>Día</th>
-                                    <th>Hora</th>
-                                    <th>Grupo</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
-
+                // Generar filas de la tabla con resaltado de horario actual
+                let filas = '';
                 clasesOrdenadas.forEach(clase => {
-                    html += `
-                        <tr>
+                    const esActual = esHorarioActual(clase.dia, clase.hora);
+                    filas += `
+                        <tr class="${esActual ? 'horario-actual' : ''}">
                             <td><span class="badge-dia">${clase.dia}</span></td>
                             <td>${clase.hora}</td>
                             <td>${clase.grupo}</td>
@@ -595,19 +865,10 @@
                 });
 
                 html += `
-                            </tbody>
-                        </table>
-                    </div>
-                `;
-            });
-
-            gridHorarios.innerHTML = html;
-        }
-
-        buscador.addEventListener('input', () => renderHorarios(todosLosHorarios));
-
-        // Iniciar
-        cargarHorarios();
-    </script>
-</body>
-</html>
+                    <div class="card-docente" id="card-${item.docente.replace(/\s/g, '')}">
+                        <div class="nombre-docente">
+                            <div class="izquierda">
+                                <span class="avatar">${inicial}</span>
+                                ${item.docente}
+                            </div>
+                            <button class="btn-imprimir" onclick="im
