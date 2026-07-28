@@ -20,7 +20,6 @@
             align-items: flex-start;
         }
 
-        /* === CONTENEDOR PRINCIPAL === */
         .container {
             max-width: 1400px;
             width: 100%;
@@ -32,7 +31,6 @@
             position: relative;
         }
 
-        /* === DECORACIÓN SUPERIOR === */
         .container::before {
             content: "𒊹 🌴";
             position: absolute;
@@ -46,7 +44,6 @@
             box-shadow: 0 2px 0 #b09a82;
         }
 
-        /* === ANIMACIÓN DE FLOTACIÓN === */
         @keyframes flotar {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
@@ -57,7 +54,6 @@
             animation: flotar 3s ease-in-out infinite;
         }
 
-        /* === HEADER === */
         .header {
             display: flex;
             justify-content: space-between;
@@ -136,7 +132,6 @@
             background: #5a4a33;
         }
 
-        /* === FILTROS === */
         .filters {
             background: #e8ddd0;
             padding: 16px 24px;
@@ -175,7 +170,6 @@
             box-shadow: 0 0 0 4px rgba(60, 42, 30, 0.08);
         }
 
-        /* === ESTADÍSTICAS GENERALES === */
         .stats-generales {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -206,7 +200,6 @@
             font-weight: 600;
         }
 
-        /* === TARJETAS DE DOCENTES === */
         .grid-docentes {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
@@ -267,7 +260,6 @@
             border: 2px solid #b09a82;
         }
 
-        /* === BARRAS DE PROGRESO === */
         .progreso-item {
             margin-bottom: 16px;
         }
@@ -304,33 +296,13 @@
             width: 0%;
         }
 
-        .barra-lleno.planeacion-ok {
-            background: linear-gradient(90deg, #2d6a4f, #409f7a);
-        }
-
-        .barra-lleno.planeacion-75 {
-            background: linear-gradient(90deg, #6b8c5c, #8cb37a);
-        }
-
-        .barra-lleno.planeacion-50 {
-            background: linear-gradient(90deg, #b8a35c, #d4c07a);
-        }
-
-        .barra-lleno.planeacion-0 {
-            background: linear-gradient(90deg, #b09a82, #8c7a6a);
-        }
-
-        .barra-lleno.capacitacion-alta {
-            background: linear-gradient(90deg, #2d6a4f, #409f7a);
-        }
-
-        .barra-lleno.capacitacion-media {
-            background: linear-gradient(90deg, #b8a35c, #d4c07a);
-        }
-
-        .barra-lleno.capacitacion-baja {
-            background: linear-gradient(90deg, #b09a82, #8c7a6a);
-        }
+        .barra-lleno.planeacion-ok { background: linear-gradient(90deg, #2d6a4f, #409f7a); }
+        .barra-lleno.planeacion-75 { background: linear-gradient(90deg, #6b8c5c, #8cb37a); }
+        .barra-lleno.planeacion-50 { background: linear-gradient(90deg, #b8a35c, #d4c07a); }
+        .barra-lleno.planeacion-0 { background: linear-gradient(90deg, #b09a82, #8c7a6a); }
+        .barra-lleno.capacitacion-alta { background: linear-gradient(90deg, #2d6a4f, #409f7a); }
+        .barra-lleno.capacitacion-media { background: linear-gradient(90deg, #b8a35c, #d4c07a); }
+        .barra-lleno.capacitacion-baja { background: linear-gradient(90deg, #b09a82, #8c7a6a); }
 
         .estado-texto {
             font-size: 0.75rem;
@@ -339,7 +311,6 @@
             margin-top: 2px;
         }
 
-        /* === LOADING Y EMPTY === */
         #loading {
             text-align: center;
             padding: 80px 20px;
@@ -361,23 +332,10 @@
             border: 2px dashed #b09a82;
         }
 
-        .empty-state .emoji {
-            font-size: 3.5rem;
-            display: block;
-            margin-bottom: 12px;
-        }
+        .empty-state .emoji { font-size: 3.5rem; display: block; margin-bottom: 12px; }
+        .empty-state h3 { font-family: 'Merriweather', serif; color: #2d241a; margin-bottom: 6px; }
+        .empty-state p { color: #6b5b4a; }
 
-        .empty-state h3 {
-            font-family: 'Merriweather', serif;
-            color: #2d241a;
-            margin-bottom: 6px;
-        }
-
-        .empty-state p {
-            color: #6b5b4a;
-        }
-
-        /* === RESPONSIVE === */
         @media (max-width: 640px) {
             body { padding: 16px; }
             .container { padding: 20px; }
@@ -392,7 +350,6 @@
 </head>
 <body>
     <div class="container">
-        <!-- HEADER -->
         <div class="header">
             <div class="header-titulo">
                 <span class="dragon-icon dragon-flotante">🐉</span>
@@ -406,13 +363,11 @@
             </div>
         </div>
 
-        <!-- FILTROS -->
         <div class="filters">
             <label for="buscador">🔍 Buscar docente:</label>
             <input type="text" id="buscador" placeholder="Nombre del docente...">
         </div>
 
-        <!-- ESTADÍSTICAS GENERALES -->
         <div class="stats-generales" id="statsGenerales">
             <div class="stat-card"><span class="numero" id="totalDocentes">0</span><span class="label">👥 Total docentes</span></div>
             <div class="stat-card"><span class="numero" id="planeacionCompleta">0</span><span class="label">✅ Planeación completa (100%)</span></div>
@@ -420,7 +375,6 @@
             <div class="stat-card"><span class="numero" id="promedioGeneral">0%</span><span class="label">📊 Promedio general</span></div>
         </div>
 
-        <!-- CONTENIDO -->
         <div id="loading">⏳ Cargando avances...</div>
         <div id="contenedorAvances" style="display: none;">
             <div class="grid-docentes" id="gridAvances"></div>
@@ -429,9 +383,9 @@
 
     <script>
         // ================================================================
-        //  CONFIGURACIÓN: Enlace al CSV
+        //  CONFIGURACIÓN: Enlace al CSV (USANDO RAW DE GITHUB)
         // ================================================================
-        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS-1NsIobgn3b5pDQNfKhYymBUyAIA821fis8k2pA6RaylQUZFKW1srpxjTt0lpyA/pub?gid=1188123299&single=true&output=csv";
+        const CSV_URL = "https://raw.githubusercontent.com/dragoncecuny/alta-academica-26/main/avances.csv";
 
         let datosDocentes = [];
         const loadingDiv = document.getElementById('loading');
@@ -440,7 +394,6 @@
         const buscador = document.getElementById('buscador');
         const updateTimeSpan = document.getElementById('updateTime');
 
-        // Elementos de estadísticas
         const totalDocentesSpan = document.getElementById('totalDocentes');
         const planeacionCompletaSpan = document.getElementById('planeacionCompleta');
         const capacitacionCompletaSpan = document.getElementById('capacitacionCompleta');
@@ -465,7 +418,11 @@
             return result;
         }
 
+        // 🔥 FUNCIÓN CORREGIDA: Convierte a minúsculas para comparar
         function mapearEstadoPlaneacion(estado) {
+            // Convertir a minúsculas para comparar
+            const estadoLower = estado.toLowerCase().trim();
+            
             const mapa = {
                 'ok': { porcentaje: 100, label: '✅ OK', clase: 'planeacion-ok' },
                 'devuelto con comentarios': { porcentaje: 75, label: '🔄 Devuelto con comentarios', clase: 'planeacion-75' },
@@ -473,7 +430,20 @@
                 'sin entrega': { porcentaje: 0, label: '⏳ Sin entrega', clase: 'planeacion-0' },
                 'no ha entrado': { porcentaje: 0, label: '🚪 No ha entrado', clase: 'planeacion-0' }
             };
-            return mapa[estado.toLowerCase()] || { porcentaje: 0, label: '❓ Sin dato', clase: 'planeacion-0' };
+            
+            // Buscar coincidencia exacta o parcial
+            for (const [key, value] of Object.entries(mapa)) {
+                if (estadoLower === key || estadoLower.includes(key) || key.includes(estadoLower)) {
+                    return value;
+                }
+            }
+            
+            // Si no coincide con nada, devolver 0% con el texto original
+            return { 
+                porcentaje: 0, 
+                label: `❓ ${estado}`, 
+                clase: 'planeacion-0' 
+            };
         }
 
         function calcularAvanceCapacitacion(debeAsistir, leFaltan) {
@@ -504,7 +474,6 @@
                 const rawData = parseCSV(csvText);
                 if (rawData.length === 0) throw new Error('No hay datos en el CSV.');
 
-                // Detectar columnas automáticamente
                 const headers = Object.keys(rawData[0]);
                 const colDocente = headers.find(h => /docente|nombre|maestro/i.test(h)) || headers[0];
                 const colEstado = headers.find(h => /estado|planeacion/i.test(h)) || headers[1];
@@ -521,14 +490,12 @@
                         avanceCapacitacion: capacitacion,
                         debeAsistir: parseInt(row[colDebeAsistir]) || 0,
                         leFaltan: parseInt(row[colLeFaltan]) || 0,
-                        // Para filtros y búsquedas
                         _search: nombre.toLowerCase()
                     };
                 }).filter(d => d.nombre !== '');
 
                 if (datosDocentes.length === 0) throw new Error('No se encontraron docentes.');
 
-                // Ordenar alfabéticamente
                 datosDocentes.sort((a, b) => a.nombre.localeCompare(b.nombre));
 
                 renderAvances(datosDocentes);
@@ -579,7 +546,6 @@
                             ${doc.nombre}
                         </div>
 
-                        <!-- BARRA 1: PLANEACIÓN -->
                         <div class="progreso-item">
                             <div class="label">
                                 <span>📋 Entrega de planeación</span>
@@ -591,7 +557,6 @@
                             <div class="estado-texto">${p.label}</div>
                         </div>
 
-                        <!-- BARRA 2: CAPACITACIÓN -->
                         <div class="progreso-item">
                             <div class="label">
                                 <span>🎓 Avance en capacitación</span>
@@ -624,8 +589,6 @@
         }
 
         buscador.addEventListener('input', () => renderAvances(datosDocentes));
-
-        // Iniciar
         cargarAvances();
     </script>
 </body>
