@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: #d9d0c1;
@@ -19,7 +18,6 @@
             justify-content: center;
             align-items: flex-start;
         }
-
         .container {
             max-width: 1400px;
             width: 100%;
@@ -30,7 +28,6 @@
             border: 1px solid #cbb9a4;
             position: relative;
         }
-
         .container::before {
             content: "𒊹 🌴";
             position: absolute;
@@ -43,17 +40,14 @@
             border: 1px solid #cbb9a4;
             box-shadow: 0 2px 0 #b09a82;
         }
-
         @keyframes flotar {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-8px); }
         }
-
         .dragon-flotante {
             display: inline-block;
             animation: flotar 3s ease-in-out infinite;
         }
-
         .header {
             display: flex;
             justify-content: space-between;
@@ -64,19 +58,16 @@
             border-bottom: 3px solid #cbb9a4;
             padding-bottom: 20px;
         }
-
         .header-titulo {
             display: flex;
             align-items: center;
             gap: 15px;
         }
-
         .header-titulo .dragon-icon {
             font-size: 2.8rem;
             line-height: 1;
             filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.1));
         }
-
         .header-titulo h1 {
             font-family: 'Merriweather', serif;
             font-size: 2rem;
@@ -84,7 +75,6 @@
             color: #3a2c1e;
             line-height: 1.2;
         }
-
         .header-titulo h1 span {
             font-weight: 400;
             font-style: italic;
@@ -92,14 +82,12 @@
             font-size: 1.1rem;
             display: block;
         }
-
         .header-derecha {
             display: flex;
             align-items: center;
             gap: 15px;
             flex-wrap: wrap;
         }
-
         .badge {
             background: #cbb9a4;
             color: #2d241a;
@@ -110,7 +98,6 @@
             border: 1px solid #b09a82;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
-
         .btn-refresh {
             background: #3a2c1e;
             color: #f2ebe1;
@@ -125,13 +112,11 @@
             box-shadow: 0 4px 0 #1f160e;
             border: 1px solid #5a4a33;
         }
-
         .btn-refresh:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 0 #1f160e;
             background: #5a4a33;
         }
-
         .filters {
             background: #e8ddd0;
             padding: 16px 24px;
@@ -144,13 +129,11 @@
             border: 2px solid #cbb9a4;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 0 #b09a82;
         }
-
         .filters label {
             font-weight: 700;
             color: #3a2c1e;
             font-family: 'Merriweather', serif;
         }
-
         .filters input {
             padding: 10px 20px;
             border: 2px solid #cbb9a4;
@@ -164,19 +147,16 @@
             min-width: 180px;
             transition: 0.15s ease;
         }
-
         .filters input:focus {
             border-color: #6b5b4a;
             box-shadow: 0 0 0 4px rgba(60, 42, 30, 0.08);
         }
-
         .stats-generales {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 15px;
             margin-bottom: 25px;
         }
-
         .stat-card {
             background: #e8ddd0;
             padding: 16px 20px;
@@ -185,7 +165,6 @@
             border: 1px solid #cbb9a4;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02), 0 4px 0 #b09a82;
         }
-
         .stat-card .numero {
             font-size: 2.2rem;
             font-weight: 700;
@@ -193,19 +172,16 @@
             font-family: 'Merriweather', serif;
             color: #3a2c1e;
         }
-
         .stat-card .label {
             font-size: 0.85rem;
             color: #6b5b4a;
             font-weight: 600;
         }
-
         .grid-docentes {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
             gap: 25px;
         }
-
         .card-docente {
             background: #faf7f2;
             border-radius: 12px 12px 8px 8px;
@@ -215,7 +191,6 @@
             transition: 0.15s ease;
             position: relative;
         }
-
         .card-docente::after {
             content: "⚡";
             position: absolute;
@@ -225,12 +200,10 @@
             opacity: 0.06;
             transform: rotate(-5deg);
         }
-
         .card-docente:hover {
             transform: translateY(-4px);
             box-shadow: 0 10px 0 #b09a82, 0 16px 24px rgba(0, 0, 0, 0.1);
         }
-
         .card-docente .nombre-docente {
             font-family: 'Merriweather', serif;
             font-size: 1.3rem;
@@ -243,7 +216,6 @@
             align-items: center;
             gap: 12px;
         }
-
         .card-docente .nombre-docente .avatar {
             width: 44px;
             height: 44px;
@@ -259,11 +231,9 @@
             font-family: 'Merriweather', serif;
             border: 2px solid #b09a82;
         }
-
         .progreso-item {
             margin-bottom: 16px;
         }
-
         .progreso-item .label {
             display: flex;
             justify-content: space-between;
@@ -272,12 +242,10 @@
             color: #3a2c1e;
             margin-bottom: 4px;
         }
-
         .progreso-item .label .porcentaje {
             font-weight: 700;
             color: #6b5b4a;
         }
-
         .barra-fondo {
             width: 100%;
             height: 18px;
@@ -287,7 +255,6 @@
             border: 1px solid #cbb9a4;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
-
         .barra-lleno {
             height: 100%;
             border-radius: 40px;
@@ -295,22 +262,19 @@
             background: linear-gradient(90deg, #b09a82, #6b5b4a);
             width: 0%;
         }
-
-        .barra-lleno.planeacion-ok { background: linear-gradient(90deg, #2d6a4f, #409f7a); }
+        .barra-lleno.planeacion-100 { background: linear-gradient(90deg, #2d6a4f, #409f7a); }
         .barra-lleno.planeacion-75 { background: linear-gradient(90deg, #6b8c5c, #8cb37a); }
         .barra-lleno.planeacion-50 { background: linear-gradient(90deg, #b8a35c, #d4c07a); }
         .barra-lleno.planeacion-0 { background: linear-gradient(90deg, #b09a82, #8c7a6a); }
         .barra-lleno.capacitacion-alta { background: linear-gradient(90deg, #2d6a4f, #409f7a); }
         .barra-lleno.capacitacion-media { background: linear-gradient(90deg, #b8a35c, #d4c07a); }
         .barra-lleno.capacitacion-baja { background: linear-gradient(90deg, #b09a82, #8c7a6a); }
-
         .estado-texto {
             font-size: 0.75rem;
             font-weight: 600;
             color: #6b5b4a;
             margin-top: 2px;
         }
-
         #loading {
             text-align: center;
             padding: 80px 20px;
@@ -322,7 +286,6 @@
             border: 2px dashed #b09a82;
             font-family: 'Merriweather', serif;
         }
-
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -331,11 +294,9 @@
             grid-column: 1 / -1;
             border: 2px dashed #b09a82;
         }
-
         .empty-state .emoji { font-size: 3.5rem; display: block; margin-bottom: 12px; }
         .empty-state h3 { font-family: 'Merriweather', serif; color: #2d241a; margin-bottom: 6px; }
         .empty-state p { color: #6b5b4a; }
-
         @media (max-width: 640px) {
             body { padding: 16px; }
             .container { padding: 20px; }
@@ -383,9 +344,9 @@
 
     <script>
         // ================================================================
-        //  CONFIGURACIÓN: Enlace al CSV (USANDO RAW DE GITHUB)
+        //  CONFIGURACIÓN: Enlace a tu Google Sheet CSV
         // ================================================================
-        const CSV_URL = "https://raw.githubusercontent.com/dragoncecuny/alta-academica-26/main/avances.csv";
+        const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKS8DppaR8LFMoBlCgEZTh5aLt-jYoyOP1QAMBSAwKNo8Graau01FkLk6Tc9UokmL9YEo58bdTgF-D/pub?output=csv";
 
         let datosDocentes = [];
         const loadingDiv = document.getElementById('loading');
@@ -400,9 +361,58 @@
         const promedioGeneralSpan = document.getElementById('promedioGeneral');
 
         // ================================================================
-        //  FUNCIONES DE PROCESAMIENTO
+        //  MAPEO DE ESTADOS DE PLANEACIÓN
         // ================================================================
+        function mapearEstadoPlaneacion(estado) {
+            const estadoLower = estado.toLowerCase().trim();
+            
+            const mapa = {
+                'ok': { porcentaje: 100, label: '✅ OK', clase: 'planeacion-100' },
+                'entregado': { porcentaje: 100, label: '✅ Entregado', clase: 'planeacion-100' },
+                'devuelto con comentarios': { porcentaje: 75, label: '🔄 Devuelto con comentarios', clase: 'planeacion-75' },
+                'entregó semestre 1': { porcentaje: 50, label: '📖 Entregó semestre 1', clase: 'planeacion-50' },
+                'sin entrega': { porcentaje: 0, label: '⏳ Sin entrega', clase: 'planeacion-0' },
+                'no ha entrado': { porcentaje: 0, label: '🚪 No ha entrado', clase: 'planeacion-0' }
+            };
+            
+            for (const [key, value] of Object.entries(mapa)) {
+                if (estadoLower === key || estadoLower.includes(key) || key.includes(estadoLower)) {
+                    return value;
+                }
+            }
+            
+            // Si no coincide, mostrar el estado original con 0%
+            return { 
+                porcentaje: 0, 
+                label: `❓ ${estado}`, 
+                clase: 'planeacion-0' 
+            };
+        }
 
+        // ================================================================
+        //  CÁLCULO DE AVANCE DE CAPACITACIÓN
+        // ================================================================
+        function calcularAvanceCapacitacion(diasFaltan) {
+            // Asumimos que el total de días requeridos es 6 (puedes ajustarlo)
+            const totalDias = 6;
+            const faltan = parseInt(diasFaltan) || 0;
+            const llevan = Math.max(0, totalDias - faltan);
+            const porcentaje = Math.round((llevan / totalDias) * 100);
+            
+            let clase = 'capacitacion-baja';
+            if (porcentaje >= 80) clase = 'capacitacion-alta';
+            else if (porcentaje >= 50) clase = 'capacitacion-media';
+            
+            return {
+                porcentaje: Math.min(100, Math.max(0, porcentaje)),
+                label: `${llevan}/${totalDias} días`,
+                clase: clase
+            };
+        }
+
+        // ================================================================
+        //  CARGAR DATOS DESDE CSV
+        // ================================================================
         function parseCSV(csvText) {
             const lines = csvText.split(/\r\n|\n/);
             if (lines.length < 2) return [];
@@ -418,50 +428,6 @@
             return result;
         }
 
-        // 🔥 FUNCIÓN CORREGIDA: Convierte a minúsculas para comparar
-        function mapearEstadoPlaneacion(estado) {
-            // Convertir a minúsculas para comparar
-            const estadoLower = estado.toLowerCase().trim();
-            
-            const mapa = {
-                'ok': { porcentaje: 100, label: '✅ OK', clase: 'planeacion-ok' },
-                'devuelto con comentarios': { porcentaje: 75, label: '🔄 Devuelto con comentarios', clase: 'planeacion-75' },
-                'entregó semestre 1': { porcentaje: 50, label: '📖 Entregó semestre 1', clase: 'planeacion-50' },
-                'sin entrega': { porcentaje: 0, label: '⏳ Sin entrega', clase: 'planeacion-0' },
-                'no ha entrado': { porcentaje: 0, label: '🚪 No ha entrado', clase: 'planeacion-0' }
-            };
-            
-            // Buscar coincidencia exacta o parcial
-            for (const [key, value] of Object.entries(mapa)) {
-                if (estadoLower === key || estadoLower.includes(key) || key.includes(estadoLower)) {
-                    return value;
-                }
-            }
-            
-            // Si no coincide con nada, devolver 0% con el texto original
-            return { 
-                porcentaje: 0, 
-                label: `❓ ${estado}`, 
-                clase: 'planeacion-0' 
-            };
-        }
-
-        function calcularAvanceCapacitacion(debeAsistir, leFaltan) {
-            const debe = parseInt(debeAsistir) || 0;
-            const faltan = parseInt(leFaltan) || 0;
-            if (debe === 0) return { porcentaje: 0, label: 'Sin dato' };
-            const asistidos = debe - faltan;
-            const porcentaje = Math.round((asistidos / debe) * 100);
-            let clase = 'capacitacion-baja';
-            if (porcentaje >= 80) clase = 'capacitacion-alta';
-            else if (porcentaje >= 50) clase = 'capacitacion-media';
-            return { porcentaje: Math.min(100, Math.max(0, porcentaje)), label: `${asistidos}/${debe} días`, clase };
-        }
-
-        // ================================================================
-        //  CARGAR Y RENDERIZAR DATOS
-        // ================================================================
-
         async function cargarAvances() {
             try {
                 loadingDiv.style.display = 'block';
@@ -474,25 +440,26 @@
                 const rawData = parseCSV(csvText);
                 if (rawData.length === 0) throw new Error('No hay datos en el CSV.');
 
+                // Detectar columnas automáticamente
                 const headers = Object.keys(rawData[0]);
                 const colDocente = headers.find(h => /docente|nombre|maestro/i.test(h)) || headers[0];
-                const colEstado = headers.find(h => /estado|planeacion/i.test(h)) || headers[1];
-                const colDebeAsistir = headers.find(h => /debe asistir|dias que debe|total/i.test(h)) || headers[2];
-                const colLeFaltan = headers.find(h => /le faltan|faltan/i.test(h)) || headers[3];
+                const colPlaneacion = headers.find(h => /planeacion|planeación|estado|entrega/i.test(h)) || headers[1];
+                const colDiasFaltan = headers.find(h => /dias|faltan|días/i.test(h)) || headers[2];
 
                 datosDocentes = rawData.map(row => {
-                    const estado = mapearEstadoPlaneacion(row[colEstado] || '');
-                    const capacitacion = calcularAvanceCapacitacion(row[colDebeAsistir], row[colLeFaltan]);
                     const nombre = (row[colDocente] || '').trim();
+                    if (!nombre) return null;
+
+                    const planeacion = mapearEstadoPlaneacion(row[colPlaneacion] || '');
+                    const capacitacion = calcularAvanceCapacitacion(row[colDiasFaltan] || '0');
+
                     return {
                         nombre: nombre,
-                        estadoPlaneacion: estado,
-                        avanceCapacitacion: capacitacion,
-                        debeAsistir: parseInt(row[colDebeAsistir]) || 0,
-                        leFaltan: parseInt(row[colLeFaltan]) || 0,
+                        planeacion: planeacion,
+                        capacitacion: capacitacion,
                         _search: nombre.toLowerCase()
                     };
-                }).filter(d => d.nombre !== '');
+                }).filter(d => d !== null);
 
                 if (datosDocentes.length === 0) throw new Error('No se encontraron docentes.');
 
@@ -506,6 +473,7 @@
                 contenedorAvances.style.display = 'block';
 
             } catch (error) {
+                console.error('Error:', error);
                 loadingDiv.innerHTML = `
                     <div class="empty-state">
                         <span class="emoji">❌</span>
@@ -518,6 +486,9 @@
             }
         }
 
+        // ================================================================
+        //  RENDERIZAR AVANCES
+        // ================================================================
         function renderAvances(docentes) {
             const terminoBusqueda = buscador.value.toLowerCase().trim();
             let filtrados = docentes.filter(d => d._search.includes(terminoBusqueda));
@@ -536,8 +507,8 @@
             let html = '';
             filtrados.forEach(doc => {
                 const inicial = doc.nombre.charAt(0).toUpperCase();
-                const p = doc.estadoPlaneacion;
-                const c = doc.avanceCapacitacion;
+                const p = doc.planeacion;
+                const c = doc.capacitacion;
 
                 html += `
                     <div class="card-docente">
@@ -565,7 +536,7 @@
                             <div class="barra-fondo">
                                 <div class="barra-lleno ${c.clase}" style="width: ${c.porcentaje}%;"></div>
                             </div>
-                            <div class="estado-texto">${c.label} · ${doc.debeAsistir - doc.leFaltan} de ${doc.debeAsistir} días asistidos</div>
+                            <div class="estado-texto">${c.label}</div>
                         </div>
                     </div>
                 `;
@@ -574,12 +545,16 @@
             gridAvances.innerHTML = html;
         }
 
+        // ================================================================
+        //  ESTADÍSTICAS GENERALES
+        // ================================================================
         function actualizarEstadisticas(docentes) {
             const total = docentes.length;
-            const planeacionCompleta = docentes.filter(d => d.estadoPlaneacion.porcentaje === 100).length;
-            const capacitacionCompleta = docentes.filter(d => d.avanceCapacitacion.porcentaje === 100).length;
-            const sumaPlaneacion = docentes.reduce((sum, d) => sum + d.estadoPlaneacion.porcentaje, 0);
-            const sumaCapacitacion = docentes.reduce((sum, d) => sum + d.avanceCapacitacion.porcentaje, 0);
+            const planeacionCompleta = docentes.filter(d => d.planeacion.porcentaje === 100).length;
+            const capacitacionCompleta = docentes.filter(d => d.capacitacion.porcentaje >= 80).length;
+            
+            const sumaPlaneacion = docentes.reduce((sum, d) => sum + d.planeacion.porcentaje, 0);
+            const sumaCapacitacion = docentes.reduce((sum, d) => sum + d.capacitacion.porcentaje, 0);
             const promedio = total > 0 ? Math.round((sumaPlaneacion + sumaCapacitacion) / (total * 2)) : 0;
 
             totalDocentesSpan.textContent = total;
@@ -589,6 +564,8 @@
         }
 
         buscador.addEventListener('input', () => renderAvances(datosDocentes));
+
+        // Iniciar
         cargarAvances();
     </script>
 </body>
